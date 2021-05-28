@@ -1,0 +1,23 @@
+<CrowTextCollection>
+	<CrowText>
+		<ID>tut01</ID>
+		<Country>eng</Country>
+		<TextToDisplay>Hi! I'm Text Corvid.</TextToDisplay>
+	</CrowText>
+	<CrowText>
+		<ID>tut01</ID>
+		<Country>isl</Country>
+		<TextToDisplay>Hæ, ég er Text Corvid.</TextToDisplay>
+	</CrowText>
+	<CrowText>
+		<ID>tut02</ID>
+		<Country>eng</Country>
+		<TextToDisplay>I like video games</TextToDisplay>
+	</CrowText>
+	<CrowText>
+		<ID>tut02</ID>
+		<Country>isl</Country>
+		<TextToDisplay>Mér likar tölva leiknir.</TextToDisplay>
+	</CrowText>
+</CrowTextCollection>
+		

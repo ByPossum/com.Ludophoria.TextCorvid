@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace TextCorvid
 {
@@ -40,6 +42,12 @@ namespace TextCorvid
                 case ".json":
                     D_allText = ReadJsonText();
                     break;
+                case ".xml":
+                    D_allText = ReadXMLData();
+                    break;
+                default:
+                    Debug.LogError("Unable to get file extension");
+                    break;
             }
         }
         #endif
@@ -49,7 +57,10 @@ namespace TextCorvid
             if (File.Exists(s_filePath + ".csv"))
                 fs = File.Open(s_filePath + ".csv", FileMode.Open);
             else if (File.Exists(s_filePath + ".json"))
-                fs = File.Open(s_filePath + "json", FileMode.Open);
+                fs = File.Open(s_filePath + ".json", FileMode.Open);
+            else if (File.Exists(s_filePath + ".xml"))
+                fs = File.Open(s_filePath + ".xml", FileMode.Open);
+            else return "Unable to load file extension.";
             string extention = Path.GetExtension(fs.Name);
             fs.Close();
             return extention;
@@ -109,6 +120,20 @@ namespace TextCorvid
             return textData;
         }
 
+        private Dictionary<string, string> ReadXMLData()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(CrowText));
+            Debug.Log(File.ReadAllText(s_filePath + ".xml"));
+            FileStream fs = new FileStream(s_filePath + ".xml", FileMode.Open);
+            CrowTextCollection crow = serializer.Deserialize(fs) as CrowTextCollection;
+            Dictionary<string, string> textData = new Dictionary<string, string>();
+            foreach(CrowText text in crow.crowText)
+            {
+                textData.Add(text.ID + text.Country, text.TextToDisplay);
+            }
+            return textData;
+        }
+
         public void MakeTestJsonData()
         {
             CrowText[] ct = new CrowText[4];
@@ -129,7 +154,7 @@ namespace TextCorvid
     }
 
     [System.Serializable]
-    public struct CrowTextCollection
+    public class CrowTextCollection
     {
         public CrowText[] crowText;
     }
@@ -137,8 +162,11 @@ namespace TextCorvid
     [System.Serializable]
     public struct CrowText
     {
+        [XmlAttribute("ID")]
         public string ID;
+        [XmlAttribute("Country")]
         public string Country;
+        [XmlAttribute("Text")]
         public string TextToDisplay;
     }
 }
