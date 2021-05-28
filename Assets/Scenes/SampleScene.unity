@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd8842045c1c9714abb9d7ba24adfb5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_filePath: Text/TextToRead
+  s_filePath: Text/TextTest
   A_supportedLanguages: 
   l_currentLanguage: 72
 --- !u!4 &453285187

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TextCrow;
+using TextCorvid;
 
 public class Runner : MonoBehaviour
 {
@@ -14,7 +14,7 @@ public class Runner : MonoBehaviour
 
     private IEnumerator GetTextDelayed()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.0f);
         Debug.Log(TextManager.x.GetText("tut01"));
     }
 }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-namespace TextCrow
+namespace TextCorvid
 {
     public class TextManager : MonoBehaviour
     {
@@ -27,13 +27,33 @@ namespace TextCrow
         #else
         public void Init()
         {
-            s_filePath = Application.dataPath + "/" + s_filePath;
+            s_filePath = Application.dataPath + "/"+ s_filePath;
             MakeThisObjectSingleton();
-            MakeTestJsonData();
-            D_allText = ReadJsonText();
+            //MakeTestJsonData();
+
+
+            switch (LoadFileExtention())
+            {
+                case ".csv":
+                    D_allText = ReadCSVText();
+                    break;
+                case ".json":
+                    D_allText = ReadJsonText();
+                    break;
+            }
         }
         #endif
-
+        private string LoadFileExtention()
+        {
+            FileStream fs = null;
+            if (File.Exists(s_filePath + ".csv"))
+                fs = File.Open(s_filePath + ".csv", FileMode.Open);
+            else if (File.Exists(s_filePath + ".json"))
+                fs = File.Open(s_filePath + "json", FileMode.Open);
+            string extention = Path.GetExtension(fs.Name);
+            fs.Close();
+            return extention;
+        }
         public string GetText(string _textID)
         {
             _textID = _textID + l_currentLanguage.ToString();
@@ -58,6 +78,24 @@ namespace TextCrow
                 x = this;
             DontDestroyOnLoad(this);
             #endif
+        }
+
+        private Dictionary<string, string> ReadCSVText()
+        {
+            Dictionary<string, string> readText = new Dictionary<string, string>();
+            string allTextFromFile = File.ReadAllText(s_filePath + ".csv");
+            string[] textRows = allTextFromFile.Split("\n"[0]);
+            int rows = textRows.Length;
+            for(int i = 0; i < rows; i++)
+            {
+                string id = textRows[i].Split(',')[0] + textRows[i].Split(',')[1];
+                string[] splitText = textRows[i].Split(',');
+                string text = "";
+                for (int j = 2; j < splitText.Length; j++)
+                    text += splitText[j] + (j != splitText.Length -1 ? ',' : '\0');
+                readText.Add(id, text);
+            }
+            return readText;
         }
 
         private Dictionary<string, string> ReadJsonText()

@@ -1,4 +1,4 @@
-﻿namespace TextCrow
+﻿namespace TextCorvid
 {
     /// <summary>
     /// All languages represented by ISO 639-2/T (Alpha-3) codes. Ref: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
