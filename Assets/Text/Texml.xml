@@ -1,4 +1,5 @@
-<CrowTextCollection>
+<?xml version="1.0" encoding="UTF-8"?>
+<CrowTextCollection xmlns="ctc">
 	<CrowText>
 		<ID>tut01</ID>
 		<Country>eng</Country>
