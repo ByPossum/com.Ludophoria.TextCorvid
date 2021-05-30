@@ -123,10 +123,8 @@ namespace TextCorvid
         private Dictionary<string, string> ReadXMLData()
         {
             XmlSerializer serializer = new XmlSerializer(typeof(CrowXml));
-            Debug.Log(File.ReadAllText(s_filePath + ".xml"));
             FileStream fs = new FileStream(s_filePath + ".xml", FileMode.Open);
             CrowXml crow = serializer.Deserialize(fs) as CrowXml; 
-            Debug.Log(crow.L_crowText.Count);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText text in crow.L_crowText)
             {
