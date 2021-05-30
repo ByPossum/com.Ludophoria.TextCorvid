@@ -17,6 +17,7 @@ namespace TextCorvid
         [SerializeField] string s_filePath;
         public Dictionary<string, string> D_allText = new Dictionary<string, string>();
         [SerializeField] public Languages[] A_supportedLanguages;
+        [SerializeField] public float f_textSpeed;
         public Languages l_currentLanguage;
 
         // Uncomment the Define if you wish to do things in start as opposed to init
