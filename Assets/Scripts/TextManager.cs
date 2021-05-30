@@ -122,12 +122,13 @@ namespace TextCorvid
 
         private Dictionary<string, string> ReadXMLData()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(CrowText));
+            XmlSerializer serializer = new XmlSerializer(typeof(CrowXml));
             Debug.Log(File.ReadAllText(s_filePath + ".xml"));
             FileStream fs = new FileStream(s_filePath + ".xml", FileMode.Open);
-            CrowTextCollection crow = serializer.Deserialize(fs) as CrowTextCollection;
+            CrowXml crow = serializer.Deserialize(fs) as CrowXml; 
+            Debug.Log(crow.L_crowText.Count);
             Dictionary<string, string> textData = new Dictionary<string, string>();
-            foreach(CrowText text in crow.crowText)
+            foreach(CrowText text in crow.L_crowText)
             {
                 textData.Add(text.ID + text.Country, text.TextToDisplay);
             }
@@ -158,15 +159,22 @@ namespace TextCorvid
     {
         public CrowText[] crowText;
     }
+    [System.Serializable, XmlRoot("CrowXml")]
+    public class CrowXml
+    {
+        [XmlArray("CrowTextCollection")]
+        [XmlArrayItem("CrowText")]
+        public List<CrowText> L_crowText = new List<CrowText>();
+    }
 
     [System.Serializable]
     public struct CrowText
     {
-        [XmlAttribute("ID")]
+        [XmlElement("ID")]
         public string ID;
-        [XmlAttribute("Country")]
+        [XmlElement("Country")]
         public string Country;
-        [XmlAttribute("Text")]
+        [XmlElement("TextToDisplay")]
         public string TextToDisplay;
     }
 }
