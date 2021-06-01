@@ -12,6 +12,11 @@
 			<TextToDisplay>Hæ, ég er Text Corvid.</TextToDisplay>
 		</CrowText>
 		<CrowText>
+			<ID>tut01</ID>
+			<Country>spa</Country>
+			<TextToDisplay>This is supposed to be spanish!</TextToDisplay>
+		</CrowText>
+		<CrowText>
 			<ID>tut02</ID>
 			<Country>eng</Country>
 			<TextToDisplay>I like video games</TextToDisplay>

@@ -9,6 +9,11 @@ namespace TextCorvid
     {
         public List<string> textKeys = new List<string>();
         public Text refText;
+        List<Text> previousText = new List<Text>();
+        private int prevLineCount;
+        private int currentRow;
+        private int rowCount;
+        public bool b_done = true;
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay, TextDisplayType displayType)
         {
             switch (displayType)
@@ -29,34 +34,47 @@ namespace TextCorvid
     
         private void DisplayByChar(string textToDisplay, RectTransform rectToDisplay)
         {
-            int prevLineCount = 0;
-            int currentRow = 0;
-            int rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / refText.preferredHeight);
-            Debug.Log("Am running");
-            foreach(string word in textToDisplay.Split(' '))
+            b_done = false;
+            currentRow = 0;
+            prevLineCount = 0;
+            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / refText.preferredHeight);
+            string[] _words = textToDisplay.Split(' ');
+            DeleteOldText();
+            StartCoroutine(ShowNextWord(textToDisplay, rectToDisplay));
+            b_done = true;
+        }
+        
+        private void DeleteOldText()
+        {
+            foreach(Text killMe in previousText)
+            {
+                DestroyImmediate(killMe.gameObject);
+            }
+            previousText = new List<Text>();
+        }
+
+        private IEnumerator ShowNextWord(string nextWord, RectTransform _parent)
+        {
+            // Show the text character by character
+            for(int i = 0; i < nextWord.Length; i++)
             {
                 // Move to a new row when the next word goes over the textbox width
-                if ((prevLineCount * refText.preferredWidth) + (refText.preferredWidth * word.Length) > rectToDisplay.rect.width)
+                if ((prevLineCount * refText.fontSize) + (refText.fontSize * nextWord.Length) > _parent.rect.width)
                 {
                     currentRow++;
                     prevLineCount = 0;
                 }
-                // Show the text character by character
-                foreach (char letter in word)
-                {
-                    StartCoroutine(ShowNextChar(letter, new Vector3(refText.preferredWidth * prevLineCount, refText.preferredHeight * currentRow, rectToDisplay.transform.position.z), rectToDisplay));
-                    prevLineCount++;
-                }
+                Text newText = Instantiate<Text>(refText);
+                newText.text = nextWord[i].ToString();
+                newText.transform.parent = _parent;
+                // Set the top left of the text to the top left of the box with character offsets (Not fully working yet)
+                newText.rectTransform.offsetMin = new Vector2((_parent.offsetMin.x + refText.fontSize) + prevLineCount * refText.fontSize, _parent.offsetMin.y);
+                newText.rectTransform.offsetMax = new Vector2(_parent.offsetMax.x, (_parent.offsetMax.y + refText.fontSize) + refText.fontSize * (currentRow));
+                newText.rectTransform.sizeDelta = new Vector2(100, 100);
+                previousText.Add(newText);
+                prevLineCount++;
+                yield return new WaitForSeconds(TextManager.x.f_textSpeed);
             }
-        }
-    
-        private IEnumerator ShowNextChar(char nextChar, Vector3 nextPos, RectTransform _parent)
-        {
-            yield return new WaitForSeconds(TextManager.x.f_textSpeed);
-            Text newText = Instantiate<Text>(refText);
-            newText.text = nextChar.ToString();
-            newText.transform.position = nextPos;
-            newText.transform.parent = _parent;
         }
     }
     
