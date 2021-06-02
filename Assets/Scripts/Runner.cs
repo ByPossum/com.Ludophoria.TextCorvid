@@ -27,17 +27,17 @@ public class Runner : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             TextManager.x.l_currentLanguage = Languages.isl;
-            textRef.text = TextManager.x.GetText("tut01");
+            td.DisplayText(TextManager.x.GetText("tut01"), rectToDrawTo, TextDisplayType.character);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
             TextManager.x.l_currentLanguage = Languages.eng;
-            textRef.text = TextManager.x.GetText("tut02");
+            td.DisplayText(TextManager.x.GetText("tut02"), rectToDrawTo, TextDisplayType.character);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
             TextManager.x.l_currentLanguage = Languages.isl;
-            textRef.text = TextManager.x.GetText("tut02");
+            td.DisplayText(TextManager.x.GetText("tut02"), rectToDrawTo, TextDisplayType.character);
         }
         langRef.text = TextManager.x.l_currentLanguage.ToString();
     }
