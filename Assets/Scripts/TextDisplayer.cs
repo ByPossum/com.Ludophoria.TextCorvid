@@ -8,6 +8,7 @@ namespace TextCorvid
     public class TextDisplayer : MonoBehaviour
     {
         [SerializeField] private RectTransform rt_displayBox;
+        [SerializeField] private Text t_displayedText;
         public List<string> textKeys = new List<string>();
         public Text refText;
         List<Text> previousText = new List<Text>();
@@ -82,10 +83,10 @@ namespace TextCorvid
             b_done = false;
             currentRow = 0;
             prevLineCount = 0;
-            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / refText.preferredHeight);
+            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.preferredHeight);
             string[] _words = textToDisplay.Split(' ');
             DeleteOldText();
-            StartCoroutine(ShowNextCharacterByCharacter(textToDisplay, rectToDisplay));
+            StartCoroutine(ShowNextCharacterByCharacter(textToDisplay, t_displayedText));
             b_done = true;
         }
         
@@ -94,10 +95,7 @@ namespace TextCorvid
         /// </summary>
         private void DeleteOldText()
         {
-            foreach(Text killMe in previousText)
-            {
-                DestroyImmediate(killMe.gameObject);
-            }
+            t_displayedText.text = "";
             previousText = new List<Text>();
         }
 
@@ -107,25 +105,19 @@ namespace TextCorvid
         /// <param name="nextString">The string to display. Will accomidate for the text being larger than the rect.</param>
         /// <param name="_parent">The area to display the text.</param>
         /// <returns>Waits for text speed.</returns>
-        private IEnumerator ShowNextCharacterByCharacter(string nextString, RectTransform _parent)
+        private IEnumerator ShowNextCharacterByCharacter(string nextString, Text _parent)
         {
             // Show the text character by character
             for(int i = 0; i < nextString.Length; i++)
             {
                 // Move to a new row when the next word goes over the textbox width
-                if ((prevLineCount * refText.fontSize) + (refText.fontSize * nextString.Length) > _parent.rect.width)
+                if ((prevLineCount * refText.fontSize) + (refText.fontSize * nextString.Length) > _parent.rectTransform.rect.width)
                 {
                     currentRow++;
                     prevLineCount = 0;
                 }
-                Text newText = Instantiate<Text>(refText);
-                newText.text = nextString[i].ToString();
-                newText.transform.parent = _parent;
-                // Set the top left of the text to the top left of the box with character offsets (Not fully working yet)
-                newText.rectTransform.offsetMin = new Vector2((_parent.offsetMin.x + refText.fontSize * 3) + prevLineCount * refText.fontSize, ((_parent.offsetMax.x - _parent.offsetMax.x) - refText.fontSize * 3) - refText.fontSize * (currentRow));
-                //newText.rectTransform.offsetMax = new Vector2(_parent.offsetMax.x, (_parent.offsetMax.y + refText.fontSize) + refText.fontSize * (currentRow));
-                newText.rectTransform.sizeDelta = new Vector2(100, 100);
-                previousText.Add(newText);
+                _parent.text += nextString[i].ToString();
+                previousText.Add(_parent);
                 prevLineCount++;
                 yield return new WaitForSeconds(TextManager.x.f_textSpeed);
             }
