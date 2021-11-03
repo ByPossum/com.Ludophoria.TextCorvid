@@ -13,12 +13,14 @@ namespace TextCorvid
         public static TextManager x;
         #endif
         [SerializeField] string s_filePath;
-        public Dictionary<string, string> D_allText = new Dictionary<string, string>();
         [SerializeField] public Languages[] A_supportedLanguages;
         [SerializeField] public float f_textSpeed;
         public Languages l_currentLanguage;
-
-        // Set in 
+        private Dictionary<string, string> D_allText = new Dictionary<string, string>();
+        private int i_currentLanguageIndex = 0;
+        /// TODO:
+        /// - Add "currently in use" text to be updated if language changes
+        // Set in Player settings
         #if USING_UNITY_FUNCTIONS
         // Start is called before the first frame update
         void Start()
@@ -149,6 +151,46 @@ namespace TextCorvid
                 sr.Close();
             }
             File.WriteAllText(s_filePath + ".JSON", jsonData);
+        }
+
+        private int UpdateLanguageIter(int _step)
+        {
+            return (int)Mathf.Repeat(i_currentLanguageIndex+_step, A_supportedLanguages.Length);
+        }
+        private int UpdateLanguageIter(Languages _lang)
+        {
+            for (int i = 0; i < A_supportedLanguages.Length; i++)
+            {
+                if (A_supportedLanguages[i] == _lang)
+                    return i;
+            }
+            Debug.LogError("Attempt to change to unsupported language.");
+            return -1;
+        }
+
+        /// <summary>
+        /// Iterate by one language
+        /// </summary>
+        public void ChangeLanguage()
+        {
+            i_currentLanguageIndex = UpdateLanguageIter(1);
+            l_currentLanguage = A_supportedLanguages[i_currentLanguageIndex];
+        }
+
+        public void ChangeLanguage(Languages _lang)
+        {
+            i_currentLanguageIndex = UpdateLanguageIter(_lang);
+            l_currentLanguage = _lang;
+        }
+
+        // Dis gross try not to use this
+        public void ChangeLanguage(string _languageToChangeTo)
+        {
+            // Ew. God- jeez what? Gross
+            Languages _nextLang = (Languages)((int?)System.Enum.Parse(typeof(Languages), _languageToChangeTo) ?? 0);
+            // Does this work? No idea
+            i_currentLanguageIndex = UpdateLanguageIter((int)_nextLang - (int)i_currentLanguageIndex);
+            l_currentLanguage = _nextLang;
         }
     }
 
