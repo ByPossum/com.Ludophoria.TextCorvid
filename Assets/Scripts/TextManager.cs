@@ -1,6 +1,4 @@
-﻿//#define USING_UNITY_FUNCTIONS
-#define ALLOW_SINGLETON
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -20,7 +18,7 @@ namespace TextCorvid
         [SerializeField] public float f_textSpeed;
         public Languages l_currentLanguage;
 
-        // Uncomment the Define if you wish to do things in start as opposed to init
+        // Set in 
         #if USING_UNITY_FUNCTIONS
         // Start is called before the first frame update
         void Start()
@@ -34,24 +32,21 @@ namespace TextCorvid
             MakeThisObjectSingleton();
             //MakeTestJsonData();
 
-
-            switch (LoadFileExtention())
+            // Load text from file
+            D_allText = LoadFileExtention() switch
             {
-                case ".csv":
-                    D_allText = ReadCSVText();
-                    break;
-                case ".json":
-                    D_allText = ReadJsonText();
-                    break;
-                case ".xml":
-                    D_allText = ReadXMLData();
-                    break;
-                default:
-                    Debug.LogError("Unable to get file extension");
-                    break;
-            }
+                ".csv" => ReadCSVText(),
+                ".json" => ReadJsonText(),
+                ".xml" => ReadXMLData(),
+                _ => null
+            };
         }
         #endif
+
+        /// <summary>
+        /// Check if any of the supported filetypes are available
+        /// </summary>
+        /// <returns>The file extension that got loaded</returns>
         private string LoadFileExtention()
         {
             FileStream fs = null;
@@ -61,7 +56,11 @@ namespace TextCorvid
                 fs = File.Open(s_filePath + ".json", FileMode.Open);
             else if (File.Exists(s_filePath + ".xml"))
                 fs = File.Open(s_filePath + ".xml", FileMode.Open);
-            else return "Unable to load file extension.";
+            else
+            {
+                fs.Close();
+                return "Unable to load file extension.";
+            }
             string extention = Path.GetExtension(fs.Name);
             fs.Close();
             return extention;
@@ -100,10 +99,10 @@ namespace TextCorvid
             int rows = textRows.Length;
             for(int i = 0; i < rows; i++)
             {
-                string id = textRows[i].Split(',')[0] + textRows[i].Split(',')[1];
+                string id = textRows[i].Split(',')[0] + textRows[i].Split(',')[1] + textRows[i].Split(',')[2];
                 string[] splitText = textRows[i].Split(',');
                 string text = "";
-                for (int j = 2; j < splitText.Length; j++)
+                for (int j = 3; j < splitText.Length; j++)
                     text += splitText[j] + (j != splitText.Length -1 ? ',' : '\0');
                 readText.Add(id, text);
             }
@@ -116,7 +115,7 @@ namespace TextCorvid
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText crow in ctc.crowText)
             {
-                textData.Add(crow.ID + crow.Country, crow.TextToDisplay);
+                textData.Add(crow.ID + crow.Event + crow.Country, crow.TextToDisplay);
             }
             return textData;
         }
@@ -129,7 +128,7 @@ namespace TextCorvid
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText text in crow.L_crowText)
             {
-                textData.Add(text.ID + text.Country, text.TextToDisplay);
+                textData.Add(text.ID + text.Event + text.Country, text.TextToDisplay);
             }
             return textData;
         }
@@ -171,6 +170,8 @@ namespace TextCorvid
     {
         [XmlElement("ID")]
         public string ID;
+        [XmlElement("Event")]
+        public string Event;
         [XmlElement("Country")]
         public string Country;
         [XmlElement("TextToDisplay")]
