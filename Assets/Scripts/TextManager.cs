@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using UnityEngine.UI;
 
 namespace TextCorvid
 {
@@ -18,6 +19,7 @@ namespace TextCorvid
         public Languages l_currentLanguage;
         private Dictionary<string, string> D_allText = new Dictionary<string, string>();
         private int i_currentLanguageIndex = 0;
+        private Dictionary<string, Text> D_currentTextOnScreen;
         /// TODO:
         /// - Add "currently in use" text to be updated if language changes
         // Set in Player settings
