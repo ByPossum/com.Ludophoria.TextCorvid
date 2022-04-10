@@ -15,7 +15,7 @@ namespace TextCorvid
         #endif
         [SerializeField] string s_filePath;
         [SerializeField] public Languages[] A_supportedLanguages;
-        [SerializeField] public float f_textSpeed;
+        [SerializeField] public int f_textSpeed;
         public Languages l_currentLanguage;
         private Dictionary<string, string> D_allText = new Dictionary<string, string>();
         private int i_currentLanguageIndex = 0;

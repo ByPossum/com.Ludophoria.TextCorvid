@@ -202,7 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   s_filePath: Text/Texml
   A_supportedLanguages: 2600000048000000
-  f_textSpeed: 0.02
+  f_textSpeed: 0
   l_currentLanguage: 72
 --- !u!4 &453285187
 Transform:

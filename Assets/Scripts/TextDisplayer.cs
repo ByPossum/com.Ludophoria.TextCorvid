@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,13 @@ namespace TextCorvid
         private int prevLineCount;
         private int currentRow;
         private int rowCount;
+        private int i_textSpeed;
         public bool b_done = true;
+
+        public void Init(int _textSpeed)
+        {
+            i_textSpeed = _textSpeed;
+        }
 
         /// <summary>
         /// Choose how the text will be displayed, and on which rect transform.
@@ -78,7 +85,7 @@ namespace TextCorvid
         /// </summary>
         /// <param name="textToDisplay">Characters to display.</param>
         /// <param name="rectToDisplay">Where to begin displaying those characters.</param>
-        private void DisplayByChar(string textToDisplay, RectTransform rectToDisplay)
+        private async void DisplayByChar(string textToDisplay, RectTransform rectToDisplay)
         {
             b_done = false;
             currentRow = 0;
@@ -86,10 +93,15 @@ namespace TextCorvid
             rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.preferredHeight);
             string[] _words = textToDisplay.Split(' ');
             DeleteOldText();
-            StartCoroutine(ShowNextCharacterByCharacter(textToDisplay, t_displayedText));
+            await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
             b_done = true;
         }
         
+        private void DisplayByBlock(string _textToDisplay, RectTransform _rectToDisplay)
+        {
+
+        }
+
         /// <summary>
         /// Remove old text from the rect.
         /// </summary>
@@ -105,7 +117,7 @@ namespace TextCorvid
         /// <param name="nextString">The string to display. Will accomidate for the text being larger than the rect.</param>
         /// <param name="_parent">The area to display the text.</param>
         /// <returns>Waits for text speed.</returns>
-        private IEnumerator ShowNextCharacterByCharacter(string nextString, Text _parent)
+        private async Task ShowNextCharacterByCharacter(string nextString, Text _parent)
         {
             // Show the text character by character
             for(int i = 0; i < nextString.Length; i++)
@@ -119,7 +131,7 @@ namespace TextCorvid
                 _parent.text += nextString[i].ToString();
                 previousText.Add(_parent);
                 prevLineCount++;
-                yield return new WaitForSeconds(TextManager.x.f_textSpeed);
+                await Task.Delay(i_textSpeed);
             }
         }
     }
