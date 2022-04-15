@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using TextCorvid;
 using UnityEngine.UI;
+using TMPro;
 
 public class Runner : MonoBehaviour
 {
-    [SerializeField] Text textRef;
-    [SerializeField] Text langRef;
+    [SerializeField] TMP_Text textRef;
+    [SerializeField] TMP_Text langRef;
     [SerializeField] RectTransform rectToDrawTo;
     [SerializeField] TextDisplayer td;
-    private Text t_textToDisplay;
+    private TMP_Text t_textToDisplay;
     private string s_dialogue = "";
     // Start is called before the first frame update
     void Start()
     {
         FindObjectOfType<TextManager>().Init();
         StartCoroutine(GetTextDelayed());
-        t_textToDisplay = rectToDrawTo.gameObject.GetComponent<Text>();
+        t_textToDisplay = rectToDrawTo.gameObject.GetComponent<TMP_Text>();
         s_dialogue = t_textToDisplay?.text;
         td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
     }

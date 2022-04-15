@@ -80,7 +80,7 @@ namespace TextCorvid
         }
 
         /// <summary>
-        /// If singleton use is allowed, make this object a singleton
+        /// NB: DELETE THIS AND MAKE A SERVICE OR SOMETHING
         /// </summary>
         private void MakeThisObjectSingleton()
         {

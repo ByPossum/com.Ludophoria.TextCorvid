@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace TextCorvid
 {
     public class TextDisplayer : MonoBehaviour
     {
         [SerializeField] private RectTransform rt_displayBox;
-        [SerializeField] private Text t_displayedText;
+        [SerializeField] private TMP_Text t_displayedText;
+        [SerializeField] private TextAnimator ta_animator;
         public List<string> textKeys = new List<string>();
-        public Text refText;
-        List<Text> previousText = new List<Text>();
+        public TMP_Text refText;
+        List<TMP_Text> previousText = new List<TMP_Text>();
         private int prevLineCount;
         private int currentRow;
         private int rowCount;
@@ -94,6 +96,7 @@ namespace TextCorvid
             string[] _words = textToDisplay.Split(' ');
             DeleteOldText();
             await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
+            ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             b_done = true;
         }
         
@@ -108,7 +111,7 @@ namespace TextCorvid
         private void DeleteOldText()
         {
             t_displayedText.text = "";
-            previousText = new List<Text>();
+            previousText = new List<TMP_Text>();
         }
 
         /// <summary>
@@ -117,7 +120,7 @@ namespace TextCorvid
         /// <param name="nextString">The string to display. Will accomidate for the text being larger than the rect.</param>
         /// <param name="_parent">The area to display the text.</param>
         /// <returns>Waits for text speed.</returns>
-        private async Task ShowNextCharacterByCharacter(string nextString, Text _parent)
+        private async Task ShowNextCharacterByCharacter(string nextString, TMP_Text _parent)
         {
             // Show the text character by character
             for(int i = 0; i < nextString.Length; i++)
