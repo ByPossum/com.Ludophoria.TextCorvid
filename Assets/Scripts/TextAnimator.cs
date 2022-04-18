@@ -13,6 +13,11 @@ public class TextAnimator : MonoBehaviour
     private Regex reg_start = new Regex("<");
     private Regex reg_end = new Regex(">");
     private List<int> Li_delegateTextLengths = new List<int>();
+    /// <summary>
+    /// TODO: This needs to return the initial text with all the tags removed
+    /// </summary>
+    /// <param name="_text"></param>
+    /// <param name="_currentTextToAnimate"></param>
     public void ParseAnimations(TMP_Text _text, string _currentTextToAnimate)
     {
         // Find all the effects
@@ -105,7 +110,7 @@ public class TextAnimator : MonoBehaviour
                 continue;
             // Grab the data we need from the opening tag
             string _fullTag = _allTags[i].Value;
-            int _startIndex = _allTags[i].Index;
+            int _startIndex = _allTags[i].Index; // Minus the length of any previous tags
             int _startLength = _fullTag.Length;
             string _effect = _fullTag.Split(' ')[0].Replace("<", "").Replace(">" ,"");
             // Initialize the data we need to find the closing tag
