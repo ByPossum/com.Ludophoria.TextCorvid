@@ -273,11 +273,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 627c0e21adb2f29438bc94084543f2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rt_displayBox: {fileID: 0}
+  rt_displayBox: {fileID: 872723383}
   t_displayedText: {fileID: 742256789}
   ta_animator: {fileID: 15219826}
   textKeys: []
-  refText: {fileID: 0}
+  refText: {fileID: 742256789}
   b_done: 0
 --- !u!1 &615508977
 GameObject:

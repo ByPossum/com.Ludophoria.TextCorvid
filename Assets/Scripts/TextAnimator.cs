@@ -9,6 +9,7 @@ using System;
 public class TextAnimator : MonoBehaviour
 {
     private Regex reg_effectCharacters = new Regex("<.*?>");
+    private Regex reg_endTag = new Regex("</");
     private Regex reg_start = new Regex("<");
     private Regex reg_end = new Regex(">");
     private List<int> Li_delegateTextLengths = new List<int>();
@@ -19,10 +20,11 @@ public class TextAnimator : MonoBehaviour
         List<string> entries = effects.Cast<Match>().Select(m => m.Value).ToList();
         foreach (string entry in entries)
             Debug.Log(entry);
+        MatchTags(effects, _currentTextToAnimate);
         // Get all start and end positions of the text
         List<int> _starts = GetAllMatchIndicies(reg_start.Matches(_currentTextToAnimate));
         List<int> _ends = GetAllMatchIndicies(reg_end.Matches(_currentTextToAnimate));
-        AssignTextDelegates(effects);
+        //AssignTextDelegates(effects);
 
     }
 
@@ -33,9 +35,12 @@ public class TextAnimator : MonoBehaviour
     /// <returns>The int position of all matches.</returns>
     public List<int> GetAllMatchIndicies(MatchCollection _matches)
     {
+        // I don't know if this is doing what I want it to do...
         List<int> _allIndex = new List<int>();
         foreach (Match _start in _matches)
+        {
             _allIndex.Add(_start.Index);
+        }
         return _allIndex;
     }
 
@@ -89,6 +94,66 @@ public class TextAnimator : MonoBehaviour
         return _arguments;
     }
 
+    private void MatchTags(MatchCollection _allTags, string _allText)
+    {
+        //List<()>
+        // Find Opening Tag
+        for (int i = 0; i < _allTags.Count; i++)
+        {
+            // Ignore closing tags
+            if (_allTags[i].Value.Contains("</"))
+                continue;
+            // Grab the data we need from the opening tag
+            string _fullTag = _allTags[i].Value;
+            int _startIndex = _allTags[i].Index;
+            int _startLength = _fullTag.Length;
+            string _effect = _fullTag.Split(' ')[0].Replace("<", "").Replace(">" ,"");
+            // Initialize the data we need to find the closing tag
+            int _totalLength = 0;
+            string _endTag = "";
+            int _endIndex = 0;
+            int _endLength = 0;
+            int _startOccurances = 0;
+            for (int j = i+1; j < _allTags.Count; j++)
+            {
+                // Check if this is the correct end tag
+                if (_allTags[j].Value.Contains("</"))
+                {
+                    if (_startOccurances < 1)
+                    {
+                        if (_allTags[j].Value.Contains(_effect))
+                        {
+                            // Assign all the data to the end tag
+                            _endTag = _allTags[j].Value;
+                            _endIndex = _allTags[j].Index;
+                            _endLength = _allTags[j].Value.Length;
+                            break;
+                        }
+                    }
+                    _totalLength += _allTags[j].Value.Length;
+                    // Reduce the number of opening tag occurences
+                    if(_allTags[j].Value.Contains(_effect))
+                        _startOccurances--;
+                }
+                else
+                {
+                    _totalLength += _allTags[j].Value.Length;
+                    // There is an opening tag of the same type, so ignore the next closing tag
+                    if(_allTags[j].Value.Contains(_effect))
+                        _startOccurances++;
+                }
+            }
+            int totalLength = (_endIndex-1 - (_startIndex + _startLength-1)) - _totalLength;
+            Debug.Log($"OTL: {_totalLength} | Effected Area: {totalLength} | Tag: {_fullTag} | Index: {_startIndex} | Length: {_startLength} | End: {_endTag} | End Index: {_endIndex} | End Length: {_endLength}");
+        }
+        // Count all Opening Tags that occur before Closing Tag and obtain the lengths of each tag
+        // Get Starting Tag's '>' index
+        // Get Ending Tag's '<' index
+        // Count length of string, minus length of each tag
+    }
+
+    #region Generics
+    // Move this to a seperate static class
     private T TryCast<T>(string _object) where T : new()
     {
         try
@@ -128,6 +193,7 @@ public class TextAnimator : MonoBehaviour
             return _output;
         }
     }
+    #endregion
 }
 
 public delegate void TextEffect(params string[] _strings);
