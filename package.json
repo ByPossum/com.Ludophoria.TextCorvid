@@ -1,0 +1,14 @@
+{
+  "name": "com.[Ludophoria].[TextCorvid]",
+  "version": "0.0.1",
+  "displayName": "TextCorvid",
+  "description": "Text Manager and Displayer",
+  "unity": "2020.3",
+  "unityRelease": "12f1",
+  "documentationUrl": "https://github.com/ByPossum/Text-Corvid/blob/Package-2020-3-12f1/README.md",
+  "author": {
+    "name": "Byron Crowhurst",
+    "email": "teamludophoria@gmail.com",
+    "url": "www.Ludophoria.co.uk"
+  }
+}
