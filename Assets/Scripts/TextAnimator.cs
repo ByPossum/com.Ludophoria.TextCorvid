@@ -5,32 +5,26 @@ using TMPro;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System;
-
+using System.Reflection;
 public class TextAnimator : MonoBehaviour
 {
     private Regex reg_effectCharacters = new Regex("<.*?>");
-    private Regex reg_endTag = new Regex("</");
-    private Regex reg_start = new Regex("<");
-    private Regex reg_end = new Regex(">");
     private List<int> Li_delegateTextLengths = new List<int>();
+
     /// <summary>
-    /// TODO: This needs to return the initial text with all the tags removed
+    /// Passes text off to have effects run and removes the effect tags
     /// </summary>
     /// <param name="_text"></param>
     /// <param name="_currentTextToAnimate"></param>
-    public void ParseAnimations(TMP_Text _text, string _currentTextToAnimate)
+    public string ParseAnimations(TMP_Text _text, string _currentTextToAnimate)
     {
         // Find all the effects
         MatchCollection effects = reg_effectCharacters.Matches(_currentTextToAnimate);
         List<string> entries = effects.Cast<Match>().Select(m => m.Value).ToList();
         foreach (string entry in entries)
             Debug.Log(entry);
-        MatchTags(effects, _currentTextToAnimate);
-        // Get all start and end positions of the text
-        List<int> _starts = GetAllMatchIndicies(reg_start.Matches(_currentTextToAnimate));
-        List<int> _ends = GetAllMatchIndicies(reg_end.Matches(_currentTextToAnimate));
-        //AssignTextDelegates(effects);
-
+        AssignTextDelegates(MatchTags(effects, _currentTextToAnimate));
+        return RemoveEffects(effects, _currentTextToAnimate);
     }
 
     /// <summary>
@@ -49,31 +43,47 @@ public class TextAnimator : MonoBehaviour
         return _allIndex;
     }
 
-    public List<(TextEffect _effect, string[] _args)> AssignTextDelegates(MatchCollection _textDelegates)
+    private string RemoveEffects(MatchCollection _matches, string _originalString)
+    {
+        foreach (Match _match in _matches)
+            _originalString = _originalString.Replace(_match.Value, "");
+        return _originalString;
+    }
+
+    public List<(TextEffect _effect, string[] _args)> AssignTextDelegates(List<(Match _match, int _start, int _length)> _textDelegates)
     {
         List<(TextEffect _effect, string[] _args)> _allEffects = new List<(TextEffect _effect, string[] _args)>();
-        int previousDelegateLength = 0;
-        foreach(Match _newDelegate in _textDelegates)
+        for (int i = 0; i < _textDelegates.Count; i++)
         {
-            // Split the delegate into Name and Arguments
-            string[] delegateAndArgs = _newDelegate.ToString().Split(' ');
-            if (!delegateAndArgs[0].Contains('/'))
+            // Get all the shit
+            string[] allTheShit = _textDelegates[i]._match.Value.Split(' ');
+            string effectName = allTheShit[0].Replace("<", "").Replace(">", "");
+            // Initialize array
+            int argLen = allTheShit.Length + 2;
+            string[] _args = new string[argLen];
+            // Add the initial arguments
+            _args[0] = _textDelegates[i]._start.ToString();
+            _args[1] = _textDelegates[i]._length.ToString();
+            // Parse each argument from the match string
+            for (int j = 1; j < allTheShit.Length; j++)
+                _args[j + 2] = allTheShit[i];
+            
+            try
             {
-                // NB: Add switch case with enum parse or some kind of reflection here to get the correct text effect
-                TextEffect _newEffect = ChangeTextColour;
-                // This is just to test the function
-                _newEffect(delegateAndArgs);
-                // Store the effect to apply
-                _allEffects.Add((_newEffect, delegateAndArgs));
-                // NEXT STEP: RUN THE FUNCTIONS ASSUMIDLY BY LOOPING THROUGH START/ENDS ALONGSIDE ALLEFFECTS
+                object newObj = new object();
+                TextEffect newEffect = Delegate.CreateDelegate(typeof(TextEffect), newObj, effectName) as TextEffect;
+                _allEffects.Add((newEffect, _args));
+                Debug.Log($"{effectName} found!");
             }
-            // This might actually not matter? I'm getting the total length of all the delegates???
-            Li_delegateTextLengths.Add(previousDelegateLength += _newDelegate.ToString().Length);
+            catch (NullReferenceException e)
+            {
+                Debug.LogError($"{effectName} is not a valid function.");
+            }
         }
         return _allEffects;
     }
 
-    private void ChangeTextColour(params string[] _color)
+    public void Colour(params string[] _color)
     {
 
         List<(string argName, string argValue)> _arguments = ParseArguments(_color);
@@ -83,6 +93,11 @@ public class TextAnimator : MonoBehaviour
         Color textSegmentColor = new Color(r, g, b);
     }
     
+    private void Wiggle(params string[] _args)
+    {
+
+    }
+
     private List<(string argName, string argValue)> ParseArguments(params string[] _args)
     {
         List<(string argName, string argValue)> _arguments = new List<(string argName, string argValue)>();
@@ -99,9 +114,9 @@ public class TextAnimator : MonoBehaviour
         return _arguments;
     }
 
-    private void MatchTags(MatchCollection _allTags, string _allText)
+    private List<(Match, int, int)> MatchTags(MatchCollection _allTags, string _allText)
     {
-        //List<()>
+        List<(Match matches, int start, int length)> _effects = new List<(Match matches, int start, int length)>();
         // Find Opening Tag
         for (int i = 0; i < _allTags.Count; i++)
         {
@@ -132,6 +147,7 @@ public class TextAnimator : MonoBehaviour
                             _endTag = _allTags[j].Value;
                             _endIndex = _allTags[j].Index;
                             _endLength = _allTags[j].Value.Length;
+                            _effects.Add((_allTags[i], _startLength, _endLength));
                             break;
                         }
                     }
@@ -152,9 +168,7 @@ public class TextAnimator : MonoBehaviour
             Debug.Log($"OTL: {_totalLength} | Effected Area: {totalLength} | Tag: {_fullTag} | Index: {_startIndex} | Length: {_startLength} | End: {_endTag} | End Index: {_endIndex} | End Length: {_endLength}");
         }
         // Count all Opening Tags that occur before Closing Tag and obtain the lengths of each tag
-        // Get Starting Tag's '>' index
-        // Get Ending Tag's '<' index
-        // Count length of string, minus length of each tag
+        return _effects;
     }
 
     #region Generics

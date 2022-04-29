@@ -95,8 +95,8 @@ namespace TextCorvid
             rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.preferredHeight);
             string[] _words = textToDisplay.Split(' ');
             DeleteOldText();
+            textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
-            ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             b_done = true;
         }
         
