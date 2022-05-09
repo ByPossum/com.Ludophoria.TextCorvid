@@ -10,6 +10,9 @@
     "Dialogue",
     "Story"
   ],
+  "dependancies": {
+	  "com.Ludophoria.TextCorvid": "https://github.com/ByPossum/Text-Corvid"
+  }
   "author": {
     "name": "Ludophoria",
     "email": "teamludophoria@gmail.com",
