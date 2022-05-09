@@ -70,10 +70,10 @@ public class TextAnimator : MonoBehaviour
             
             try
             {
-                object newObj = new object();
+                /*object newObj = new object();
                 TextEffect newEffect = Delegate.CreateDelegate(typeof(TextEffect), newObj, effectName) as TextEffect;
                 _allEffects.Add((newEffect, _args));
-                Debug.Log($"{effectName} found!");
+                Debug.Log($"{effectName} found!");*/
             }
             catch (NullReferenceException e)
             {
