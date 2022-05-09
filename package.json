@@ -4,22 +4,11 @@
   "displayName": "Text Corvid",
   "description": "Text manager for Unity",
   "unity": "2020.3",
-  "unityRelease": "12f1",
- "keywords": [
-    "Text",
-    "Dialogue",
-    "Manager"
-  ],
+  "author": "Ludophoria",
     "dependencies": {
-    "com.unity.textmeshpro": "3.0.6"
   },
   "repository":{
 	"type": "git",
 	"url": "https://github.com/ByPossum/Text-Corvid.git"
-  },
-  "author": {
-    "name": "Ludophoria",
-    "email": "bypossum@gmail.com",
-    "url": "https://www.Ludophoria.co.uk"
   }
 }
