@@ -10,6 +10,13 @@
     "Dialogue",
     "Manager"
   ],
+    "dependencies": {
+    "com.unity.textmeshpro": "3.0.6"
+  },
+  "repository":{
+	"type": "git",
+	"url": "https://github.com/ByPossum/Text-Corvid.git"
+  },
   "author": {
     "name": "Ludophoria",
     "email": "bypossum@gmail.com",
