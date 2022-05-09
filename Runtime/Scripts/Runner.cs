@@ -10,6 +10,7 @@ public class Runner : MonoBehaviour
     [SerializeField] Text langRef;
     [SerializeField] RectTransform rectToDrawTo;
     [SerializeField] TextDisplayer td;
+    private string _testUpdate;
     // Start is called before the first frame update
     void Start()
     {
