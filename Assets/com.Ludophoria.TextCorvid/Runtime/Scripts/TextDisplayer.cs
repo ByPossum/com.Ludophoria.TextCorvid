@@ -26,6 +26,13 @@ namespace TextCorvid
             i_textSpeed = _textSpeed;
         }
 
+        public void Init(int _textSpeed, ResizableTextBox _textBox)
+        {
+            Init(i_textSpeed);
+            // Get number of characters in text
+
+        }
+
         /// <summary>
         /// Choose how the text will be displayed, and on which rect transform.
         /// </summary>
@@ -34,6 +41,8 @@ namespace TextCorvid
         /// <param name="displayType">How the text will be displayed.</param>
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay, TextDisplayType displayType)
         {
+            if (rectToDisplay.GetComponent<ResizableTextBox>())
+                rectToDisplay.GetComponent<ResizableTextBox>().Init(textToDisplay, t_displayedText.fontSize);
             switch (displayType)
             {
                 case TextDisplayType.block:
@@ -92,8 +101,7 @@ namespace TextCorvid
             b_done = false;
             currentRow = 0;
             prevLineCount = 0;
-            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.preferredHeight);
-            string[] _words = textToDisplay.Split(' ');
+            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.rectTransform.rect.height);
             DeleteOldText();
             textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);

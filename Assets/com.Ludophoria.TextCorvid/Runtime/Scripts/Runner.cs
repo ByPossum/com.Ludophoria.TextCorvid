@@ -17,9 +17,9 @@ public class Runner : MonoBehaviour
     void Start()
     {
         FindObjectOfType<TextManager>().Init();
-        StartCoroutine(GetTextDelayed());
         t_textToDisplay = rectToDrawTo.gameObject.GetComponent<TMP_Text>();
         s_dialogue = t_textToDisplay?.text;
+        td.Init(TextManager.x.f_textSpeed);
         td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
     }
 
@@ -28,7 +28,7 @@ public class Runner : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             TextManager.x.l_currentLanguage = Languages.eng;
-            td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
+            td.DisplayText(TextManager.x.GetText("test01"), rectToDrawTo, TextDisplayType.character);
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -46,11 +46,5 @@ public class Runner : MonoBehaviour
             td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
         }
         langRef.text = TextManager.x.l_currentLanguage.ToString();
-    }
-
-    private IEnumerator GetTextDelayed()
-    {
-        yield return new WaitForSeconds(0.0f);
-        Debug.Log(TextManager.x.GetText(s_dialogue));
     }
 }

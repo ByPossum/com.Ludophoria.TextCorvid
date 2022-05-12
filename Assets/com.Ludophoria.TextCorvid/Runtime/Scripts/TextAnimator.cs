@@ -21,8 +21,6 @@ public class TextAnimator : MonoBehaviour
         // Find all the effects
         MatchCollection effects = reg_effectCharacters.Matches(_currentTextToAnimate);
         List<string> entries = effects.Cast<Match>().Select(m => m.Value).ToList();
-        foreach (string entry in entries)
-            Debug.Log(entry);
         AssignTextDelegates(MatchTags(effects, _currentTextToAnimate));
         return RemoveEffects(effects, _currentTextToAnimate);
     }
@@ -165,7 +163,6 @@ public class TextAnimator : MonoBehaviour
                 }
             }
             int totalLength = (_endIndex-1 - (_startIndex + _startLength-1)) - _totalLength;
-            Debug.Log($"OTL: {_totalLength} | Effected Area: {totalLength} | Tag: {_fullTag} | Index: {_startIndex} | Length: {_startLength} | End: {_endTag} | End Index: {_endIndex} | End Length: {_endLength}");
         }
         // Count all Opening Tags that occur before Closing Tag and obtain the lengths of each tag
         return _effects;
