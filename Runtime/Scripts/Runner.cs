@@ -21,26 +21,29 @@ public class Runner : MonoBehaviour
         s_dialogue = t_textToDisplay?.text;
         td.Init(TextManager.x.f_textSpeed);
         td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
-        TextManager.x.l_currentLanguage = Languages.eng;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            td.DisplayText(TextManager.x.GetText("tut01"), rectToDrawTo, TextDisplayType.character);
+            TextManager.x.l_currentLanguage = Languages.eng;
+            td.DisplayText(TextManager.x.GetText("test01"), rectToDrawTo, TextDisplayType.character);
         }
         if (Input.GetKeyDown(KeyCode.A))
         {
-            td.DisplayText(TextManager.x.GetText("test02"), rectToDrawTo, TextDisplayType.character);
+            TextManager.x.l_currentLanguage = Languages.isl;
+            td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            td.DisplayText(TextManager.x.GetText("test03"), rectToDrawTo, TextDisplayType.character);
+            TextManager.x.l_currentLanguage = Languages.eng;
+            td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
         }
         if (Input.GetKeyDown(KeyCode.D))
         {
-            td.DisplayText(TextManager.x.GetText("test04"), rectToDrawTo, TextDisplayType.character);
+            TextManager.x.l_currentLanguage = Languages.isl;
+            td.DisplayText(TextManager.x.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
         }
         langRef.text = TextManager.x.l_currentLanguage.ToString();
     }

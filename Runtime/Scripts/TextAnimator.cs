@@ -41,11 +41,6 @@ public class TextAnimator : MonoBehaviour
         return _allIndex;
     }
 
-    public string RemoveEffects(string _originalString)
-    {
-        return RemoveEffects(reg_effectCharacters.Matches(_originalString), _originalString);
-    }
-
     private string RemoveEffects(MatchCollection _matches, string _originalString)
     {
         foreach (Match _match in _matches)
