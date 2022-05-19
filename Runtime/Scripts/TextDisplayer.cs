@@ -1,20 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace TextCorvid
 {
     public class TextDisplayer : MonoBehaviour
     {
         [SerializeField] private RectTransform rt_displayBox;
+        [SerializeField] private TMP_Text t_displayedText;
+        [SerializeField] private TextAnimator ta_animator;
         public List<string> textKeys = new List<string>();
-        public Text refText;
-        List<Text> previousText = new List<Text>();
+        public TMP_Text refText;
+        List<TMP_Text> previousText = new List<TMP_Text>();
         private int prevLineCount;
         private int currentRow;
         private int rowCount;
+        private int i_textSpeed;
         public bool b_done = true;
+
+        public void Init(int _textSpeed)
+        {
+            i_textSpeed = _textSpeed;
+        }
+
+        public void Init(int _textSpeed, ResizableTextBox _textBox)
+        {
+            Init(i_textSpeed);
+            // Get number of characters in text
+
+        }
 
         /// <summary>
         /// Choose how the text will be displayed, and on which rect transform.
@@ -24,6 +41,8 @@ namespace TextCorvid
         /// <param name="displayType">How the text will be displayed.</param>
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay, TextDisplayType displayType)
         {
+            if (rectToDisplay.GetComponent<ResizableTextBox>())
+                rectToDisplay.GetComponent<ResizableTextBox>().Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
             switch (displayType)
             {
                 case TextDisplayType.block:
@@ -77,28 +96,30 @@ namespace TextCorvid
         /// </summary>
         /// <param name="textToDisplay">Characters to display.</param>
         /// <param name="rectToDisplay">Where to begin displaying those characters.</param>
-        private void DisplayByChar(string textToDisplay, RectTransform rectToDisplay)
+        private async void DisplayByChar(string textToDisplay, RectTransform rectToDisplay)
         {
             b_done = false;
             currentRow = 0;
             prevLineCount = 0;
-            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / refText.preferredHeight);
-            string[] _words = textToDisplay.Split(' ');
+            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.rectTransform.rect.height);
             DeleteOldText();
-            StartCoroutine(ShowNextCharacterByCharacter(textToDisplay, rectToDisplay));
+            textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
+            await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
             b_done = true;
         }
         
+        private void DisplayByBlock(string _textToDisplay, RectTransform _rectToDisplay)
+        {
+
+        }
+
         /// <summary>
         /// Remove old text from the rect.
         /// </summary>
         private void DeleteOldText()
         {
-            foreach(Text killMe in previousText)
-            {
-                DestroyImmediate(killMe.gameObject);
-            }
-            previousText = new List<Text>();
+            t_displayedText.text = "";
+            previousText = new List<TMP_Text>();
         }
 
         /// <summary>
@@ -107,27 +128,21 @@ namespace TextCorvid
         /// <param name="nextString">The string to display. Will accomidate for the text being larger than the rect.</param>
         /// <param name="_parent">The area to display the text.</param>
         /// <returns>Waits for text speed.</returns>
-        private IEnumerator ShowNextCharacterByCharacter(string nextString, RectTransform _parent)
+        private async Task ShowNextCharacterByCharacter(string nextString, TMP_Text _parent)
         {
             // Show the text character by character
             for(int i = 0; i < nextString.Length; i++)
             {
                 // Move to a new row when the next word goes over the textbox width
-                if ((prevLineCount * refText.fontSize) + (refText.fontSize * nextString.Length) > _parent.rect.width)
+                if ((prevLineCount * refText.fontSize) + (refText.fontSize * nextString.Length) > _parent.rectTransform.rect.width)
                 {
                     currentRow++;
                     prevLineCount = 0;
                 }
-                Text newText = Instantiate<Text>(refText);
-                newText.text = nextString[i].ToString();
-                newText.transform.parent = _parent;
-                // Set the top left of the text to the top left of the box with character offsets (Not fully working yet)
-                newText.rectTransform.offsetMin = new Vector2((_parent.offsetMin.x + refText.fontSize * 3) + prevLineCount * refText.fontSize, ((_parent.offsetMax.x - _parent.offsetMax.x) - refText.fontSize * 3) - refText.fontSize * (currentRow));
-                //newText.rectTransform.offsetMax = new Vector2(_parent.offsetMax.x, (_parent.offsetMax.y + refText.fontSize) + refText.fontSize * (currentRow));
-                newText.rectTransform.sizeDelta = new Vector2(100, 100);
-                previousText.Add(newText);
+                _parent.text += nextString[i].ToString();
+                previousText.Add(_parent);
                 prevLineCount++;
-                yield return new WaitForSeconds(TextManager.x.f_textSpeed);
+                await Task.Delay(i_textSpeed);
             }
         }
     }

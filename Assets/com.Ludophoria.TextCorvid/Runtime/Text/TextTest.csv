@@ -1,0 +1,8 @@
+tut,01,eng,<Colour r=0,7 g=0,8 b=0,3><Wiggle>Hi I'm <Wiggle r=0,5 g=1 b=1>Text</Wiggle> Corvid</Wiggle></Colour>.
+tut,01,isl,<Colour r=0,7 g=0,8 b=0,3><Wiggle>Hæ, ég er <Wiggle r=0,5 g=1 b=1>Text</Wiggle> Corvid</Wiggle></Colour>.
+tut,02,eng,I like video games.
+tut,02,isl,Mér likar tölva leiknir.
+test,01,eng,This text is supposed to be very long. Far too long honestly. Just overly long and uncomfortable. Are you feeling okay about the length of this text? It's quite long. I'd be surprised if you didn't feel upset by it.
+test,02,eng,Ah!
+test,03,eng,This should be an avarage amount of text. Just a nice bit of text to show how big a box should be.
+test,04,eng,Obnoxious Hippopotomonstrosesquippedaliophobia.
