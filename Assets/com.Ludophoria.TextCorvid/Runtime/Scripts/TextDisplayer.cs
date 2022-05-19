@@ -42,7 +42,7 @@ namespace TextCorvid
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay, TextDisplayType displayType)
         {
             if (rectToDisplay.GetComponent<ResizableTextBox>())
-                rectToDisplay.GetComponent<ResizableTextBox>().Init(textToDisplay, t_displayedText.fontSize);
+                rectToDisplay.GetComponent<ResizableTextBox>().Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
             switch (displayType)
             {
                 case TextDisplayType.block:
