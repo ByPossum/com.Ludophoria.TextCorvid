@@ -1,11 +1,10 @@
-﻿//#define USING_UNITY_FUNCTIONS
-#define ALLOW_SINGLETON
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using UnityEngine.UI;
 
 namespace TextCorvid
 {
@@ -15,12 +14,15 @@ namespace TextCorvid
         public static TextManager x;
         #endif
         [SerializeField] string s_filePath;
-        public Dictionary<string, string> D_allText = new Dictionary<string, string>();
         [SerializeField] public Languages[] A_supportedLanguages;
-        [SerializeField] public float f_textSpeed;
+        [SerializeField] public int f_textSpeed;
         public Languages l_currentLanguage;
-
-        // Uncomment the Define if you wish to do things in start as opposed to init
+        private Dictionary<string, string> D_allText = new Dictionary<string, string>();
+        private int i_currentLanguageIndex = 0;
+        private Dictionary<string, Text> D_currentTextOnScreen;
+        /// TODO:
+        /// - Add "currently in use" text to be updated if language changes
+        // Set in Player settings
         #if USING_UNITY_FUNCTIONS
         // Start is called before the first frame update
         void Start()
@@ -34,24 +36,21 @@ namespace TextCorvid
             MakeThisObjectSingleton();
             //MakeTestJsonData();
 
-
-            switch (LoadFileExtention())
+            // Load text from file
+            D_allText = LoadFileExtention() switch
             {
-                case ".csv":
-                    D_allText = ReadCSVText();
-                    break;
-                case ".json":
-                    D_allText = ReadJsonText();
-                    break;
-                case ".xml":
-                    D_allText = ReadXMLData();
-                    break;
-                default:
-                    Debug.LogError("Unable to get file extension");
-                    break;
-            }
+                ".csv" => ReadCSVText(),
+                ".json" => ReadJsonText(),
+                ".xml" => ReadXMLData(),
+                _ => null
+            };
         }
         #endif
+
+        /// <summary>
+        /// Check if any of the supported filetypes are available
+        /// </summary>
+        /// <returns>The file extension that got loaded</returns>
         private string LoadFileExtention()
         {
             FileStream fs = null;
@@ -61,7 +60,11 @@ namespace TextCorvid
                 fs = File.Open(s_filePath + ".json", FileMode.Open);
             else if (File.Exists(s_filePath + ".xml"))
                 fs = File.Open(s_filePath + ".xml", FileMode.Open);
-            else return "Unable to load file extension.";
+            else
+            {
+                fs.Close();
+                return "Unable to load file extension.";
+            }
             string extention = Path.GetExtension(fs.Name);
             fs.Close();
             return extention;
@@ -77,7 +80,7 @@ namespace TextCorvid
         }
 
         /// <summary>
-        /// If singleton use is allowed, make this object a singleton
+        /// NB: DELETE THIS AND MAKE A SERVICE OR SOMETHING
         /// </summary>
         private void MakeThisObjectSingleton()
         {
@@ -100,10 +103,10 @@ namespace TextCorvid
             int rows = textRows.Length;
             for(int i = 0; i < rows; i++)
             {
-                string id = textRows[i].Split(',')[0] + textRows[i].Split(',')[1];
+                string id = textRows[i].Split(',')[0] + textRows[i].Split(',')[1] + textRows[i].Split(',')[2];
                 string[] splitText = textRows[i].Split(',');
                 string text = "";
-                for (int j = 2; j < splitText.Length; j++)
+                for (int j = 3; j < splitText.Length; j++)
                     text += splitText[j] + (j != splitText.Length -1 ? ',' : '\0');
                 readText.Add(id, text);
             }
@@ -116,7 +119,7 @@ namespace TextCorvid
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText crow in ctc.crowText)
             {
-                textData.Add(crow.ID + crow.Country, crow.TextToDisplay);
+                textData.Add(crow.ID + crow.Event + crow.Country, crow.TextToDisplay);
             }
             return textData;
         }
@@ -129,7 +132,7 @@ namespace TextCorvid
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText text in crow.L_crowText)
             {
-                textData.Add(text.ID + text.Country, text.TextToDisplay);
+                textData.Add(text.ID + text.Event + text.Country, text.TextToDisplay);
             }
             return textData;
         }
@@ -151,6 +154,46 @@ namespace TextCorvid
             }
             File.WriteAllText(s_filePath + ".JSON", jsonData);
         }
+
+        private int UpdateLanguageIter(int _step)
+        {
+            return (int)Mathf.Repeat(i_currentLanguageIndex+_step, A_supportedLanguages.Length);
+        }
+        private int UpdateLanguageIter(Languages _lang)
+        {
+            for (int i = 0; i < A_supportedLanguages.Length; i++)
+            {
+                if (A_supportedLanguages[i] == _lang)
+                    return i;
+            }
+            Debug.LogError("Attempt to change to unsupported language.");
+            return -1;
+        }
+
+        /// <summary>
+        /// Iterate by one language
+        /// </summary>
+        public void ChangeLanguage()
+        {
+            i_currentLanguageIndex = UpdateLanguageIter(1);
+            l_currentLanguage = A_supportedLanguages[i_currentLanguageIndex];
+        }
+
+        public void ChangeLanguage(Languages _lang)
+        {
+            i_currentLanguageIndex = UpdateLanguageIter(_lang);
+            l_currentLanguage = _lang;
+        }
+
+        // Dis gross try not to use this
+        public void ChangeLanguage(string _languageToChangeTo)
+        {
+            // Ew. God- jeez what? Gross
+            Languages _nextLang = (Languages)((int?)System.Enum.Parse(typeof(Languages), _languageToChangeTo) ?? 0);
+            // Does this work? No idea
+            i_currentLanguageIndex = UpdateLanguageIter((int)_nextLang - (int)i_currentLanguageIndex);
+            l_currentLanguage = _nextLang;
+        }
     }
 
     [System.Serializable]
@@ -171,6 +214,8 @@ namespace TextCorvid
     {
         [XmlElement("ID")]
         public string ID;
+        [XmlElement("Event")]
+        public string Event;
         [XmlElement("Country")]
         public string Country;
         [XmlElement("TextToDisplay")]
