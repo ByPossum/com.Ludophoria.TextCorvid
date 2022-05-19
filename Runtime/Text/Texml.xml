@@ -2,27 +2,32 @@
 <CrowXml>
 	<CrowTextCollection>
 		<CrowText>
-			<ID>tut01</ID>
+			<ID>tut</ID>
+			<Event>01</Event>
 			<Country>eng</Country>
 			<TextToDisplay>Hi! I'm Text Corvid.</TextToDisplay>
 		</CrowText>
 		<CrowText>
-			<ID>tut01</ID>
+			<ID>tut</ID>
+			<Event>01</Event>
 			<Country>isl</Country>
 			<TextToDisplay>Hæ, ég er Text Corvid.</TextToDisplay>
 		</CrowText>
 		<CrowText>
-			<ID>tut01</ID>
+			<ID>tut</ID>
+			<Event>01</Event>
 			<Country>spa</Country>
 			<TextToDisplay>This is supposed to be spanish!</TextToDisplay>
 		</CrowText>
 		<CrowText>
-			<ID>tut02</ID>
+			<ID>tut</ID>
+			<Event>02</Event>
 			<Country>eng</Country>
 			<TextToDisplay>I like video games</TextToDisplay>
 		</CrowText>
 		<CrowText>
-			<ID>tut02</ID>
+			<ID>tut</ID>
+			<Event>02</Event>
 			<Country>isl</Country>
 			<TextToDisplay>Mér likar tölva leiknir.</TextToDisplay>
 		</CrowText>
