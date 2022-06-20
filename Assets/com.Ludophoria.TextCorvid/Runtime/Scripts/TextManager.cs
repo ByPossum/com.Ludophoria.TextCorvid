@@ -8,32 +8,22 @@ using UnityEngine.UI;
 
 namespace TextCorvid
 {
-    public class TextManager : MonoBehaviour
+    public class TextManager
     {
-        #if ALLOW_SINGLETON
-        public static TextManager x;
-        #endif
-        [SerializeField] string s_filePath;
-        [SerializeField] public Languages[] A_supportedLanguages;
-        [SerializeField] public int f_textSpeed;
         public Languages l_currentLanguage;
+        private TextSettings ts_settings = new TextSettings();
         private Dictionary<string, string> D_allText = new Dictionary<string, string>();
         private int i_currentLanguageIndex = 0;
         private Dictionary<string, Text> D_currentTextOnScreen;
+        private string s_filePath;
         /// TODO:
         /// - Add "currently in use" text to be updated if language changes
         // Set in Player settings
-        #if USING_UNITY_FUNCTIONS
-        // Start is called before the first frame update
-        void Start()
+        public TextManager(TextSettings _newSettings)
         {
-            MakeThisObjectSingleton();
-        }
-        #else
-        public void Init()
-        {
-            s_filePath = Application.dataPath + "/"+ s_filePath;
-            MakeThisObjectSingleton();
+            ts_settings = _newSettings;
+            s_filePath = Application.dataPath + "/"+ ts_settings.s_filePath;
+            l_currentLanguage = ts_settings.A_supportedLanguages[0];
             //MakeTestJsonData();
 
             // Load text from file
@@ -45,7 +35,6 @@ namespace TextCorvid
                 _ => null
             };
         }
-        #endif
 
         /// <summary>
         /// Check if any of the supported filetypes are available
@@ -62,7 +51,7 @@ namespace TextCorvid
                 fs = File.Open(s_filePath + ".xml", FileMode.Open);
             else
             {
-                fs.Close();
+                fs?.Close();
                 return "Unable to load file extension.";
             }
             string extention = Path.GetExtension(fs.Name);
@@ -77,22 +66,6 @@ namespace TextCorvid
                 if (key.Contains(_textID))
                     return D_allText[key];
             return "Unable To Get Text";
-        }
-
-        /// <summary>
-        /// NB: DELETE THIS AND MAKE A SERVICE OR SOMETHING
-        /// </summary>
-        private void MakeThisObjectSingleton()
-        {
-            #if ALLOW_SINGLETON
-            if (x != null)
-            {
-                Destroy(this);
-            }
-            else
-                x = this;
-            DontDestroyOnLoad(this);
-            #endif
         }
 
         private Dictionary<string, string> ReadCSVText()
@@ -157,13 +130,13 @@ namespace TextCorvid
 
         private int UpdateLanguageIter(int _step)
         {
-            return (int)Mathf.Repeat(i_currentLanguageIndex+_step, A_supportedLanguages.Length);
+            return (int)Mathf.Repeat(i_currentLanguageIndex+_step, ts_settings.A_supportedLanguages.Length);
         }
         private int UpdateLanguageIter(Languages _lang)
         {
-            for (int i = 0; i < A_supportedLanguages.Length; i++)
+            for (int i = 0; i < ts_settings.A_supportedLanguages.Length; i++)
             {
-                if (A_supportedLanguages[i] == _lang)
+                if (ts_settings.A_supportedLanguages[i] == _lang)
                     return i;
             }
             Debug.LogError("Attempt to change to unsupported language.");
@@ -176,7 +149,7 @@ namespace TextCorvid
         public void ChangeLanguage()
         {
             i_currentLanguageIndex = UpdateLanguageIter(1);
-            l_currentLanguage = A_supportedLanguages[i_currentLanguageIndex];
+            l_currentLanguage = ts_settings.A_supportedLanguages[i_currentLanguageIndex];
         }
 
         public void ChangeLanguage(Languages _lang)
@@ -193,6 +166,10 @@ namespace TextCorvid
             // Does this work? No idea
             i_currentLanguageIndex = UpdateLanguageIter((int)_nextLang - (int)i_currentLanguageIndex);
             l_currentLanguage = _nextLang;
+        }
+        public int GetSettings()
+        {
+            return ts_settings.i_textSpeed;
         }
     }
 

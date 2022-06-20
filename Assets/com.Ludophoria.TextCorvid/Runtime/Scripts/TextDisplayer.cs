@@ -11,7 +11,7 @@ namespace TextCorvid
     {
         [SerializeField] private RectTransform rt_displayBox;
         [SerializeField] private TMP_Text t_displayedText;
-        [SerializeField] private TextAnimator ta_animator;
+        private TextAnimator ta_animator;
         public List<string> textKeys = new List<string>();
         public TMP_Text refText;
         List<TMP_Text> previousText = new List<TMP_Text>();
@@ -21,14 +21,11 @@ namespace TextCorvid
         private int i_textSpeed;
         public bool b_done = true;
 
-        public void Init(int _textSpeed)
+
+        public void Init(int _textSpeed, TextAnimator _anim = null)
         {
             i_textSpeed = _textSpeed;
-        }
-
-        public void Init(int _textSpeed, ResizableTextBox _textBox)
-        {
-            Init(i_textSpeed);
+            ta_animator = _anim;
             // Get number of characters in text
 
         }
@@ -39,37 +36,15 @@ namespace TextCorvid
         /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
         /// <param name="rectToDisplay">Rect Transform used to display on. Will display on the top left of the rect transform.</param>
         /// <param name="displayType">How the text will be displayed.</param>
-        public void DisplayText(string textToDisplay, RectTransform rectToDisplay, TextDisplayType displayType)
+        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
         {
-            if (rectToDisplay.GetComponent<ResizableTextBox>())
+            if (rectToDisplay == null)
+                rectToDisplay = rt_displayBox;
+            if (rectToDisplay.GetComponent<ResizableTextBox>() != null)
                 rectToDisplay.GetComponent<ResizableTextBox>().Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
-            switch (displayType)
-            {
-                case TextDisplayType.block:
-                    break;
-                case TextDisplayType.line:
-                    break;
-                case TextDisplayType.word:
-                    break;
-                case TextDisplayType.character:
-                    DisplayByChar(textToDisplay, rectToDisplay);
-                    break;
-                default:
-                    break;
-            }
-        }
 
-        /// <summary>
-        /// Choose how the text will be displayed. Will be displayed on serialized rect transform.
-        /// </summary>
-        /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
-        /// <param name="displayType">How the text will be displayed</param>
-        public void DisplayText(string textToDisplay, TextDisplayType displayType)
-        {
             switch (displayType)
             {
-                case TextDisplayType.none:
-                    break;
                 case TextDisplayType.block:
                     break;
                 case TextDisplayType.line:
@@ -79,9 +54,9 @@ namespace TextCorvid
                 case TextDisplayType.character:
                     try
                     {
-                        DisplayByChar(textToDisplay, rt_displayBox);
+                        DisplayByChar(textToDisplay, rectToDisplay);
                     }
-                    catch(System.NullReferenceException nre)
+                    catch (System.NullReferenceException nre)
                     {
                         Debug.LogException(nre);
                     }
