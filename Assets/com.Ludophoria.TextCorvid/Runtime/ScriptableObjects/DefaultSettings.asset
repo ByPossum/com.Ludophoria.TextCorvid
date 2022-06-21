@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   s_filePath: com.Ludophoria.TextCorvid/Runtime/Text/TextTest
   A_supportedLanguages: 2600000048000000
-  i_textSpeed: 0
+  i_textSpeed: 2
   b_autoDetectFile: 0

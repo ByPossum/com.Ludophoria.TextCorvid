@@ -9,24 +9,25 @@ namespace TextCorvid
 {
     public class TextDisplayer : MonoBehaviour
     {
-        [SerializeField] private RectTransform rt_displayBox;
-        [SerializeField] private TMP_Text t_displayedText;
+        [SerializeField, InspectorName("Parent Rect Transform")] private RectTransform rt_displayBox;
+        [SerializeField, InspectorName("Displayed Text")] private TMP_Text t_displayedText;
         private TextAnimator ta_animator;
-        public List<string> textKeys = new List<string>();
-        public TMP_Text refText;
         List<TMP_Text> previousText = new List<TMP_Text>();
         private int prevLineCount;
         private int currentRow;
         private int rowCount;
         private int i_textSpeed;
-        public bool b_done = true;
-
+        private bool b_done = true;
 
         public void Init(int _textSpeed, TextAnimator _anim = null)
         {
             i_textSpeed = _textSpeed;
             ta_animator = _anim;
-            // Get number of characters in text
+            if (!rt_displayBox)
+                rt_displayBox = GetComponent<RectTransform>();
+            if (!t_displayedText)
+                t_displayedText = GetComponentInChildren<TMP_Text>();
+            
 
         }
 
@@ -41,7 +42,7 @@ namespace TextCorvid
             if (rectToDisplay == null)
                 rectToDisplay = rt_displayBox;
             if (rectToDisplay.GetComponent<ResizableTextBox>() != null)
-                rectToDisplay.GetComponent<ResizableTextBox>().Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
+                rectToDisplay.GetComponent<ResizableTextBox>()?.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
 
             switch (displayType)
             {
@@ -109,7 +110,7 @@ namespace TextCorvid
             for(int i = 0; i < nextString.Length; i++)
             {
                 // Move to a new row when the next word goes over the textbox width
-                if ((prevLineCount * refText.fontSize) + (refText.fontSize * nextString.Length) > _parent.rectTransform.rect.width)
+                if ((prevLineCount * t_displayedText.fontSize) + (t_displayedText.fontSize * nextString.Length) > _parent.rectTransform.rect.width)
                 {
                     currentRow++;
                     prevLineCount = 0;
