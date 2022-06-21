@@ -8,7 +8,7 @@ public class CreateTCPrefabs
     [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 1)]
     static void CreateResizableTextBox()
     {
-        GameObject _obj = (GameObject)AssetDatabase.LoadAssetAtPath("Packages/Text Corvid/Runtime/Prefabs/ResizableTextBox.prefab", typeof(GameObject));
+        GameObject _obj = (GameObject)AssetDatabase.LoadAssetAtPath("Packages/com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab", typeof(GameObject));
 
         if (!_obj)
         {
