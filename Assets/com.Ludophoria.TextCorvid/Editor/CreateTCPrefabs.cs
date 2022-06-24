@@ -8,16 +8,32 @@ public class CreateTCPrefabs
     [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 1)]
     static void CreateResizableTextBox()
     {
-        GameObject _obj = (GameObject)AssetDatabase.LoadAssetAtPath("Packages/com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab", typeof(GameObject));
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab");
+    }
+
+    [MenuItem("GameObject/TextCorvid/World Space Textbox", false, 1)]
+    static void CreateWSTextBox()
+    {
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/WSCanvasTextBox.prefab");
+    }
+
+    [MenuItem("GameObject/TextCorvid/Text Managers", false, 1)]
+    static void CreateTextManagers()
+    {
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextManager.prefab");
+    }
+    static void CreateNewObjectFromString(string filePath)
+    {
+        GameObject _obj = (GameObject)AssetDatabase.LoadAssetAtPath("Packages/" + filePath, typeof(GameObject));
 
         if (!_obj)
         {
-
-            _obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab", typeof(GameObject));
-            if(!_obj)
-                Debug.LogError("ResizableTextBox prefab Not Found");
+            _obj = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/" + filePath, typeof(GameObject));
+            if (!_obj)
+                Debug.LogError("Object failed to create");
         }
-
-        GameObject go = PrefabUtility.InstantiatePrefab(_obj, Selection.activeTransform) as GameObject;
+        GameObject go = null;
+        if (_obj)
+            go = PrefabUtility.InstantiatePrefab(_obj, Selection.activeTransform) as GameObject;
     }
 }
