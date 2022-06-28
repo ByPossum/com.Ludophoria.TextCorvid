@@ -11,17 +11,12 @@ namespace TextCorvid
         private GameObject go_target;
         [SerializeField, Tooltip("Do you want this textbox turned off once you leave the trigger?")]
         private bool b_turnOffOnExit;
-        [SerializeField, Tooltip("How do you want this text to display?")]
-        private TextDisplayType tdt_displayType = TextDisplayType.character;
         private GameObject go_textBox;
-        private TextDisplayer td_displayer;
-        private TextGlue tg;
         private void TurnOnTextBox(GameObject _objectToCheck)
         {
             if (_objectToCheck == go_target)
             {
                 go_textBox.SetActive(true);
-                td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.GetComponentInChildren<TMPro.TMP_Text>(true).text), go_textBox.GetComponent<RectTransform>(), tdt_displayType);
             }
         }
         private void TurnOffTextBox(GameObject _objectToCheck)
@@ -33,9 +28,6 @@ namespace TextCorvid
         private void Start()
         {
             go_textBox = GetComponentInChildren<RectTransform>(true).gameObject;
-            td_displayer = go_textBox.GetComponentInChildren<TextDisplayer>(true);
-            tg = FindObjectOfType<TextGlue>(true);
-            td_displayer.Init(tg.GetTextManager().GetSettings(), tg.GetTextAnimator());
         }
     
         #region 2D Colliders
