@@ -61,6 +61,7 @@ namespace TextCorvid
         public string GetText(string _textID)
         {
             _textID = _textID + l_currentLanguage.ToString();
+            _textID = _textID.ToLower();
             Dictionary<string, string>.KeyCollection keys = D_allText.Keys;
             foreach (string key in D_allText.Keys)
                 if (key.Contains(_textID))
