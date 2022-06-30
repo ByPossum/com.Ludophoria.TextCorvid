@@ -12,11 +12,14 @@ namespace TextCorvid
         [SerializeField] private int i_linesPerBox;
         [SerializeField] private int i_maxHeight;
         private int i_currentWidth, i_currentHeight;
+        private float f_currentBoxWidth, f_currentBoxHeight;
         private RectTransform rt_box;
         private bool b_boxSizeSatisfied = false;
-    
+
         public int Width { get { return i_currentWidth; } }
         public int Height { get { return i_currentHeight; } }
+        public float BoxWidth { get { return f_currentBoxWidth; } }
+        public float BoxHeight { get { return f_currentBoxHeight; } }
     
         public void Init(string _text, float _textSize)
         {
@@ -24,6 +27,9 @@ namespace TextCorvid
             List<string> _bins = CollectTextIntoBins(i_minCharactersPerLine, _text);
             Vector2 _resize = ResizeBoxV2(_text.Length * _textSize, _bins.Count - 1, _textSize, _text);
             rt_box.sizeDelta = _resize.x < i_maxCharactersPerLine*_textSize && _resize.y < i_maxHeight * _textSize ? _resize : new Vector2(i_maxCharactersPerLine * _textSize, i_maxHeight * _textSize);
+            f_currentBoxWidth = _resize.x;
+            f_currentBoxHeight = _resize.y;
+
             //rt_box.sizeDelta = ResizeBox(i_maxWidth, i_maxHeight, _textSize, _text.Length, _text);
         }
     
@@ -32,8 +38,11 @@ namespace TextCorvid
             float _currentWidth = _previousWidth * 0.5f;
             int _binSize = Mathf.CeilToInt(_currentWidth / _fontSize);
             List<string> _bins = CollectTextIntoBins(_binSize, _text);
-            if (_currentWidth / _fontSize > i_minCharactersPerLine && _currentWidth / _fontSize < i_maxCharactersPerLine && b_boxSizeSatisfied)
+
+            if (_currentWidth / _fontSize > i_minCharactersPerLine && b_boxSizeSatisfied)
                 return ResizeBoxV2(_currentWidth, _bins.Count, _fontSize, _text);
+            else if (b_boxSizeSatisfied)
+                return ResizeBoxV2(_currentWidth + _currentWidth * 0.5f, _bins.Count, _fontSize, _text);
             return new Vector2(_previousWidth, _previousHeight * _fontSize);
         }
     
