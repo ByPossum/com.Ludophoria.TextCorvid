@@ -10,17 +10,36 @@ namespace TextCorvid
         private float f_targetY;
         private int i_currentIndex;
         private List<float> fL_heights = new List<float>();
+        private bool b_takingInput = false;
+        private bool b_done = false;
         public void FireInput()
         {
-            f_targetY = transform.position.y;
-            IncrementTextBox();
+            if (b_takingInput)
+            {
+                f_targetY = transform.position.y;
+                IncrementTextBox();
+            }
+        }
+
+        public bool GetDone()
+        {
+            return b_done;
+        }
+
+        public void ToggleInput()
+        {
+            b_takingInput = ! b_takingInput;
         }
 
         private void IncrementTextBox()
         {
+            b_takingInput = false;
             if (i_currentIndex >= go_textBoxes.Length)
                 foreach (GameObject box in go_textBoxes)
+                {
                     box.SetActive(false);
+                    b_done = true;
+                }
             // The current index of the text box we're looking at
             i_currentIndex++;
             for (int i = go_textBoxes.Length-1; i >= 0; i--)
@@ -33,7 +52,7 @@ namespace TextCorvid
                 else
                     go_textBoxes[i].SetActive(false);
             }
-
+            b_takingInput = true;
         }
 
         private IEnumerator MoveTheDangTextBox(GameObject _textBox)
