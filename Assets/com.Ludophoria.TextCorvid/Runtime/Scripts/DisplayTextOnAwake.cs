@@ -15,7 +15,7 @@ namespace TextCorvid
             while(tg == null)
             {
                 tg = FindObjectOfType<TextGlue>();
-                await System.Threading.Tasks.Task.Delay(1);
+                await System.Threading.Tasks.Task.Yield();
             }
 
             td_displayer = GetComponentInChildren<TextDisplayer>(true);

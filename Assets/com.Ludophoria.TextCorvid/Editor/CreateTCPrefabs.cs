@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class CreateTCPrefabs
 {
-    [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 5)]
+    [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 6)]
     static void CreateResizableTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab");
     }
 
-    [MenuItem("GameObject/TextCorvid/World Space Textbox", false, 4)]
+    [MenuItem("GameObject/TextCorvid/World Space Textbox", false, 5)]
     static void CreateWSTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/WSCanvasTextBox.prefab");
@@ -31,6 +31,11 @@ public class CreateTCPrefabs
     static void CreateTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/Text.prefab");
+    }
+    [MenuItem("GameObject/TextCorvid/Text Sequencer", false, 4)]
+    static void CreateSequencer()
+    {
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextSequencer.prefab");
     }
 
     static void CreateNewObjectFromString(string filePath)
