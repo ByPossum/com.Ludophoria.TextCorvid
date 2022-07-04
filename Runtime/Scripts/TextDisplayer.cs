@@ -9,9 +9,10 @@ namespace TextCorvid
 {
     public class TextDisplayer : MonoBehaviour
     {
-        [SerializeField, InspectorName("Parent Rect Transform")] private RectTransform rt_displayBox;
-        [SerializeField, InspectorName("Displayed Text")] private TMP_Text t_displayedText;
+        [SerializeField] private RectTransform rt_displayBox;
+        [SerializeField] private TMP_Text t_displayedText;
         private TextAnimator ta_animator;
+        private TMP_Text t_testBox;
         List<TMP_Text> previousText = new List<TMP_Text>();
         private int prevLineCount;
         private int currentRow;
@@ -23,6 +24,7 @@ namespace TextCorvid
         {
             i_textSpeed = _textSpeed;
             ta_animator = _anim;
+            
             if (!rt_displayBox)
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
@@ -37,13 +39,8 @@ namespace TextCorvid
         /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
         /// <param name="rectToDisplay">Rect Transform used to display on. Will display on the top left of the rect transform.</param>
         /// <param name="displayType">How the text will be displayed.</param>
-        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
+        public void DisplayText(string textToDisplay, float rectHeight, TextDisplayType displayType = TextDisplayType.block)
         {
-            if (rectToDisplay == null)
-                rectToDisplay = rt_displayBox;
-            if (rectToDisplay.GetComponent<ResizableTextBox>() != null)
-                rectToDisplay.GetComponent<ResizableTextBox>()?.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
-
             switch (displayType)
             {
                 case TextDisplayType.block:
@@ -55,7 +52,7 @@ namespace TextCorvid
                 case TextDisplayType.character:
                     try
                     {
-                        DisplayByChar(textToDisplay, rectToDisplay);
+                        DisplayByChar(textToDisplay, rectHeight);
                     }
                     catch (System.NullReferenceException nre)
                     {
@@ -67,17 +64,28 @@ namespace TextCorvid
             }
         }
 
+        public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block)
+        {
+            rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
+            DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
+        }
+
+        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
+        {
+
+        }
+
         /// <summary>
         /// Display the text character by character.
         /// </summary>
         /// <param name="textToDisplay">Characters to display.</param>
         /// <param name="rectToDisplay">Where to begin displaying those characters.</param>
-        private async void DisplayByChar(string textToDisplay, RectTransform rectToDisplay)
+        private async void DisplayByChar(string textToDisplay, float rectHeight)
         {
             b_done = false;
             currentRow = 0;
             prevLineCount = 0;
-            rowCount = Mathf.FloorToInt(rectToDisplay.rect.height / t_displayedText.rectTransform.rect.height);
+            rowCount = Mathf.FloorToInt(rectHeight / t_displayedText.rectTransform.rect.height);
             DeleteOldText();
             textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
