@@ -14,6 +14,7 @@ namespace TextCorvid
         private int i_currentWidth, i_currentHeight;
         private float f_currentBoxWidth, f_currentBoxHeight;
         private RectTransform rt_box;
+        private SpriteRenderer sr_textBox;
         private bool b_boxSizeSatisfied = false;
 
         public int Width { get { return i_currentWidth; } }
@@ -23,14 +24,18 @@ namespace TextCorvid
     
         public void Init(string _text, float _textSize)
         {
+            sr_textBox = GetComponent<SpriteRenderer>();
             rt_box = GetComponent<RectTransform>();
             List<string> _bins = CollectTextIntoBins(i_minCharactersPerLine, _text);
             Vector2 _resize = ResizeBoxV2(_text.Length * _textSize, _bins.Count - 1, _textSize, _text);
-            rt_box.sizeDelta = _resize.x < i_maxCharactersPerLine*_textSize && _resize.y < i_maxHeight * _textSize ? _resize : new Vector2(i_maxCharactersPerLine * _textSize, i_maxHeight * _textSize);
             f_currentBoxWidth = _resize.x;
             f_currentBoxHeight = _resize.y;
-
-            //rt_box.sizeDelta = ResizeBox(i_maxWidth, i_maxHeight, _textSize, _text.Length, _text);
+            if (sr_textBox)
+            {
+                sr_textBox.size = new Vector2(_resize.x*0.1f, _resize.y*0.1f);
+                return;
+            }
+            rt_box.sizeDelta = _resize.x < i_maxCharactersPerLine*_textSize && _resize.y < i_maxHeight * _textSize ? _resize : new Vector2(i_maxCharactersPerLine * _textSize, i_maxHeight * _textSize);
         }
     
         private Vector2 ResizeBoxV2(float _previousWidth, int _previousHeight, float _fontSize, string _text)

@@ -37,6 +37,13 @@ public class CreateTCPrefabs
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextSequencer.prefab");
     }
+    [MenuItem("GameObject/TextCorvid/Text Sequencer", false, 2)]
+    static void CreateSpriteBox()
+    {
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/SpriteTextBox.prefab");
+    }
+
+
 
     static void CreateNewObjectFromString(string filePath)
     {
