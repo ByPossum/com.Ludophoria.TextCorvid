@@ -27,7 +27,7 @@ namespace TextCorvid
             sr_textBox = GetComponent<SpriteRenderer>();
             rt_box = GetComponent<RectTransform>();
             List<string> _bins = CollectTextIntoBins(i_minCharactersPerLine, _text);
-            Vector2 _resize = ResizeBoxV2(_text.Length * _textSize, _bins.Count - 1, _textSize, _text);
+            Vector2 _resize = ResizeBox(_text.Length * _textSize, _bins.Count - 1, _textSize, _text);
             f_currentBoxWidth = _resize.x;
             f_currentBoxHeight = _resize.y;
             if (sr_textBox)
@@ -39,47 +39,46 @@ namespace TextCorvid
             }
             rt_box.sizeDelta = _resize.x < i_maxCharactersPerLine*_textSize && _resize.y < i_maxHeight * _textSize ? _resize : new Vector2(i_maxCharactersPerLine * _textSize, i_maxHeight * _textSize);
         }
-    
-        private Vector2 ResizeBoxV2(float _previousWidth, int _previousHeight, float _fontSize, string _text)
+
+        public void Init(string _text, TMP_Text _container)
+        {
+            sr_textBox = GetComponent<SpriteRenderer>();
+            rt_box = GetComponent<RectTransform>();
+            List<string> _bins = CollectTextIntoBins(i_minCharactersPerLine, _text);
+            Vector2 _resize = ResizeBoxV2(_text, _container, _bins);
+            f_currentBoxWidth = _resize.x;
+            f_currentBoxHeight = _resize.y;
+            if (sr_textBox)
+            {
+                Vector2 newSize = new Vector2(_resize.x * 0.1f, _resize.y * 0.1f);
+                sr_textBox.size = newSize;
+                sr_textBox.GetComponentInChildren<RectTransform>().sizeDelta = newSize;
+                return;
+            }
+        }
+        
+        private Vector2 ResizeBoxV2(string _text, TMP_Text _container, List<string> _bins)
+        {
+
+            return Vector2.zero;
+        }
+
+        //private float SolveMaxWidth(TMP_Text _container, List<string> _bins)
+        //{
+
+        //}
+
+        private Vector2 ResizeBox(float _previousWidth, int _previousHeight, float _fontSize, string _text)
         {
             float _currentWidth = _previousWidth * 0.5f;
             int _binSize = Mathf.CeilToInt(_currentWidth / _fontSize);
             List<string> _bins = CollectTextIntoBins(_binSize, _text);
 
             if (_currentWidth / _fontSize > i_minCharactersPerLine && b_boxSizeSatisfied)
-                return ResizeBoxV2(_currentWidth, _bins.Count, _fontSize, _text);
+                return ResizeBox(_currentWidth, _bins.Count, _fontSize, _text);
             else if (b_boxSizeSatisfied)
-                return ResizeBoxV2(_currentWidth + _currentWidth * 0.5f, _bins.Count, _fontSize, _text);
+                return ResizeBox(_currentWidth + _currentWidth * 0.5f, _bins.Count, _fontSize, _text);
             return new Vector2(_previousWidth, _previousHeight * _fontSize);
-        }
-    
-        private Vector2 ResizeBox(float _previousWidth, float _previousHeight, float _textSize, int _textLength, string _text)
-        {
-            // Half the previous width
-            float _currentWidth = _previousWidth * 0.5f;
-            int _currentBins = Mathf.CeilToInt(_currentWidth / _textSize);
-    
-            List<string> _binsOfText = CollectTextIntoBins(_currentBins, _text);
-            
-            Debug.Log($"Width: {_currentWidth} | Bins: {_currentWidth / _textSize} (Int: {_currentBins}) | Text Size: {_textSize} | What's in our bin: {_binsOfText.Count}");
-            // Generate height from the bin count
-            float _height = _binsOfText.Count * _textSize;
-    
-            // Try and go smaller
-            if (_height < _previousHeight)
-                return ResizeBox(_currentWidth, _height, _textSize, _textLength, _text);
-    
-            // Go a bit bigger
-            float _widthTimesAQuarter = _currentWidth * 1.25f;
-            int _largerBinSize = Mathf.CeilToInt(_widthTimesAQuarter / _textSize);
-            List<string> _largerBins = CollectTextIntoBins(_largerBinSize, _text);
-            float _newHeight = _largerBins.Count * _textSize;
-            Vector2 _resizeTest = ResizeBox(_currentWidth * 1.25f, _newHeight, _textSize, _textLength, _text);
-            // Try again to go smaller
-            if (_resizeTest.y < _previousHeight)
-                return ResizeBox(_widthTimesAQuarter, _newHeight, _textSize, _textLength, _text);
-            // Return smallest Value
-            return new Vector2(_currentWidth, i_currentHeight);
         }
     
         private List<string> CollectTextIntoBins(int _binLength, string _text)
