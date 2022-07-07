@@ -32,7 +32,9 @@ namespace TextCorvid
             f_currentBoxHeight = _resize.y;
             if (sr_textBox)
             {
-                sr_textBox.size = new Vector2(_resize.x*0.1f, _resize.y*0.1f);
+                Vector2 newSize = new Vector2(_resize.x * 0.1f, _resize.y * 0.1f);
+                sr_textBox.size = newSize;
+                sr_textBox.GetComponentInChildren<RectTransform>().sizeDelta = newSize;
                 return;
             }
             rt_box.sizeDelta = _resize.x < i_maxCharactersPerLine*_textSize && _resize.y < i_maxHeight * _textSize ? _resize : new Vector2(i_maxCharactersPerLine * _textSize, i_maxHeight * _textSize);
