@@ -72,7 +72,7 @@ namespace TextCorvid
 
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
         {
-
+            DisplayText(textToDisplay, rectToDisplay.rect.height, displayType);
         }
 
         /// <summary>
