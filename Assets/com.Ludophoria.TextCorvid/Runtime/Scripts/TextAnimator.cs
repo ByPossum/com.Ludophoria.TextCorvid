@@ -48,7 +48,16 @@ namespace TextCorvid
         {
             return RemoveEffects(reg_effectCharacters.Matches(_originalString), _originalString);
         }
-    
+        public string RemoveAllEffects(string _originalString)
+        {
+            return RemoveAllEffects(reg_effectCharacters.Matches(_originalString), _originalString);
+        }
+        public string RemoveAllEffects(MatchCollection _matches, string _originalString)
+        {
+            foreach (Match _match in _matches)
+                    _originalString = _originalString.Replace(_match.Value, "");
+            return _originalString;
+        }
         private string RemoveEffects(MatchCollection _matches, string _originalString)
         {
             foreach (Match _match in _matches)
