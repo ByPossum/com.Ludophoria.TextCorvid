@@ -66,7 +66,7 @@ namespace TextCorvid
 
         public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block)
         {
-            rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
+            rs_textBox.Init(ta_animator.RemoveAllEffects(textToDisplay), t_displayedText.fontSize);
             DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
         }
 
