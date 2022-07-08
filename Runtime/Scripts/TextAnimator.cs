@@ -52,7 +52,8 @@ namespace TextCorvid
         private string RemoveEffects(MatchCollection _matches, string _originalString)
         {
             foreach (Match _match in _matches)
-                _originalString = _originalString.Replace(_match.Value, "");
+                if(!_match.Value.Contains("sprite"))
+                    _originalString = _originalString.Replace(_match.Value, "");
             return _originalString;
         }
     
