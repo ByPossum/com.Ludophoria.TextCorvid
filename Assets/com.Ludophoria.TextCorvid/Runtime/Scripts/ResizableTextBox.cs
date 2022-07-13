@@ -59,6 +59,21 @@ namespace TextCorvid
         
         private Vector2 ResizeBoxV2(string _text, TMP_Text _container, List<string> _bins)
         {
+            // ============ INITIAL VALUES ============
+            // Set Lowest width     (low)   to largest word
+            // Set Largest width    (law)   to all words summed
+            // Set Lowest height    (loh)   to Number of bins
+            // Set Largest height   (lah)   to Total # of words
+            // ============ SOLVING VALUES ============
+            // Set Width guess      (wg)    to Average Width (low + law / 2)
+            // Set Height guess     (hg)    to Average Height (loh + lah / 2)
+            // return previous guess when both hg and wg are too small
+            // if width can go lower
+            //      Set Largest Width to Width Guess
+            // if height can go lower
+            //      Set Largest Height to Height Guess
+            // Solve again
+            // Until you can't go smaller
 
             return Vector2.zero;
         }
