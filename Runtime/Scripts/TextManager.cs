@@ -75,7 +75,7 @@ namespace TextCorvid
         private Dictionary<string, string> ReadCSVText()
         {
             Dictionary<string, string> readText = new Dictionary<string, string>();
-            string allTextFromFile = Resources.Load<TextAsset>(s_filePath + ".csv").text ?? File.ReadAllText(s_filePath + ".csv");
+            string allTextFromFile = Resources.Load<TextAsset>(s_filePath) ? Resources.Load<TextAsset>(s_filePath).text : File.ReadAllText(Application.dataPath + s_filePath + ".csv");
             string[] textRows = allTextFromFile.Split("\n"[0]);
             int rows = textRows.Length;
             for(int i = 0; i < rows; i++)
@@ -92,7 +92,7 @@ namespace TextCorvid
 
         private Dictionary<string, string> ReadJsonText()
         {
-            CrowTextCollection ctc = JsonUtility.FromJson<CrowTextCollection>(Resources.Load<TextAsset>(s_filePath + ".JSON").text ?? File.ReadAllText(s_filePath + ".JSON"));
+            CrowTextCollection ctc = JsonUtility.FromJson<CrowTextCollection>(Resources.Load<TextAsset>(s_filePath) ? Resources.Load<TextAsset>(s_filePath).text : File.ReadAllText(Application.dataPath + s_filePath + ".JSON"));
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText crow in ctc.crowText)
             {
