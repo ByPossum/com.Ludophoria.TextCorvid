@@ -29,7 +29,7 @@ namespace TextCorvid
             //MakeTestJsonData();
 
             // Load text from file
-            D_allText = LoadFileExtention() switch
+            D_allText = LoadFileExtention(true) switch
             {
                 ".csv" => ReadCSVText(),
                 ".json" => ReadJsonText(),
@@ -42,10 +42,10 @@ namespace TextCorvid
         /// Check if any of the supported filetypes are available
         /// </summary>
         /// <returns>The file extension that got loaded</returns>
-        private string LoadFileExtention()
+        private string LoadFileExtention(bool _fromResources)
         {
             FileStream fs = null;
-            string _filePath = Application.dataPath + s_filePath;
+            string _filePath = Application.dataPath + (_fromResources ? "/Resources/" : "") + s_filePath;
             if (File.Exists(_filePath + ".csv"))
                 fs = File.Open(_filePath + ".csv", FileMode.Open);
             else if (File.Exists(_filePath + ".json"))
@@ -55,6 +55,8 @@ namespace TextCorvid
             else
             {
                 fs?.Close();
+                if (_fromResources)
+                    return LoadFileExtention(false);
                 return "Unable to load file extension.";
             }
             string extention = Path.GetExtension(fs.Name);
