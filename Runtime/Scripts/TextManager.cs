@@ -75,7 +75,8 @@ namespace TextCorvid
         private Dictionary<string, string> ReadCSVText()
         {
             Dictionary<string, string> readText = new Dictionary<string, string>();
-            string allTextFromFile = Resources.Load<TextAsset>(s_filePath) ? Resources.Load<TextAsset>(s_filePath).text : File.ReadAllText(Application.dataPath + s_filePath + ".csv");
+            TextAsset _ass = GetTextAssetFromFile(".csv");
+            string allTextFromFile = _ass.text;
             string[] textRows = allTextFromFile.Split("\n"[0]);
             int rows = textRows.Length;
             for(int i = 0; i < rows; i++)
@@ -92,7 +93,8 @@ namespace TextCorvid
 
         private Dictionary<string, string> ReadJsonText()
         {
-            CrowTextCollection ctc = JsonUtility.FromJson<CrowTextCollection>(Resources.Load<TextAsset>(s_filePath) ? Resources.Load<TextAsset>(s_filePath).text : File.ReadAllText(Application.dataPath + s_filePath + ".JSON"));
+            TextAsset _ass = GetTextAssetFromFile(".JSON");
+            CrowTextCollection ctc = JsonUtility.FromJson<CrowTextCollection>(_ass.text);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText crow in ctc.crowText)
             {
@@ -103,14 +105,20 @@ namespace TextCorvid
 
         private Dictionary<string, string> ReadXMLData()
         {
-            TextAsset _ass = Resources.Load<TextAsset>(s_filePath);
-            if (!_ass)
-                _ass = new TextAsset(File.ReadAllText(Application.dataPath + s_filePath + ".xml"));
+            TextAsset _ass = GetTextAssetFromFile(".xml");
             CrowXml _allText = GenericReaders.ReadXML<CrowXml>(_ass);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach (CrowText _text in _allText.L_crowText)
                 textData.Add(_text.ID + _text.Event + _text.Country, _text.TextToDisplay);
             return textData;
+        }
+
+        private TextAsset GetTextAssetFromFile(string _ext)
+        {
+            TextAsset _ass = Resources.Load<TextAsset>(s_filePath);
+            if (!_ass)
+                _ass = new TextAsset(File.ReadAllText(Application.dataPath + s_filePath + _ext));
+            return _ass;
         }
 
         public void MakeTestJsonData()
