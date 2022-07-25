@@ -5,6 +5,8 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine.UI;
+using LudoReaders;
+
 
 namespace TextCorvid
 {
@@ -22,8 +24,8 @@ namespace TextCorvid
         public TextManager(TextSettings _newSettings)
         {
             ts_settings = _newSettings;
-            s_filePath = Application.dataPath + "/"+ ts_settings.s_filePath;
             l_currentLanguage = ts_settings.A_supportedLanguages[0];
+            s_filePath = ts_settings.s_filePath;
             //MakeTestJsonData();
 
             // Load text from file
@@ -43,12 +45,13 @@ namespace TextCorvid
         private string LoadFileExtention()
         {
             FileStream fs = null;
-            if (File.Exists(s_filePath + ".csv"))
-                fs = File.Open(s_filePath + ".csv", FileMode.Open);
-            else if (File.Exists(s_filePath + ".json"))
-                fs = File.Open(s_filePath + ".json", FileMode.Open);
-            else if (File.Exists(s_filePath + ".xml"))
-                fs = File.Open(s_filePath + ".xml", FileMode.Open);
+            string _filePath = Application.dataPath + "/com.Ludophoria.TextCorvid/Runtime/Resources/" + s_filePath;
+            if (File.Exists(_filePath + ".csv"))
+                fs = File.Open(_filePath + ".csv", FileMode.Open);
+            else if (File.Exists(_filePath + ".json"))
+                fs = File.Open(_filePath + ".json", FileMode.Open);
+            else if (File.Exists(_filePath + ".xml"))
+                fs = File.Open(_filePath + ".xml", FileMode.Open);
             else
             {
                 fs?.Close();
@@ -100,14 +103,10 @@ namespace TextCorvid
 
         private Dictionary<string, string> ReadXMLData()
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(CrowXml));
-            FileStream fs = new FileStream(s_filePath + ".xml", FileMode.Open);
-            CrowXml crow = serializer.Deserialize(fs) as CrowXml; 
+            CrowXml _allText = GenericReaders.ReadXML<CrowXml>(Resources.Load<TextAsset>(s_filePath));
             Dictionary<string, string> textData = new Dictionary<string, string>();
-            foreach(CrowText text in crow.L_crowText)
-            {
-                textData.Add(text.ID + text.Event + text.Country, text.TextToDisplay);
-            }
+            foreach (CrowText _text in _allText.L_crowText)
+                textData.Add(_text.ID + _text.Event + _text.Country, _text.TextToDisplay);
             return textData;
         }
 
