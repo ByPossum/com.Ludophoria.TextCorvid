@@ -46,8 +46,7 @@ namespace TextCorvid
             sr_textBox = GetComponent<SpriteRenderer>();
             rt_box = GetComponent<RectTransform>();
             List<string> _bins = CollectTextIntoBins(i_minCharactersPerLine, _text);
-            List<string> _dummy = CollectTextIntoBins(i_minCharactersPerLine, _text, _container);
-            Vector2 _resize = ResizeBoxV2(_text, _container, _bins);
+            Vector2 _resize = ResizeBox(_text.Length, _bins.Count-1, _container.fontSize, _text);
             f_currentBoxWidth = _resize.x;
             f_currentBoxHeight = _resize.y;
             if (sr_textBox)
