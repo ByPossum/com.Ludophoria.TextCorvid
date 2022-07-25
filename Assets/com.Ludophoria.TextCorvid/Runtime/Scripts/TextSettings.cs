@@ -8,6 +8,7 @@ namespace TextCorvid
     public class TextSettings : ScriptableObject
     {
         public string s_filePath;
+        public string s_folderPaths;
         public Languages[] A_supportedLanguages;
         public int i_textSpeed;
         public bool b_autoDetectFile;

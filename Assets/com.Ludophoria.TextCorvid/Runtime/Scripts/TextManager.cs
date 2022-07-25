@@ -18,6 +18,7 @@ namespace TextCorvid
         private int i_currentLanguageIndex = 0;
         private Dictionary<string, Text> D_currentTextOnScreen;
         private string s_filePath;
+        private string s_folderPath;
         /// TODO:
         /// - Add "currently in use" text to be updated if language changes
         // Set in Player settings
@@ -26,6 +27,7 @@ namespace TextCorvid
             ts_settings = _newSettings;
             l_currentLanguage = ts_settings.A_supportedLanguages[0];
             s_filePath = ts_settings.s_filePath;
+            s_folderPath = ts_settings.s_folderPaths;
             //MakeTestJsonData();
 
             // Load text from file
@@ -44,8 +46,15 @@ namespace TextCorvid
         /// <returns>The file extension that got loaded</returns>
         private string LoadFileExtention(bool _fromResources)
         {
+            DirectoryInfo _dir = new DirectoryInfo(Application.dataPath);
+            FileInfo[] _resourceInfo = _dir.GetFiles("*", SearchOption.AllDirectories);
+            string _ext = "";
+            foreach (FileInfo _info in _resourceInfo)
+                if (_info.FullName.Contains(s_filePath))
+                    return _info.Extension;
+            return "Unable To Load File Extension";
             FileStream fs = null;
-            string _filePath = Application.dataPath + (_fromResources ? "/Resources/" : "") + s_filePath;
+            string _filePath = Application.dataPath + s_filePath;
             if (File.Exists(_filePath + ".csv"))
                 fs = File.Open(_filePath + ".csv", FileMode.Open);
             else if (File.Exists(_filePath + ".json"))
@@ -117,9 +126,9 @@ namespace TextCorvid
 
         private TextAsset GetTextAssetFromFile(string _ext)
         {
-            TextAsset _ass = Resources.Load<TextAsset>(s_filePath);
+            TextAsset _ass = Resources.Load<TextAsset>(s_folderPath + s_filePath);
             if (!_ass)
-                _ass = new TextAsset(File.ReadAllText(Application.dataPath + s_filePath + _ext));
+                _ass = new TextAsset(File.ReadAllText(Application.dataPath + s_folderPath + s_filePath + _ext));
             return _ass;
         }
 
