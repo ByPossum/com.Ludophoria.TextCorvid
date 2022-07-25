@@ -1,4 +1,4 @@
-tut,01,eng,<Colour r=0,7 g=0,8 b=0,3><Wiggle>Hi I'm <Wiggle r=0,5 g=1 b=1>Text</Wiggle> Corvid</Wiggle></Colour><sprite=0>.
+tut,01,eng,<color="red"><Wiggle>Hi </Wiggle>I'm <b><color="green"><Wiggle r=0,5 g=1 b=1>Text Corvid</Wiggle></b><sprite=0>.
 tut,01,isl,<Colour r=0,7 g=0,8 b=0,3><Wiggle>Hæ, ég er <Wiggle r=0,5 g=1 b=1>Text</Wiggle> Corvid</Wiggle></Colour>.
 tut,02,eng,I like video games.
 tut,02,isl,Mér likar tölva leiknir.

@@ -66,7 +66,7 @@ namespace TextCorvid
 
         public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block)
         {
-            rs_textBox.Init(ta_animator.RemoveAllEffects(textToDisplay), t_displayedText.fontSize);
+            rs_textBox.Init(ta_animator.RemoveAllEffects(textToDisplay), t_displayedText);
             DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
         }
 
@@ -123,7 +123,26 @@ namespace TextCorvid
                     currentRow++;
                     prevLineCount = 0;
                 }
-                _parent.text += nextString[i].ToString();
+                int iteratorChanger = 0;
+                string seg = string.Empty;
+                // if there's an effect from TMP just add it all at once
+                if (nextString[i] == '<')
+                {
+                    for (int j = i; j < nextString.Length; j++)
+                    {
+                        if (nextString[j] == '>')
+                        {
+                            iteratorChanger = j+1;
+                            break;
+                        }
+                    }
+                    int charLen = iteratorChanger - i;
+                    seg = nextString.Substring(i, charLen);
+                    i = iteratorChanger;
+                }
+                else
+                    seg = nextString[i].ToString();
+                _parent.text += seg;
                 previousText.Add(_parent);
                 prevLineCount++;
                 await Task.Delay(i_textSpeed);
