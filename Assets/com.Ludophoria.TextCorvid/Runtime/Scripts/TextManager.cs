@@ -45,7 +45,7 @@ namespace TextCorvid
         private string LoadFileExtention()
         {
             FileStream fs = null;
-            string _filePath = Application.dataPath + "/com.Ludophoria.TextCorvid/Runtime/Resources/" + s_filePath;
+            string _filePath = Application.dataPath + s_filePath;
             if (File.Exists(_filePath + ".csv"))
                 fs = File.Open(_filePath + ".csv", FileMode.Open);
             else if (File.Exists(_filePath + ".json"))
@@ -103,7 +103,10 @@ namespace TextCorvid
 
         private Dictionary<string, string> ReadXMLData()
         {
-            CrowXml _allText = GenericReaders.ReadXML<CrowXml>(Resources.Load<TextAsset>(s_filePath));
+            TextAsset _ass = Resources.Load<TextAsset>(s_filePath);
+            if (!_ass)
+                _ass = new TextAsset(File.ReadAllText(Application.dataPath + s_filePath + ".xml"));
+            CrowXml _allText = GenericReaders.ReadXML<CrowXml>(_ass);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach (CrowText _text in _allText.L_crowText)
                 textData.Add(_text.ID + _text.Event + _text.Country, _text.TextToDisplay);
