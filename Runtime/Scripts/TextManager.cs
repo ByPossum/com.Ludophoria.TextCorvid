@@ -127,11 +127,11 @@ namespace TextCorvid
 
         private TextAsset GetTextAssetFromFile(string _ext)
         {
-            string _path = s_folderPath + s_filePath;
+            string _path = s_folderPath + s_filePath.Split('.')[0];
             TextAsset _ass = Resources.Load<TextAsset>(_path);
             if (!_ass)
-                if (File.Exists(Application.dataPath + _path))
-                    _ass = new TextAsset(File.ReadAllText(Application.dataPath + _path));
+                if (File.Exists(Application.dataPath + _path + _ext))
+                    _ass = new TextAsset(File.ReadAllText(Application.dataPath + _path + _ext));
             return _ass;
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba143f12dbcaeba4fbaae899cf8fbe58, type: 3}
   m_Name: DefaultSettings
   m_EditorClassIdentifier: 
-  s_filePath: Texml
+  s_filePath: Texml.xml
   s_folderPaths: /com.Ludophoria.TextCorvid/Runtime/Resources/Text/
   A_supportedLanguages: 2600000048000000
   i_textSpeed: 2
