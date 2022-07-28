@@ -46,13 +46,12 @@ namespace TextCorvid
         /// <returns>The file extension that got loaded</returns>
         private string LoadFileExtention(bool _fromResources)
         {
-            DirectoryInfo _dir = new DirectoryInfo(Application.dataPath);
-            FileInfo[] _resourceInfo = _dir.GetFiles("*", SearchOption.AllDirectories);
-            string _ext = "";
-            foreach (FileInfo _info in _resourceInfo)
-                if (_info.FullName.Contains(s_filePath))
-                    return _info.Extension;
-            return "Unable To Load File Extension";
+            if (_fromResources)
+            {
+                string _extension = "." + s_filePath.Split('.')[1];
+                Debug.Log(_extension);
+                return _extension;
+            }
             FileStream fs = null;
             string _filePath = Application.dataPath + s_filePath;
             if (File.Exists(_filePath + ".csv"))
@@ -76,10 +75,13 @@ namespace TextCorvid
         {
             _textID = _textID + l_currentLanguage.ToString();
             _textID = _textID.ToLower();
-            Dictionary<string, string>.KeyCollection keys = D_allText.Keys;
-            foreach (string key in D_allText.Keys)
-                if (key.Contains(_textID))
-                    return D_allText[key];
+            if(D_allText != null)
+            {
+                Dictionary<string, string>.KeyCollection keys = D_allText.Keys;
+                foreach (string key in D_allText.Keys)
+                    if (key.Contains(_textID))
+                        return D_allText[key];
+            }
             return "Unable To Get Text";
         }
 
@@ -126,9 +128,11 @@ namespace TextCorvid
 
         private TextAsset GetTextAssetFromFile(string _ext)
         {
-            TextAsset _ass = Resources.Load<TextAsset>(s_folderPath + s_filePath);
+            string _path = s_folderPath + s_filePath;
+            TextAsset _ass = Resources.Load<TextAsset>(_path);
             if (!_ass)
-                _ass = new TextAsset(File.ReadAllText(Application.dataPath + s_folderPath + s_filePath + _ext));
+                if (File.Exists(Application.dataPath + _path))
+                    _ass = new TextAsset(File.ReadAllText(Application.dataPath + _path));
             return _ass;
         }
 
