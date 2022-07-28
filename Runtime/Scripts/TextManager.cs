@@ -49,7 +49,6 @@ namespace TextCorvid
             if (_fromResources)
             {
                 string _extension = "." + s_filePath.Split('.')[1];
-                Debug.Log(_extension);
                 return _extension;
             }
             FileStream fs = null;
