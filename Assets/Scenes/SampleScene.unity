@@ -1791,6 +1791,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
+      propertyPath: f_maxWidth
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
+      propertyPath: f_minWidth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
+      propertyPath: f_maxHeight
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
+      propertyPath: f_minHeight
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3008638271118424069, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_Name
       value: SpriteTextBox
