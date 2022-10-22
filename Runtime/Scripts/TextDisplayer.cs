@@ -18,13 +18,15 @@ namespace TextCorvid
         private int currentRow;
         private int rowCount;
         private int i_textSpeed;
+        private float f_resizeTolerance;
         private bool b_done = true;
 
-        public void Init(int _textSpeed, TextAnimator _anim = null)
+        public void Init(int _textSpeed, float _resizeTolerance, TextAnimator _anim = null)
         {
             i_textSpeed = _textSpeed;
             ta_animator = _anim;
-            
+            f_resizeTolerance = _resizeTolerance;
+
             if (!rt_displayBox)
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
@@ -66,8 +68,9 @@ namespace TextCorvid
 
         public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block)
         {
-            rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText.fontSize);
+            rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), f_resizeTolerance, t_displayedText);
             DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
+            GetComponent<SpriteRenderer>().size += new Vector2(rs_textBox.Padding.x + rs_textBox.Padding.z, rs_textBox.Padding.y + rs_textBox.Padding.w);
         }
 
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)

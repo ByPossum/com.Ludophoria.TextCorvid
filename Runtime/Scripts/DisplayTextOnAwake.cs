@@ -19,7 +19,7 @@ namespace TextCorvid
             }
 
             td_displayer = GetComponentInChildren<TextDisplayer>(true);
-            td_displayer.Init(tg.GetTextManager().GetSettings(), tg.GetTextAnimator());
+            td_displayer.Init(tg.GetTextManager().TextSpeed, tg.GetTextManager().ResizeTolerance, tg.GetTextAnimator());
             // NB: Change text display type to some variable?
             ResizableTextBox tb = GetComponentInChildren<ResizableTextBox>();
             if (tb)

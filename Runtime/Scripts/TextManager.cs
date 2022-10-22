@@ -19,6 +19,8 @@ namespace TextCorvid
         private Dictionary<string, Text> D_currentTextOnScreen;
         private string s_filePath;
         private string s_folderPath;
+        public int TextSpeed { get { return ts_settings.i_textSpeed; } }
+        public float ResizeTolerance { get { return ts_settings.f_resizingTolerance; } }
         /// TODO:
         /// - Add "currently in use" text to be updated if language changes
         // Set in Player settings
@@ -192,10 +194,7 @@ namespace TextCorvid
             i_currentLanguageIndex = UpdateLanguageIter((int)_nextLang - (int)i_currentLanguageIndex);
             l_currentLanguage = _nextLang;
         }
-        public int GetSettings()
-        {
-            return ts_settings.i_textSpeed;
-        }
+
     }
 
     [System.Serializable]
