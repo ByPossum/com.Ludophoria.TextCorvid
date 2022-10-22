@@ -17,3 +17,4 @@ MonoBehaviour:
   A_supportedLanguages: 2600000048000000
   i_textSpeed: 2
   b_autoDetectFile: 0
+  f_resizingTolerance: 3

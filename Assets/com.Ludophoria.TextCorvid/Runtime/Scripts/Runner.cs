@@ -23,7 +23,7 @@ public class Runner : MonoBehaviour
         t_textToDisplay = rectToDrawTo.gameObject.GetComponent<TMP_Text>();
         s_dialogue = t_textToDisplay?.text;
 
-        td.Init(tm_managerRef.GetSettings(), tg_glue.GetTextAnimator());
+        td.Init(tm_managerRef.TextSpeed, tm_managerRef.ResizeTolerance, tg_glue.GetTextAnimator());
         td.DisplayText(tm_managerRef.GetText(s_dialogue), rectToDrawTo, TextDisplayType.character);
         tm_managerRef.l_currentLanguage = Languages.eng;
     }

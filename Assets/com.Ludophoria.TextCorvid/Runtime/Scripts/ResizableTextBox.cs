@@ -11,12 +11,16 @@ namespace TextCorvid
         private SpriteRenderer sr_textBox;
         private bool b_boxSizeSatisfied = false;
         [SerializeField]private float f_minWidth, f_maxWidth, f_minHeight, f_maxHeight;
+        [SerializeField, Tooltip("Left, Top, Right, Bottom")] private Vector4 v_padding;
         private float f_width, f_height;
+        private float f_tolerance;
         public float BoxWidth { get { return f_width; } }
         public float BoxHeight { get { return f_height; } }
-    
-        public void Init(string _text, TMP_Text _container)
+        public Vector4 Padding { get { return v_padding; } }
+        public void Init(string _text, float _resizeTolerance, TMP_Text _container)
         {
+            // Never let this bish crash
+            f_tolerance = _resizeTolerance <= 0f ? 0.1f : _resizeTolerance;
             sr_textBox = GetComponent<SpriteRenderer>();
             rt_box = _container.GetComponent<RectTransform>();
             Vector2 _resize = ResizeBox(f_minWidth, f_maxWidth, _text, _text.Length);
@@ -37,7 +41,7 @@ namespace TextCorvid
             List<string> bins = CollectTextIntoBins(Mathf.CeilToInt(_midX), _text);
             int midY = bins.Count;
             float area = _midX * midY;
-            if(Mathf.Abs(area - _target) < 1f && area > f_minWidth * f_minHeight && area < f_maxWidth * f_maxHeight)
+            if(Mathf.Abs(area - _target) < f_tolerance && area > f_minWidth * f_minHeight && area < f_maxWidth * f_maxHeight)
                 return new Vector2(_midX, midY);
             if (area > _target)
                 _maxX = _midX - 1f;
