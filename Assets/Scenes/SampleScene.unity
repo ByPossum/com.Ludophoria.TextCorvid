@@ -1809,19 +1809,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: v_padding.w
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: v_padding.x
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: v_padding.y
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: v_padding.z
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3008638271118424069, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_Name

@@ -42,7 +42,7 @@ namespace TextCorvid
             int midY = bins.Count;
             float area = _midX * midY;
             if(Mathf.Abs(area - _target) < f_tolerance && area > f_minWidth * f_minHeight && area < f_maxWidth * f_maxHeight)
-                return new Vector2(_midX, midY);
+                return new Vector2(midY, _midX);
             if (area > _target)
                 _maxX = _midX - 1f;
             if (area < _target)
