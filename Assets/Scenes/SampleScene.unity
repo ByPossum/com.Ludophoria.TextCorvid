@@ -1797,7 +1797,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: f_minWidth
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: f_maxHeight
@@ -1805,7 +1805,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: f_minHeight
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3008638270855989248, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: v_padding.w
@@ -1873,7 +1873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008638271674883834, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_text
-      value: tut01
+      value: ArmIntro01
       objectReference: {fileID: 0}
     - target: {fileID: 3008638271674883834, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_fontSize

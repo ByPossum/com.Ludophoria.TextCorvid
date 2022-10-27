@@ -12,6 +12,5 @@ namespace TextCorvid
         public Languages[] A_supportedLanguages;
         public int i_textSpeed;
         public bool b_autoDetectFile;
-        public float f_resizingTolerance;
     }
 }

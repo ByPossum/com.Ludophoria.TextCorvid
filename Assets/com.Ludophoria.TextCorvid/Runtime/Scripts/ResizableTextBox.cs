@@ -17,13 +17,12 @@ namespace TextCorvid
         public float BoxWidth { get { return f_width; } }
         public float BoxHeight { get { return f_height; } }
         public Vector4 Padding { get { return v_padding; } }
-        public void Init(string _text, float _resizeTolerance, TMP_Text _container)
+        public void Init(string _text, TMP_Text _container)
         {
             // Never let this bish crash
-            f_tolerance = _resizeTolerance <= 0f ? 0.1f : _resizeTolerance;
             sr_textBox = GetComponent<SpriteRenderer>();
             rt_box = _container.GetComponent<RectTransform>();
-            f_tolerance = _text.Length + _text.Length * 0.1f; 
+            f_tolerance = _text.Length + _text.Length * 0.1f;
             Vector2 _resize = ResizeBox(f_minWidth, f_maxWidth, _text, _text.Length);
             if (sr_textBox)
             {
@@ -40,7 +39,7 @@ namespace TextCorvid
             // Get our mid
             float _midX = (_minX + _maxX) * 0.5f;
             List<string> bins = CollectTextIntoBins(Mathf.CeilToInt(_midX), _text);
-            int midY = bins.Count;
+            int midY = bins.Count + 1;
             float area = _midX * midY;
             if(Mathf.Abs(area - _target) < f_tolerance && area > f_minWidth * f_minHeight && area < f_maxWidth * f_maxHeight)
                 return new Vector2(midY, _midX);
@@ -68,6 +67,7 @@ namespace TextCorvid
                 _binsOfText.Add(_nextBin);
                 _nextBin = " " + words[i];
             }
+            _binsOfText.Add(_nextBin);
             return _binsOfText;
         }
     }

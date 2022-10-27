@@ -5,7 +5,7 @@
 			<ID>tut</ID>
 			<Event>01</Event>
 			<Country>eng</Country>
-			<TextToDisplay>Hi! I'm Text Corvid.</TextToDisplay>
+			<TextToDisplay>Hi!</TextToDisplay>
 		</CrowText>
 		<CrowText>
 			<ID>tut</ID>

@@ -20,7 +20,6 @@ namespace TextCorvid
         private string s_filePath;
         private string s_folderPath;
         public int TextSpeed { get { return ts_settings.i_textSpeed; } }
-        public float ResizeTolerance { get { return ts_settings.f_resizingTolerance; } }
         /// TODO:
         /// - Add "currently in use" text to be updated if language changes
         // Set in Player settings
