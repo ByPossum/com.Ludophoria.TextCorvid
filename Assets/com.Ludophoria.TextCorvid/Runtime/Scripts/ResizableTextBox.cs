@@ -23,6 +23,7 @@ namespace TextCorvid
             f_tolerance = _resizeTolerance <= 0f ? 0.1f : _resizeTolerance;
             sr_textBox = GetComponent<SpriteRenderer>();
             rt_box = _container.GetComponent<RectTransform>();
+            f_tolerance = _text.Length + _text.Length * 0.1f; 
             Vector2 _resize = ResizeBox(f_minWidth, f_maxWidth, _text, _text.Length);
             if (sr_textBox)
             {

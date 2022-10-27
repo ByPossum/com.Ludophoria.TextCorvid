@@ -1873,7 +1873,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3008638271674883834, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_text
-      value: ArmIntro01
+      value: tut01
       objectReference: {fileID: 0}
     - target: {fileID: 3008638271674883834, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_fontSize
