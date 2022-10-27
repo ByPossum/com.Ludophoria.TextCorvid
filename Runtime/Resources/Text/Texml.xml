@@ -31,5 +31,11 @@
 			<Country>isl</Country>
 			<TextToDisplay>Mér likar tölva leiknir.</TextToDisplay>
 		</CrowText>
+		<CrowText>
+			<ID>ArmIntro</ID>
+			<Event>01</Event>
+			<Country>eng</Country>
+			<TextToDisplay>Hey, kid! Be a friend and help get me down from here.</TextToDisplay>
+		</CrowText>
 	</CrowTextCollection>
 </CrowXml>

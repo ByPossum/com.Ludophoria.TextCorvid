@@ -95,7 +95,7 @@ namespace TextCorvid
             int rows = textRows.Length;
             for(int i = 0; i < rows; i++)
             {
-                string id = textRows[i].Split(',')[0] + textRows[i].Split(',')[1] + textRows[i].Split(',')[2];
+                string id = textRows[i].Split(',')[0].ToLower() + textRows[i].Split(',')[1].ToLower() + textRows[i].Split(',')[2].ToLower();
                 string[] splitText = textRows[i].Split(',');
                 string text = "";
                 for (int j = 3; j < splitText.Length; j++)
@@ -112,7 +112,7 @@ namespace TextCorvid
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText crow in ctc.crowText)
             {
-                textData.Add(crow.ID + crow.Event + crow.Country, crow.TextToDisplay);
+                textData.Add(crow.ID.ToLower() + crow.Event.ToLower() + crow.Country.ToLower(), crow.TextToDisplay);
             }
             return textData;
         }
@@ -123,7 +123,7 @@ namespace TextCorvid
             CrowXml _allText = GenericReaders.ReadXML<CrowXml>(_ass);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach (CrowText _text in _allText.L_crowText)
-                textData.Add(_text.ID + _text.Event + _text.Country, _text.TextToDisplay);
+                textData.Add(_text.ID.ToLower() + _text.Event.ToLower() + _text.Country.ToLower(), _text.TextToDisplay);
             return textData;
         }
 
