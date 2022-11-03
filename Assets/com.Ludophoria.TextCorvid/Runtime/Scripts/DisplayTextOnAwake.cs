@@ -18,14 +18,15 @@ namespace TextCorvid
                 await System.Threading.Tasks.Task.Yield();
             }
 
+
             td_displayer = GetComponentInChildren<TextDisplayer>(true);
             td_displayer.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator());
             // NB: Change text display type to some variable?
             ResizableTextBox tb = GetComponentInChildren<ResizableTextBox>();
             if (tb)
-                td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.GetComponentInChildren<TMPro.TMP_Text>(true).text), tb, TextDisplayType.character);
+                td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.TextID), tb, TextDisplayType.character);
             else
-                td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.GetComponentInChildren<TMPro.TMP_Text>(true).text), GetComponent<RectTransform>().rect.height, TextDisplayType.character);
+                td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.TextID), GetComponent<RectTransform>().rect.height, TextDisplayType.character);
         }
     }
 }

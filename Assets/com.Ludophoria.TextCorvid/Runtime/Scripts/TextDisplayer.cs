@@ -11,21 +11,23 @@ namespace TextCorvid
     {
         [SerializeField] private RectTransform rt_displayBox;
         [SerializeField] private TMP_Text t_displayedText;
+        private string s_textID;
         private TextAnimator ta_animator;
-        private TMP_Text t_testBox;
         List<TMP_Text> previousText = new List<TMP_Text>();
+        #region TextBox Sizes
         private int prevLineCount;
         private int currentRow;
         private int rowCount;
+        #endregion
         private int i_textSpeed;
-        private float f_resizeTolerance;
         private bool b_done = true;
+        public string TextID { get { return s_textID; } }
 
         public void Init(int _textSpeed, TextAnimator _anim = null)
         {
             i_textSpeed = _textSpeed;
             ta_animator = _anim;
-
+            s_textID = t_displayedText.text;
             if (!rt_displayBox)
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
@@ -38,28 +40,25 @@ namespace TextCorvid
         /// Choose how the text will be displayed, and on which rect transform.
         /// </summary>
         /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
-        /// <param name="rectToDisplay">Rect Transform used to display on. Will display on the top left of the rect transform.</param>
+        /// <param name="rectSize">This is contextual. It's the size of the area to display. DisplayType.line uses width. DisplayType.character uses height.</param>
         /// <param name="displayType">How the text will be displayed.</param>
-        public void DisplayText(string textToDisplay, float rectHeight, TextDisplayType displayType = TextDisplayType.block)
+        public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block)
         {
             switch (displayType)
             {
                 case TextDisplayType.block:
-                    break;
+                    DisplayByBlock(textToDisplay);
+                    return;
                 case TextDisplayType.line:
-                    break;
+                    DisplayTextByLine(textToDisplay, Mathf.FloorToInt(rectSize));
+                    return;
                 case TextDisplayType.word:
+                    DisplayByWord(textToDisplay);
                     break;
                 case TextDisplayType.character:
-                    try
-                    {
-                        DisplayByChar(textToDisplay, rectHeight);
-                    }
-                    catch (System.NullReferenceException nre)
-                    {
-                        Debug.LogException(nre);
-                    }
-                    break;
+                    try{ DisplayByChar(textToDisplay, rectSize); }
+                    catch (System.NullReferenceException nre){ Debug.LogException(nre); }
+                    return;
                 default:
                     break;
             }
@@ -94,9 +93,25 @@ namespace TextCorvid
             b_done = true;
         }
         
-        private void DisplayByBlock(string _textToDisplay, RectTransform _rectToDisplay)
+        private void DisplayByBlock(string _textToDisplay)
         {
+            b_done = false;
+            t_displayedText.text = ta_animator.ParseAnimations(t_displayedText, _textToDisplay);
+            b_done = true;
+        }
 
+        private async void DisplayTextByLine(string _textToDisplay, int _maxLength)
+        {
+            b_done = false;
+            await DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
+            b_done = true;
+        }
+
+        private async void DisplayByWord(string _textToDisplay)
+        {
+            b_done = false;
+            await DisplayWord(_textToDisplay);
+            b_done = true;
         }
 
         /// <summary>
@@ -106,6 +121,23 @@ namespace TextCorvid
         {
             t_displayedText.text = "";
             previousText = new List<TMP_Text>();
+        }
+
+        private List<string> CollectTextIntoBins(string _text, int _width)
+        {
+            string[] words = _text.Split(' ');
+            List<string> bins = new List<string>();
+            string temp = string.Empty;
+            foreach (string word in words)
+            {
+                if (word.Length + temp.Length + 1 > _width)
+                {
+                    bins.Add(temp);
+                    temp = string.Empty;
+                }
+                temp += word == string.Empty ? word : " " + word;
+            }
+            return bins;
         }
 
         /// <summary>
@@ -149,6 +181,29 @@ namespace TextCorvid
                 prevLineCount++;
                 await Task.Delay(i_textSpeed);
             }
+        }
+
+        private async Task DisplayLine(List<string> _lines)
+        {
+            foreach(string _line in _lines)
+            {
+                t_displayedText.text += _line;
+                await Task.Delay(i_textSpeed);
+            }
+        }
+
+        private async Task DisplayWord(string _words)
+        {
+            foreach (string word in _words.Split(' '))
+            {
+                t_displayedText.text += word;
+                await Task.Delay(i_textSpeed);
+            }
+        }
+
+        private void OnDisable()
+        {
+            t_displayedText.text = s_textID;
         }
     }
     
