@@ -1827,6 +1827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpriteTextBox
       objectReference: {fileID: 0}
+    - target: {fileID: 3008638271118424070, guid: f433e5e6d44512d498b41aefee608808, type: 3}
+      propertyPath: tdt_displayType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3008638271118424071, guid: f433e5e6d44512d498b41aefee608808, type: 3}
       propertyPath: m_RootOrder
       value: 12

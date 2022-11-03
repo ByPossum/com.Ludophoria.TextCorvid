@@ -27,11 +27,11 @@ namespace TextCorvid
         {
             i_textSpeed = _textSpeed;
             ta_animator = _anim;
-            s_textID = t_displayedText.text;
             if (!rt_displayBox)
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
                 t_displayedText = GetComponentInChildren<TMP_Text>();
+            s_textID = t_displayedText.text;
             
 
         }
@@ -137,6 +137,8 @@ namespace TextCorvid
                 }
                 temp += word == string.Empty ? word : " " + word;
             }
+            if(temp != string.Empty)
+                bins.Add(temp);
             return bins;
         }
 
@@ -185,6 +187,7 @@ namespace TextCorvid
 
         private async Task DisplayLine(List<string> _lines)
         {
+            t_displayedText.text = "";
             foreach(string _line in _lines)
             {
                 t_displayedText.text += _line;
@@ -194,16 +197,17 @@ namespace TextCorvid
 
         private async Task DisplayWord(string _words)
         {
+            t_displayedText.text = "";
             foreach (string word in _words.Split(' '))
             {
-                t_displayedText.text += word;
+                t_displayedText.text += word + " ";
                 await Task.Delay(i_textSpeed);
             }
         }
 
         private void OnDisable()
         {
-            t_displayedText.text = s_textID;
+            //t_displayedText.text = s_textID;
         }
     }
     
