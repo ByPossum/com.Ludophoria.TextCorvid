@@ -1,7 +1,9 @@
 {
     "name": "Ludophoria.TextCorvid.Editor",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:bf0ab8d44e70df743ba90c93e518c5dc"
+    ],
     "includePlatforms": [
         "Editor"
     ],
