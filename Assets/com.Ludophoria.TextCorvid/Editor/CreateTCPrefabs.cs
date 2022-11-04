@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class CreateTCPrefabs
 {
-    [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 6)]
+    [MenuItem("GameObject/TextCorvid/Resizable Textbox", false,2)]
     static void CreateResizableTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab");
     }
 
-    [MenuItem("GameObject/TextCorvid/World Space Textbox", false, 5)]
+    [MenuItem("GameObject/TextCorvid/Canvas Textbox", false, 3)]
     static void CreateWSTextBox()
     {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/WSCanvasTextBox.prefab");
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/CanvasTextBox.prefab");
     }
 
     [MenuItem("GameObject/TextCorvid/Text Managers", false, 1)]
@@ -22,22 +22,22 @@ public class CreateTCPrefabs
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextManager.prefab");
     }
-    [MenuItem("GameObject/TextCorvid/Trigger Text Box", false, 3)]
+    [MenuItem("GameObject/TextCorvid/Trigger Text Box", false, 14)]
     static void CreateTriggerTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TriggerTextBox.prefab");
     }
-    [MenuItem("GameObject/TextCorvid/Text Box", false, 2)]
+    [MenuItem("GameObject/TextCorvid/Text Box", false, 15)]
     static void CreateTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/Text.prefab");
     }
-    [MenuItem("GameObject/TextCorvid/Text Sequencer", false, 4)]
+    [MenuItem("GameObject/TextCorvid/Text Sequencer", false, 16)]
     static void CreateSequencer()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextSequencer.prefab");
     }
-    [MenuItem("GameObject/TextCorvid/Sprite Text Box", false, 2)]
+    [MenuItem("GameObject/TextCorvid/Sprite Text Box", false, 17)]
     static void CreateSpriteBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/SpriteTextBox.prefab");
