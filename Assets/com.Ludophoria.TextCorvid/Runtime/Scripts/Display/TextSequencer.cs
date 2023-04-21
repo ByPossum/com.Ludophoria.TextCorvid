@@ -7,7 +7,8 @@ namespace TextCorvid
     public class TextSequencer : MonoBehaviour
     {
         [SerializeField] private DialogueData[] dA_sequencedText;
-        
+        [SerializeField] private CharacterDisplayer cd_characterImage;
+        [SerializeField] private TextDisplayer td_display;
         private int i_currentDialogue;
     
         public DialogueData AdvanceDialogue()
