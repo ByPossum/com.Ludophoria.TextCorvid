@@ -23,6 +23,7 @@ namespace TextCorvid
         /// TODO:
         /// - Add "currently in use" text to be updated if language changes
         // Set in Player settings
+
         public TextManager(TextSettings _newSettings)
         {
             ts_settings = _newSettings;

@@ -6,7 +6,6 @@ namespace TextCorvid
 {
     public class DisplayTextOnAwake : MonoBehaviour
     {
-
         TextGlue tg;
         TextDisplayer td_displayer;
         [SerializeField] private TextDisplayType tdt_displayType;
