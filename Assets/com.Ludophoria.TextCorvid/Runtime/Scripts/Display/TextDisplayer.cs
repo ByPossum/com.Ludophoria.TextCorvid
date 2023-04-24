@@ -42,7 +42,7 @@ namespace TextCorvid
         /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
         /// <param name="rectSize">This is contextual. It's the size of the area to display. DisplayType.line uses width. DisplayType.character uses height.</param>
         /// <param name="displayType">How the text will be displayed.</param>
-        public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block)
+        public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
         {
             switch (displayType)
             {
@@ -64,14 +64,14 @@ namespace TextCorvid
             }
         }
 
-        public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block)
+        public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
         {
             rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText);
             DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
             GetComponent<SpriteRenderer>().size += new Vector2(rs_textBox.Padding.x + rs_textBox.Padding.z, rs_textBox.Padding.y + rs_textBox.Padding.w);
         }
 
-        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
+        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
         {
             DisplayText(textToDisplay, rectToDisplay.rect.height, displayType);
         }

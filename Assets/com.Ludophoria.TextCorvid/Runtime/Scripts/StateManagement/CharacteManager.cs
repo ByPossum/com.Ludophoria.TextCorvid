@@ -36,7 +36,7 @@ namespace TextCorvid
         public Sprite GetCharacterSprite(string _name)
         {
             for (int i = 0; i < A_characterName.Length; i++)
-                if (_name == A_characterName[i])
+                if (_name.Contains(A_characterName[i]))
                     return A_characterImages[i];
             Debug.LogError("Character Name Not Found");
             return null;
