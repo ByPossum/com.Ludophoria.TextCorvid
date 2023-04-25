@@ -9,6 +9,6 @@ namespace TextCorvid
     public struct DialogueData
     {
         public string s_dialogueID;
-        public UnityEvent[] ueA_events;
+        public UnityEvent ueA_events;
     }
 }

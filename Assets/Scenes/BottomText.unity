@@ -222,13 +222,57 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2179891919344355758, guid: 0841a9b649263194c807b51576b2f165, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0841a9b649263194c807b51576b2f165, type: 3}
 --- !u!224 &285875350 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2179891919344355753, guid: 0841a9b649263194c807b51576b2f165, type: 3}
   m_PrefabInstance: {fileID: 285875349}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &457620338
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 457620340}
+  - component: {fileID: 457620339}
+  m_Layer: 0
+  m_Name: Runner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &457620339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457620338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a41d4cd1aed204ea11c5a86f5dd698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &457620340
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 457620338}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 361.11874, y: 238.65762, z: 211.24548}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &590033458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -398,8 +442,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   A_characterName:
   - Arm
+  - Girl
   A_characterImages:
   - {fileID: 21300000, guid: f3ab12ee1f2bb994981b7f57b6d4aa96, type: 3}
+  - {fileID: 21300000, guid: 17ba2f44c30c60e45af994de2c2eb8ac, type: 3}
 --- !u!1 &1082632804
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,6 +549,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   i_characterImage: {fileID: 1598679793}
   cm_characters: {fileID: 1039336994}
+--- !u!1 &1442330223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442330225}
+  - component: {fileID: 1442330224}
+  m_Layer: 0
+  m_Name: RandomDooberoni
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1442330224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442330223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f69b0e4a936ea34997d62f134c405ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1442330225
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442330223}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 361.11874, y: 238.65762, z: 211.24548}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1598679793 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 621718029, guid: 0841a9b649263194c807b51576b2f165, type: 3}
@@ -512,6 +601,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2056205306 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2179891918895103436, guid: 0841a9b649263194c807b51576b2f165, type: 3}
+  m_PrefabInstance: {fileID: 285875349}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627c0e21adb2f29438bc94084543f2be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2144479603
@@ -526,6 +626,7 @@ GameObject:
   - component: {fileID: 2144479607}
   - component: {fileID: 2144479606}
   - component: {fileID: 2144479605}
+  - component: {fileID: 2144479608}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -614,3 +715,38 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &2144479608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144479603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e80136073b0e75d46b6166dac2fde0de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dA_sequencedText:
+  - s_dialogueID: ArmIntro01
+    ueA_events:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1442330224}
+          m_TargetAssemblyTypeName: RandomDoober, Ludophoria.TextCorvid
+          m_MethodName: RandomDooberer
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - s_dialogueID: GirlIntro01
+    ueA_events:
+      m_PersistentCalls:
+        m_Calls: []
+  cd_characterImage: {fileID: 1142280332}
+  td_display: {fileID: 2056205306}

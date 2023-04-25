@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +12,6 @@ namespace TextCorvid
     {
         [SerializeField] private RectTransform rt_displayBox;
         [SerializeField] private TMP_Text t_displayedText;
-        private string s_textID;
         private TextAnimator ta_animator;
         List<TMP_Text> previousText = new List<TMP_Text>();
         #region TextBox Sizes
@@ -21,9 +21,11 @@ namespace TextCorvid
         #endregion
         private int i_textSpeed;
         private bool b_done = true;
+        private Task t_currentTask = null;
+        private string s_textID;
         public string TextID { get { return s_textID; } }
 
-        public void Init(int _textSpeed, TextAnimator _anim = null)
+        public void Init(int _textSpeed, TextAnimator _anim = null, string _textID = null)
         {
             i_textSpeed = _textSpeed;
             ta_animator = _anim;
@@ -31,9 +33,7 @@ namespace TextCorvid
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
                 t_displayedText = GetComponentInChildren<TMP_Text>();
-            s_textID = t_displayedText.text;
-            
-
+            s_textID = _textID != null ? _textID : t_displayedText.text;
         }
 
         /// <summary>
@@ -89,7 +89,8 @@ namespace TextCorvid
             rowCount = Mathf.FloorToInt(rectHeight / t_displayedText.rectTransform.rect.height);
             DeleteOldText();
             textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
-            await ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
+            t_currentTask = ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
+            await t_currentTask;
             b_done = true;
         }
         
@@ -103,14 +104,16 @@ namespace TextCorvid
         private async void DisplayTextByLine(string _textToDisplay, int _maxLength)
         {
             b_done = false;
-            await DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
+            t_currentTask = DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
+            await t_currentTask;
             b_done = true;
         }
 
         private async void DisplayByWord(string _textToDisplay)
         {
             b_done = false;
-            await DisplayWord(_textToDisplay);
+            t_currentTask = DisplayWord(_textToDisplay);
+            await t_currentTask;
             b_done = true;
         }
 

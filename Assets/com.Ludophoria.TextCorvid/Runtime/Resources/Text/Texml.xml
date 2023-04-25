@@ -37,5 +37,11 @@
 			<Country>eng</Country>
 			<TextToDisplay>Hey, kid! Be a friend and help get me down from here.</TextToDisplay>
 		</CrowText>
+		<CrowText>
+			<ID>GirlIntro</ID>
+			<Event>01</Event>
+			<Country>eng</Country>
+			<TextToDisplay>Nah, I'm good</TextToDisplay>
+		</CrowText>
 	</CrowTextCollection>
 </CrowXml>
