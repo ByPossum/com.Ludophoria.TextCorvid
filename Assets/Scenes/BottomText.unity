@@ -727,6 +727,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e80136073b0e75d46b6166dac2fde0de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  td_wayToDisplayText: 4
   dA_sequencedText:
   - s_dialogueID: ArmIntro01
     ueA_events:

@@ -6,8 +6,10 @@ namespace TextCorvid
 {
     public class TextSequencer : MonoBehaviour, IInputSignal
     {
+        [SerializeField] TextDisplayType td_wayToDisplayText;
         [SerializeField] private DialogueData[] dA_sequencedText;
         [SerializeField] private CharacterDisplayer cd_characterImage;
+        [SerializeField] private FrameDisplayer fd_frames;
         [SerializeField] private TextDisplayer td_display;
         private int i_currentDialogue = -1;
         private TextGlue tg;
@@ -20,11 +22,23 @@ namespace TextCorvid
 
         public void FireInput()
         {
-            if(i_currentDialogue >= 0)
+            StopAllCoroutines();
+            StartCoroutine(SequenceText());
+        }
+
+        private IEnumerator SequenceText()
+        {
+            if (i_currentDialogue >= 0)
                 dA_sequencedText[i_currentDialogue].ueA_events.Invoke();
             DialogueData _nextDialogue = AdvanceDialogue();
-            td_display.DisplayText(tg.GetTextManager().GetText(_nextDialogue.s_dialogueID), 0f, TextDisplayType.block);
+            if (cd_characterImage.CheckNewCharacterTalking(_nextDialogue.s_dialogueID))
+            {
+                fd_frames.AnimateFrame(0, 1, 1, 1);
+
+            }
+            td_display?.DisplayText(tg.GetTextManager().GetText(_nextDialogue.s_dialogueID), 0f, td_wayToDisplayText);
             cd_characterImage.UpdateCharacterImage(_nextDialogue.s_dialogueID);
+            yield return null;
         }
 
         public bool GetDone()

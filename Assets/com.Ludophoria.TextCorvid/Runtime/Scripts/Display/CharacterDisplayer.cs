@@ -11,7 +11,12 @@ namespace TextCorvid
         [SerializeField] private CharacteManager cm_characters;
         public void UpdateCharacterImage(string _id)
         {
-            i_characterImage.sprite = cm_characters.GetCharacterSprite(_id);
+            i_characterImage.sprite = cm_characters.GetSpriteOfCurrentTalkingCharacter(_id);
+        }
+
+        public bool CheckNewCharacterTalking(string _id)
+        {
+            return cm_characters.CheckNewCharacterTalking(_id);
         }
     }
 }

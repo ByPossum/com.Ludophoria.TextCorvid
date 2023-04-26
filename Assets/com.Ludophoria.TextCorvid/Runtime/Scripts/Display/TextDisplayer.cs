@@ -20,7 +20,6 @@ namespace TextCorvid
         private int rowCount;
         #endregion
         private int i_textSpeed;
-        private bool b_done = true;
         private Task t_currentTask = null;
         private string s_textID;
         public string TextID { get { return s_textID; } }
@@ -83,7 +82,6 @@ namespace TextCorvid
         /// <param name="rectToDisplay">Where to begin displaying those characters.</param>
         private async void DisplayByChar(string textToDisplay, float rectHeight)
         {
-            b_done = false;
             currentRow = 0;
             prevLineCount = 0;
             rowCount = Mathf.FloorToInt(rectHeight / t_displayedText.rectTransform.rect.height);
@@ -91,30 +89,23 @@ namespace TextCorvid
             textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             t_currentTask = ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
             await t_currentTask;
-            b_done = true;
         }
         
         private void DisplayByBlock(string _textToDisplay)
         {
-            b_done = false;
             t_displayedText.text = ta_animator.ParseAnimations(t_displayedText, _textToDisplay);
-            b_done = true;
         }
 
         private async void DisplayTextByLine(string _textToDisplay, int _maxLength)
         {
-            b_done = false;
             t_currentTask = DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
             await t_currentTask;
-            b_done = true;
         }
 
         private async void DisplayByWord(string _textToDisplay)
         {
-            b_done = false;
             t_currentTask = DisplayWord(_textToDisplay);
             await t_currentTask;
-            b_done = true;
         }
 
         /// <summary>
