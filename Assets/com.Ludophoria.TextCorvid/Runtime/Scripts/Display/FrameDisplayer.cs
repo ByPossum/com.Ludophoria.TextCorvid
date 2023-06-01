@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace TextCorvid
 {
-    public class FrameDisplayer : MonoBehaviour
+    public class FrameDisplayer : SkippableAnimation
     {
         [SerializeField] private Image i_frame;
         float f_previousTarget = 0f;
@@ -15,12 +16,11 @@ namespace TextCorvid
             i_frame.sprite = _newFrame;
         }
 
-        public void AnimateFrame(float _from, float _to, float _speed, float _duration = 1f)
+        public IEnumerator AnimateFrame(float _from, float _to, float _speed, float _duration = 1f)
         {
-            StopAllCoroutines();
             i_frame.transform.localScale = new Vector3(i_frame.transform.localScale.x, _to, i_frame.transform.localScale.z);
             f_previousTarget = _to;
-            StartCoroutine(ScaleFrame(_from, _to, _speed, _duration));
+            return ScaleFrame(_from, _to, _speed, _duration);
         }
 
         public IEnumerator ScaleFrame(float _from, float _to, float _speed, float _duration = 1f)
@@ -36,6 +36,16 @@ namespace TextCorvid
                 i_frame.transform.localScale = new Vector3(_startScale.x, proportionalSize, _startScale.y);
                 yield return null;
             }
+        }
+
+        public override void SkipToTheEnd()
+        {
+            i_frame.transform.localScale = Vector3.one;
+        }
+
+        public override void AssignEndState()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

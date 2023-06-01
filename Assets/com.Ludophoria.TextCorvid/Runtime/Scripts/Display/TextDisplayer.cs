@@ -8,10 +8,11 @@ using TMPro;
 
 namespace TextCorvid
 {
-    public class TextDisplayer : MonoBehaviour
+    public class TextDisplayer : SkippableAnimation
     {
         [SerializeField] private RectTransform rt_displayBox;
         [SerializeField] private TMP_Text t_displayedText;
+        private string s_textToBeDisplayed = "";
         private TextAnimator ta_animator;
         List<TMP_Text> previousText = new List<TMP_Text>();
         #region TextBox Sizes
@@ -202,6 +203,16 @@ namespace TextCorvid
         private void OnDisable()
         {
             //t_displayedText.text = s_textID;
+        }
+
+        public override void SkipToTheEnd()
+        {
+            t_displayedText.text = s_textToBeDisplayed;
+        }
+
+        public override void AssignEndState()
+        {
+            s_textToBeDisplayed = ta_animator.RemoveAllEffects(FindObjectOfType<TextGlue>().GetTextManager().GetText(s_textID));
         }
     }
     

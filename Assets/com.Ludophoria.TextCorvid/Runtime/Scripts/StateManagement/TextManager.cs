@@ -13,7 +13,7 @@ namespace TextCorvid
     public class TextManager
     {
         public Languages l_currentLanguage;
-        private TextSettings ts_settings = new TextSettings();
+        private TextSettings ts_settings;
         private Dictionary<string, string> D_allText = new Dictionary<string, string>();
         private int i_currentLanguageIndex = 0;
         private Dictionary<string, Text> D_currentTextOnScreen;

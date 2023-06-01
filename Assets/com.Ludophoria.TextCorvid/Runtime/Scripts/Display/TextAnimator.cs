@@ -13,7 +13,7 @@ namespace TextCorvid
     {
         private Regex reg_effectCharacters = new Regex("<.*?>");
         private List<int> Li_delegateTextLengths = new List<int>();
-    
+        
         /// <summary>
         /// Passes text off to have effects run and removes the effect tags
         /// </summary>

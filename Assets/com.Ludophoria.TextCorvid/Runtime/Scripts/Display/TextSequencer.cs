@@ -8,22 +8,34 @@ namespace TextCorvid
     {
         [SerializeField] TextDisplayType td_wayToDisplayText;
         [SerializeField] private DialogueData[] dA_sequencedText;
-        [SerializeField] private CharacterDisplayer cd_characterImage;
-        [SerializeField] private FrameDisplayer fd_frames;
-        [SerializeField] private TextDisplayer td_display;
+        [SerializeField] private TextBox ctb_characterTextBox;
         private int i_currentDialogue = -1;
         private TextGlue tg;
-
+        private IEnumerator ie_currentEvent;
         void Start()
         {
             tg = FindObjectOfType<TextGlue>();
-            td_display.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator());
+            ctb_characterTextBox.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator(), dA_sequencedText[0].s_dialogueID);
+        }
+
+        public void Update()
+        {
+            
         }
 
         public void FireInput()
         {
-            StopAllCoroutines();
-            StartCoroutine(SequenceText());
+            if (!ctb_characterTextBox.gameObject.activeInHierarchy)
+                ctb_characterTextBox.gameObject.SetActive(true);
+            ie_currentEvent = SequenceText();
+            if(ie_currentEvent != null)
+            {
+                StartCoroutine(ie_currentEvent);
+            }
+            else
+            {
+                // Interrupt here
+            }
         }
 
         private IEnumerator SequenceText()
@@ -31,14 +43,29 @@ namespace TextCorvid
             if (i_currentDialogue >= 0)
                 dA_sequencedText[i_currentDialogue].ueA_events.Invoke();
             DialogueData _nextDialogue = AdvanceDialogue();
-            if (cd_characterImage.CheckNewCharacterTalking(_nextDialogue.s_dialogueID))
+            switch (ctb_characterTextBox)
+            {
+                case CharacterTextBox ctb:
+                    yield return CharacterDialogue(_nextDialogue);
+                    break;
+            }
+            ie_currentEvent = null;
+            yield return null;
+        }
+
+        private IEnumerator CharacterDialogue(DialogueData _nextDialogue)
+        {
+            CharacterTextBox ctb = (CharacterTextBox)ctb_characterTextBox;
+            CharacterDisplayer disp = ctb.GetCharacterDisplayer;
+            FrameDisplayer fd_frames = ctb.GetFrameDisplayer;
+            disp.UpdateCharacterImage(_nextDialogue.s_dialogueID);
+            if (disp.CheckNewCharacterTalking(_nextDialogue.s_dialogueID))
             {
                 fd_frames.AnimateFrame(0, 1, 1, 1);
-
+                while (fd_frames.GetAnimating)
+                    yield return null;
             }
-            td_display?.DisplayText(tg.GetTextManager().GetText(_nextDialogue.s_dialogueID), 0f, td_wayToDisplayText);
-            cd_characterImage.UpdateCharacterImage(_nextDialogue.s_dialogueID);
-            yield return null;
+            ctb.Interact();
         }
 
         public bool GetDone()
@@ -62,6 +89,11 @@ namespace TextCorvid
             if(i_currentDialogue <= 0)
                 i_currentDialogue = 0;
             return dA_sequencedText[i_currentDialogue];
+        }
+
+        public IEnumerator EnumeratorTest()
+        {
+            yield return new WaitForSeconds(10);
         }
     }
 }

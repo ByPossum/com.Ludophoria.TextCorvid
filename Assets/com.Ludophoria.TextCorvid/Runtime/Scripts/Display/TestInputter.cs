@@ -2,18 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TextCorvid;
+using System.Threading.Tasks;
+
 public class TestInputter : MonoBehaviour
 {
     IInputSignal ts;
-    private void Start()
+    private async void Start()
     {
-        ts = FindObjectOfType<TextSequencer>();
+        while (ts == null)
+        {
+            ts = FindObjectOfType<TextSequencer>();
+            await Task.Yield();
+        }
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
+        {
             ts.FireInput();
+        }
 
     }
 }
