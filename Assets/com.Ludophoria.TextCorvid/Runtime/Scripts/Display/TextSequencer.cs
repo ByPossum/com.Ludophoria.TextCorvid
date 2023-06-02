@@ -9,6 +9,7 @@ namespace TextCorvid
         [SerializeField] TextDisplayType td_wayToDisplayText;
         [SerializeField] private DialogueData[] dA_sequencedText;
         [SerializeField] private TextBox ctb_characterTextBox;
+        private CorvidAnimationState cas_currentState;
         private int i_currentDialogue = -1;
         private TextGlue tg;
         private IEnumerator ie_currentEvent;
@@ -20,7 +21,8 @@ namespace TextCorvid
 
         public void Update()
         {
-            
+            if (ie_currentEvent != null)
+                Debug.Log(ie_currentEvent.ToString());
         }
 
         public void FireInput()
@@ -34,7 +36,7 @@ namespace TextCorvid
             }
             else
             {
-                // Interrupt here
+                ctb_characterTextBox.Interact();
             }
         }
 
@@ -48,6 +50,7 @@ namespace TextCorvid
                 case CharacterTextBox ctb:
                     yield return CharacterDialogue(_nextDialogue);
                     break;
+                /// TODO: Implement Resizable Text Boxes and others
             }
             ie_currentEvent = null;
             yield return null;
@@ -59,13 +62,8 @@ namespace TextCorvid
             CharacterDisplayer disp = ctb.GetCharacterDisplayer;
             FrameDisplayer fd_frames = ctb.GetFrameDisplayer;
             disp.UpdateCharacterImage(_nextDialogue.s_dialogueID);
-            if (disp.CheckNewCharacterTalking(_nextDialogue.s_dialogueID))
-            {
-                fd_frames.AnimateFrame(0, 1, 1, 1);
-                while (fd_frames.GetAnimating)
-                    yield return null;
-            }
             ctb.Interact();
+            yield return null;
         }
 
         public bool GetDone()

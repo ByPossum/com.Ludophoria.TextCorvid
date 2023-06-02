@@ -9,7 +9,6 @@ namespace TextCorvid
     public class FrameDisplayer : SkippableAnimation
     {
         [SerializeField] private Image i_frame;
-        float f_previousTarget = 0f;
 
         public void UpdateFrame(Sprite _newFrame)
         {
@@ -18,8 +17,7 @@ namespace TextCorvid
 
         public IEnumerator AnimateFrame(float _from, float _to, float _speed, float _duration = 1f)
         {
-            i_frame.transform.localScale = new Vector3(i_frame.transform.localScale.x, _to, i_frame.transform.localScale.z);
-            f_previousTarget = _to;
+            i_frame.transform.localScale = new Vector3(i_frame.transform.localScale.x, _from, i_frame.transform.localScale.z);
             return ScaleFrame(_from, _to, _speed, _duration);
         }
 
@@ -28,7 +26,7 @@ namespace TextCorvid
             float start = Time.time;
             Vector3 _startScale = new Vector3(i_frame.transform.localScale.x, _from, i_frame.transform.localScale.z);
 
-            while (_from < _to ? _startScale.y < _to : _startScale.y > _to)
+            while (_from < _to ? i_frame.transform.localScale.y < _to : i_frame.transform.localScale.y > _to)
             {
                 float size = (Time.time - start) * _speed;
                 float proportionalSize = size / _duration;
@@ -40,6 +38,7 @@ namespace TextCorvid
 
         public override void SkipToTheEnd()
         {
+            StopAllCoroutines();
             i_frame.transform.localScale = Vector3.one;
         }
 

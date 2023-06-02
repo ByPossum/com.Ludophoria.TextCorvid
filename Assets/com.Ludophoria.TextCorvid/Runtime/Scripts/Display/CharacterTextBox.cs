@@ -21,7 +21,6 @@ namespace TextCorvid
         {
             tg = FindObjectOfType<TextGlue>();
             cas_currentState = CorvidAnimationState.idle;
-            Interact();
         }
 
         private void OnDisable()
@@ -59,7 +58,7 @@ namespace TextCorvid
             cd_characterImage.UpdateCharacterImage(_textID);
         }
 
-        public void Interact()
+        public override void Interact()
         {
             switch (cas_currentState)
             {
@@ -100,13 +99,13 @@ namespace TextCorvid
 
         private void CheckTextBoxDone()
         {
+            cas_currentState = CorvidAnimationState.animating;
             if (i_currentAnimatingObject >= A_objectsToAnimate.Length - 1)
             {
                 CloseTextBox();
                 return;
             }
 
-            cas_currentState = CorvidAnimationState.animating;
             Animate();
         }
     }

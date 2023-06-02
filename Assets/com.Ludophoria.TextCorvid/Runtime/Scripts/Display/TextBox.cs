@@ -14,5 +14,7 @@ namespace TextCorvid
             s_textID = GetComponentInChildren<TMPro.TMP_Text>().text;
             td_display.Init(_textSpeed, _animator, _initialID);
         }
+
+        public abstract void Interact();
     }
 }
