@@ -17,27 +17,34 @@ namespace TextCorvid
         {
             tg = FindObjectOfType<TextGlue>();
             ctb_characterTextBox.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator(), dA_sequencedText[0].s_dialogueID);
-        }
-
-        public void Update()
-        {
-            if (ie_currentEvent != null)
-                Debug.Log(ie_currentEvent.ToString());
+            cas_currentState = CorvidAnimationState.idle;
         }
 
         public void FireInput()
         {
             if (!ctb_characterTextBox.gameObject.activeInHierarchy)
                 ctb_characterTextBox.gameObject.SetActive(true);
+            switch (cas_currentState)
+            {
+                case CorvidAnimationState.idle:
+                    TransitionToAnimating();
+                    break;
+                case CorvidAnimationState.animating:
+                    break;
+                case CorvidAnimationState.animationEnd:
+                    break;
+                case CorvidAnimationState.closed:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void TransitionToAnimating()
+        {
             ie_currentEvent = SequenceText();
-            if(ie_currentEvent != null)
-            {
-                StartCoroutine(ie_currentEvent);
-            }
-            else
-            {
-                ctb_characterTextBox.Interact();
-            }
+            cas_currentState = CorvidAnimationState.animating;
+            StartCoroutine(ie_currentEvent);
         }
 
         private IEnumerator SequenceText()
@@ -87,11 +94,6 @@ namespace TextCorvid
             if(i_currentDialogue <= 0)
                 i_currentDialogue = 0;
             return dA_sequencedText[i_currentDialogue];
-        }
-
-        public IEnumerator EnumeratorTest()
-        {
-            yield return new WaitForSeconds(10);
         }
     }
 }
