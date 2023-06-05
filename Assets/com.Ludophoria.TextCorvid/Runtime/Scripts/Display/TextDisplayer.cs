@@ -208,6 +208,7 @@ namespace TextCorvid
         public override void SkipToTheEnd()
         {
             t_displayedText.text = s_textToBeDisplayed;
+            cas_currentState = CorvidAnimationState.idle;
         }
 
         public override void AssignEndState()

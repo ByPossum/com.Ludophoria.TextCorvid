@@ -17,6 +17,7 @@ namespace TextCorvid
 
         public IEnumerator AnimateFrame(float _from, float _to, float _speed, float _duration = 1f)
         {
+            cas_currentState = CorvidAnimationState.animating;
             i_frame.transform.localScale = new Vector3(i_frame.transform.localScale.x, _from, i_frame.transform.localScale.z);
             return ScaleFrame(_from, _to, _speed, _duration);
         }
@@ -34,17 +35,19 @@ namespace TextCorvid
                 i_frame.transform.localScale = new Vector3(_startScale.x, proportionalSize, _startScale.y);
                 yield return null;
             }
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         public override void SkipToTheEnd()
         {
             StopAllCoroutines();
             i_frame.transform.localScale = Vector3.one;
+            cas_currentState = CorvidAnimationState.idle;
         }
 
         public override void AssignEndState()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

@@ -30,11 +30,6 @@ namespace TextCorvid
 
         private void Update()
         {
-            if(cas_currentState == CorvidAnimationState.animationEnd)
-            {
-                i_currentAnimatingObject++;
-                cas_currentState = CorvidAnimationState.idle;
-            }
         }
 
         public void DisplayText(string _textToShow, TextDisplayType _typeToDisplay)
@@ -42,10 +37,11 @@ namespace TextCorvid
              td_display.DisplayText(_textToShow, 0f, _typeToDisplay);
         }
 
-        public void OpenTextBox()
+        public IEnumerator ToggleTextBox(bool _opening)
         {
             t_currentTask = fd_frames.AnimateFrame(0, f_frameSize, f_speed);
-            StartCoroutine(t_currentTask);
+            yield return StartCoroutine(t_currentTask);
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         public void CloseTextBox()
@@ -58,19 +54,30 @@ namespace TextCorvid
             cd_characterImage.UpdateCharacterImage(_textID);
         }
 
-        public override void Interact()
+        public override IEnumerator Interact()
         {
             switch (cas_currentState)
             {
                 case CorvidAnimationState.idle:
-                    CheckTextBoxDone();
+                    cas_currentState = CorvidAnimationState.animating;
+                    if (!CheckTextBoxDone())
+                        Animate();
                     break;
                 case CorvidAnimationState.animating:
                     Interrupt();
                     break;
+                case CorvidAnimationState.animationEnd:
+                    i_currentAnimatingObject++;
+                    cas_currentState = CorvidAnimationState.idle;
+                    StartCoroutine(Interact());
+                    break;
+                case CorvidAnimationState.closed:
+                    ToggleTextBox(false);
+                    break;
                 default:
                     break;
             }
+            return t_currentTask;
         }
 
         private void Animate()
@@ -79,7 +86,7 @@ namespace TextCorvid
             switch (A_objectsToAnimate[i_currentAnimatingObject])
             {
                 case FrameDisplayer frame:
-                    OpenTextBox();
+                    StartCoroutine(ToggleTextBox(true));
                     break;
                 case TextDisplayer dialogue:
                     DisplayText(tg.GetTextManager().GetText(s_textID), TextDisplayType.character);
@@ -93,20 +100,17 @@ namespace TextCorvid
                 fd_frames.SkipToTheEnd();
             else if (td_display.GetAnimating)
                 td_display.SkipToTheEnd();
-            i_currentAnimatingObject = A_objectsToAnimate.Length;
-
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
-        private void CheckTextBoxDone()
+        private bool CheckTextBoxDone()
         {
-            cas_currentState = CorvidAnimationState.animating;
             if (i_currentAnimatingObject >= A_objectsToAnimate.Length - 1)
             {
-                CloseTextBox();
-                return;
+                ToggleTextBox(false);
+                return true;
             }
-
-            Animate();
+            return false;
         }
     }
 }

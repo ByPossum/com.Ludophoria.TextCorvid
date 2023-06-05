@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace TextCorvid
         [SerializeField] private DialogueData[] dA_sequencedText;
         [SerializeField] private TextBox ctb_characterTextBox;
         private CorvidAnimationState cas_currentState;
-        private int i_currentDialogue = -1;
+        private int i_currentDialogue = 0;
         private TextGlue tg;
         private IEnumerator ie_currentEvent;
         void Start()
@@ -22,16 +23,21 @@ namespace TextCorvid
 
         public void FireInput()
         {
-            if (!ctb_characterTextBox.gameObject.activeInHierarchy)
+            if (!ctb_characterTextBox.gameObject.activeInHierarchy && cas_currentState != CorvidAnimationState.closed)
                 ctb_characterTextBox.gameObject.SetActive(true);
+
             switch (cas_currentState)
             {
                 case CorvidAnimationState.idle:
+                    ChangeFrameAndPortrait((CharacterTextBox)ctb_characterTextBox);
                     TransitionToAnimating();
+                    ie_currentEvent = ctb_characterTextBox.Interact();
                     break;
                 case CorvidAnimationState.animating:
+                    StartCoroutine(SequenceText());
                     break;
                 case CorvidAnimationState.animationEnd:
+                    ctb_characterTextBox.gameObject.SetActive(false);
                     break;
                 case CorvidAnimationState.closed:
                     break;
@@ -40,14 +46,38 @@ namespace TextCorvid
             }
         }
 
+        private void ChangeFrameAndPortrait(CharacterTextBox _tb)
+        {
+            _tb.GetCharacterDisplayer.UpdateCharacterImage(dA_sequencedText[i_currentDialogue].s_dialogueID);
+            //_tb.GetFrameDisplayer.UpdateFrame();
+        }
+
         private void TransitionToAnimating()
         {
-            ie_currentEvent = SequenceText();
             cas_currentState = CorvidAnimationState.animating;
-            StartCoroutine(ie_currentEvent);
+            //StartCoroutine(SequenceText());
         }
 
         private IEnumerator SequenceText()
+        {
+            if (!ctb_characterTextBox.Animating)
+            {
+                ie_currentEvent = SequenceDialogueData();
+                StartCoroutine(ie_currentEvent);
+                yield return ie_currentEvent;
+
+            }
+            else
+            {
+                ie_currentEvent = ctb_characterTextBox.Interact();
+                StartCoroutine(ie_currentEvent);
+                yield return ie_currentEvent;
+            }
+            ie_currentEvent = null;
+            yield return null;
+        }
+
+        private IEnumerator SequenceDialogueData()
         {
             if (i_currentDialogue >= 0)
                 dA_sequencedText[i_currentDialogue].ueA_events.Invoke();
@@ -57,9 +87,8 @@ namespace TextCorvid
                 case CharacterTextBox ctb:
                     yield return CharacterDialogue(_nextDialogue);
                     break;
-                /// TODO: Implement Resizable Text Boxes and others
+                    /// TODO: Implement Resizable Text Boxes and others
             }
-            ie_currentEvent = null;
             yield return null;
         }
 
