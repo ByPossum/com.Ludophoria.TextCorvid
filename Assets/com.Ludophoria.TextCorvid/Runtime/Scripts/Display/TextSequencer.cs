@@ -17,7 +17,7 @@ namespace TextCorvid
         void Start()
         {
             tg = FindObjectOfType<TextGlue>();
-            ctb_characterTextBox.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator(), dA_sequencedText[0].s_dialogueID);
+            ctb_characterTextBox.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator(), null, tg.GetTextManager().GetText(dA_sequencedText[0].s_dialogueID));
             cas_currentState = CorvidAnimationState.idle;
         }
 
@@ -81,11 +81,14 @@ namespace TextCorvid
         {
             if (i_currentDialogue >= 0)
                 dA_sequencedText[i_currentDialogue].ueA_events.Invoke();
+            
             DialogueData _nextDialogue = AdvanceDialogue();
             switch (ctb_characterTextBox)
             {
                 case CharacterTextBox ctb:
                     yield return CharacterDialogue(_nextDialogue);
+                    break;
+                default:
                     break;
                     /// TODO: Implement Resizable Text Boxes and others
             }

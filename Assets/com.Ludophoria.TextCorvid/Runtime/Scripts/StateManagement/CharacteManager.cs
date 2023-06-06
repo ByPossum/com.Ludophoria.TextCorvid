@@ -38,16 +38,33 @@ namespace TextCorvid
     
         public Sprite GetSpriteOfCurrentTalkingCharacter(string _name)
         {
-            for (int i = 0; i < A_characterName.Length; i++)
-                if(_name != string.Empty && _name != null)
-                    if (_name.Contains(A_characterName[i]))
-                    {
-                        s_currentCharacterTalking = A_characterName[i];
-                        return A_characterImages[i];
-                    }
+            int newCharacter = GetTalkingCharacterIndex(_name);
+
+            // Return character if found
+            if (newCharacter >= 0)
+            {
+                // Update current talking character
+                i_currentTalkingIndex = newCharacter;
+                // Return Character
+                s_currentCharacterTalking = A_characterName[newCharacter];
+                return A_characterImages[newCharacter];
+            }
+
+            // Return null if not found
             Debug.LogError("Character Name Not Found");
             s_currentCharacterTalking = string.Empty;
             return null;
+        }
+
+        private int GetTalkingCharacterIndex(string _name)
+        {
+            for (int i = 0; i < A_characterName.Length; i++)
+                if (_name != string.Empty && _name != null)
+                    if (_name.Contains(A_characterName[i]))
+                    {
+                        return i;
+                    }
+            return -1;
         }
 
         public Sprite GetFrameOfCurrentTalkingCharacter(string _name)
@@ -55,9 +72,10 @@ namespace TextCorvid
             return A_frames[i_currentTalkingIndex];
         }
 
-        public bool CheckNewCharacterTalking(string _id)
+        public bool CheckNewCharacterTalking(string _name)
         {
-            return _id.Contains(s_currentCharacterTalking);
+            int newCharacter = GetTalkingCharacterIndex(_name);
+            return i_currentTalkingIndex == newCharacter;
         }
     }
 }

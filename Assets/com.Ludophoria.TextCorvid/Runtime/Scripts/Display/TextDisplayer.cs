@@ -21,7 +21,7 @@ namespace TextCorvid
         private int rowCount;
         #endregion
         private int i_textSpeed;
-        private Task t_currentTask = null;
+        private IEnumerator t_currentTask = null;
         private string s_textID;
         public string TextID { get { return s_textID; } }
 
@@ -36,6 +36,18 @@ namespace TextCorvid
             s_textID = _textID != null ? _textID : t_displayedText.text;
         }
 
+        public void CacheID(string _textID)
+        {
+            s_textID = _textID;
+            t_displayedText.text = "";
+        }
+
+        public void CacheText(string _textToDisplay)
+        {
+            s_textToBeDisplayed = _textToDisplay;
+            t_displayedText.text = "";
+        }
+
         /// <summary>
         /// Choose how the text will be displayed, and on which rect transform.
         /// </summary>
@@ -44,6 +56,7 @@ namespace TextCorvid
         /// <param name="displayType">How the text will be displayed.</param>
         public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
         {
+            cas_currentState = CorvidAnimationState.animating;
             switch (displayType)
             {
                 case TextDisplayType.block:
@@ -76,12 +89,17 @@ namespace TextCorvid
             DisplayText(textToDisplay, rectToDisplay.rect.height, displayType);
         }
 
+        public void DisplayText(float _rectSize, TextDisplayType _displayType)
+        {
+            DisplayText(s_textToBeDisplayed, _rectSize, _displayType);
+        }
+
         /// <summary>
         /// Display the text character by character.
         /// </summary>
         /// <param name="textToDisplay">Characters to display.</param>
         /// <param name="rectToDisplay">Where to begin displaying those characters.</param>
-        private async void DisplayByChar(string textToDisplay, float rectHeight)
+        private void DisplayByChar(string textToDisplay, float rectHeight)
         {
             currentRow = 0;
             prevLineCount = 0;
@@ -89,7 +107,8 @@ namespace TextCorvid
             DeleteOldText();
             textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             t_currentTask = ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
-            await t_currentTask;
+            print("Yeee boiii");
+            StartCoroutine(t_currentTask);
         }
         
         private void DisplayByBlock(string _textToDisplay)
@@ -97,16 +116,16 @@ namespace TextCorvid
             t_displayedText.text = ta_animator.ParseAnimations(t_displayedText, _textToDisplay);
         }
 
-        private async void DisplayTextByLine(string _textToDisplay, int _maxLength)
+        private IEnumerator DisplayTextByLine(string _textToDisplay, int _maxLength)
         {
             t_currentTask = DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
-            await t_currentTask;
+            yield return StartCoroutine(t_currentTask);
         }
 
-        private async void DisplayByWord(string _textToDisplay)
+        private IEnumerator DisplayByWord(string _textToDisplay)
         {
             t_currentTask = DisplayWord(_textToDisplay);
-            await t_currentTask;
+            yield return StartCoroutine(t_currentTask);
         }
 
         /// <summary>
@@ -143,7 +162,7 @@ namespace TextCorvid
         /// <param name="nextString">The string to display. Will accomidate for the text being larger than the rect.</param>
         /// <param name="_parent">The area to display the text.</param>
         /// <returns>Waits for text speed.</returns>
-        private async Task ShowNextCharacterByCharacter(string nextString, TMP_Text _parent)
+        private IEnumerator ShowNextCharacterByCharacter(string nextString, TMP_Text _parent)
         {
             // Show the text character by character
             for(int i = 0; i < nextString.Length; i++)
@@ -176,27 +195,27 @@ namespace TextCorvid
                 _parent.text += seg;
                 previousText.Add(_parent);
                 prevLineCount++;
-                await Task.Delay(i_textSpeed);
+                yield return new WaitForSeconds(i_textSpeed*0.01f);
             }
         }
 
-        private async Task DisplayLine(List<string> _lines)
+        private IEnumerator DisplayLine(List<string> _lines)
         {
             t_displayedText.text = "";
             foreach(string _line in _lines)
             {
                 t_displayedText.text += _line;
-                await Task.Delay(i_textSpeed);
+                yield return new WaitForSeconds(i_textSpeed);
             }
         }
 
-        private async Task DisplayWord(string _words)
+        private IEnumerator DisplayWord(string _words)
         {
             t_displayedText.text = "";
             foreach (string word in _words.Split(' '))
             {
                 t_displayedText.text += word + " ";
-                await Task.Delay(i_textSpeed);
+                yield return new WaitForSeconds(i_textSpeed);
             }
         }
 
@@ -207,6 +226,7 @@ namespace TextCorvid
 
         public override void SkipToTheEnd()
         {
+            StopAllCoroutines();
             t_displayedText.text = s_textToBeDisplayed;
             cas_currentState = CorvidAnimationState.idle;
         }

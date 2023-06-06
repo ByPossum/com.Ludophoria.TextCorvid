@@ -15,5 +15,5 @@ MonoBehaviour:
   s_filePath: Texml.xml
   s_folderPaths: /com.Ludophoria.TextCorvid/Runtime/Resources/Text/
   A_supportedLanguages: 2600000048000000
-  i_textSpeed: 50
+  i_textSpeed: 10
   b_autoDetectFile: 0

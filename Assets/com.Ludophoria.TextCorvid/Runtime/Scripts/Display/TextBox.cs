@@ -10,10 +10,12 @@ namespace TextCorvid
         protected string s_textID;
         [SerializeField]protected CorvidAnimationState cas_currentState = CorvidAnimationState.closed;
         public bool Animating { get { return cas_currentState == CorvidAnimationState.animating; } }
-        public void Init(int _textSpeed, TextAnimator _animator = null, string _initialID = null)
+        public void Init(int _textSpeed, TextAnimator _animator = null, string _initialID = null, string _initialText = null)
         {
             s_textID = GetComponentInChildren<TMPro.TMP_Text>().text;
             td_display.Init(_textSpeed, _animator, _initialID);
+            if (_initialText != null)
+                td_display.CacheText(_initialText);
         }
 
         public abstract IEnumerator Interact();

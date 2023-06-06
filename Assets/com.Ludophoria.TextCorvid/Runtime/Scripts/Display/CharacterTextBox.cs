@@ -11,7 +11,6 @@ namespace TextCorvid
         [SerializeField] protected CharacterDisplayer cd_characterImage;
         [SerializeField] protected FrameDisplayer fd_frames;
         [SerializeField] protected SkippableAnimation[] A_objectsToAnimate;
-        private TextGlue tg;
         private int i_currentAnimatingObject = 0;
         private IEnumerator t_currentTask;
         public CharacterDisplayer GetCharacterDisplayer { get { return cd_characterImage; } }
@@ -19,7 +18,6 @@ namespace TextCorvid
 
         private void OnEnable()
         {
-            tg = FindObjectOfType<TextGlue>();
             cas_currentState = CorvidAnimationState.idle;
         }
 
@@ -32,16 +30,29 @@ namespace TextCorvid
         {
         }
 
-        public void DisplayText(string _textToShow, TextDisplayType _typeToDisplay)
+        public void DisplayText(TextDisplayType _typeToDisplay)
         {
-             td_display.DisplayText(_textToShow, 0f, _typeToDisplay);
+             td_display.DisplayText(0f, _typeToDisplay);
         }
 
         public IEnumerator ToggleTextBox(bool _opening)
         {
-            t_currentTask = fd_frames.AnimateFrame(0, f_frameSize, f_speed);
+
+            t_currentTask = fd_frames.AnimateFrame(_opening ? 0 : f_frameSize, _opening ? f_frameSize : 0f, f_speed);
             yield return StartCoroutine(t_currentTask);
-            cas_currentState = CorvidAnimationState.animationEnd;
+            ToggleText();
+        }
+
+        private IEnumerator CheckForNewCharacter()
+        {
+            yield return null;
+            //if(cd_characterImage.CheckNewCharacterTalking())
+        }
+
+        private void ToggleText()
+        {
+            td_display.AssignEndState();
+            DisplayText(TextDisplayType.character);
         }
 
         public void CloseTextBox()
@@ -89,7 +100,7 @@ namespace TextCorvid
                     StartCoroutine(ToggleTextBox(true));
                     break;
                 case TextDisplayer dialogue:
-                    DisplayText(tg.GetTextManager().GetText(s_textID), TextDisplayType.character);
+                    DisplayText(TextDisplayType.character);
                     break;
             }
         }
