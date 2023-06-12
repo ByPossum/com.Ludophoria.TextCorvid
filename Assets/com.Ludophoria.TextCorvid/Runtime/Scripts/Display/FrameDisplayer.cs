@@ -9,6 +9,7 @@ namespace TextCorvid
     public class FrameDisplayer : SkippableAnimation
     {
         [SerializeField] private Image i_frame;
+        private Vector3 v_endState;
 
         public void UpdateFrame(Sprite _newFrame)
         {
@@ -41,13 +42,13 @@ namespace TextCorvid
         public override void SkipToTheEnd()
         {
             StopAllCoroutines();
-            i_frame.transform.localScale = Vector3.one;
+            i_frame.transform.localScale = v_endState;
             cas_currentState = CorvidAnimationState.idle;
         }
 
         public override void AssignEndState()
         {
-            
+            v_endState = transform.localScale.y > 0f ? Vector3.zero : Vector3.one;
         }
     }
 }

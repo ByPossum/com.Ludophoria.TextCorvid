@@ -107,7 +107,6 @@ namespace TextCorvid
             DeleteOldText();
             textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             t_currentTask = ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
-            print("Yeee boiii");
             StartCoroutine(t_currentTask);
         }
         
@@ -120,12 +119,14 @@ namespace TextCorvid
         {
             t_currentTask = DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
             yield return StartCoroutine(t_currentTask);
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         private IEnumerator DisplayByWord(string _textToDisplay)
         {
             t_currentTask = DisplayWord(_textToDisplay);
             yield return StartCoroutine(t_currentTask);
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         /// <summary>
@@ -197,6 +198,7 @@ namespace TextCorvid
                 prevLineCount++;
                 yield return new WaitForSeconds(i_textSpeed*0.01f);
             }
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         private IEnumerator DisplayLine(List<string> _lines)
@@ -228,7 +230,7 @@ namespace TextCorvid
         {
             StopAllCoroutines();
             t_displayedText.text = s_textToBeDisplayed;
-            cas_currentState = CorvidAnimationState.idle;
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         public override void AssignEndState()

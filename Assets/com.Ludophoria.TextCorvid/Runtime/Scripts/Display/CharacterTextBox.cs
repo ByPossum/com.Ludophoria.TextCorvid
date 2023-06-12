@@ -13,6 +13,7 @@ namespace TextCorvid
         [SerializeField] protected SkippableAnimation[] A_objectsToAnimate;
         private int i_currentAnimatingObject = 0;
         private IEnumerator t_currentTask;
+        private bool b_shouldEndAnim = true;
         public CharacterDisplayer GetCharacterDisplayer { get { return cd_characterImage; } }
         public FrameDisplayer GetFrameDisplayer { get { return fd_frames; } }
 
@@ -28,6 +29,19 @@ namespace TextCorvid
 
         private void Update()
         {
+
+            if (cas_currentState == CorvidAnimationState.animating)
+            {
+                b_shouldEndAnim = true;
+                foreach (SkippableAnimation _anim in A_objectsToAnimate)
+                {
+                    if (!_anim.GetAnimationEnd)
+                        b_shouldEndAnim = false;
+                }
+                if(b_shouldEndAnim)
+                    cas_currentState = CorvidAnimationState.animationEnd;
+            }
+                    
         }
 
         public void DisplayText(TextDisplayType _typeToDisplay)
@@ -97,6 +111,7 @@ namespace TextCorvid
             switch (A_objectsToAnimate[i_currentAnimatingObject])
             {
                 case FrameDisplayer frame:
+                    frame.AssignEndState();
                     StartCoroutine(ToggleTextBox(true));
                     break;
                 case TextDisplayer dialogue:
@@ -111,7 +126,6 @@ namespace TextCorvid
                 fd_frames.SkipToTheEnd();
             else if (td_display.GetAnimating)
                 td_display.SkipToTheEnd();
-            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         private bool CheckTextBoxDone()

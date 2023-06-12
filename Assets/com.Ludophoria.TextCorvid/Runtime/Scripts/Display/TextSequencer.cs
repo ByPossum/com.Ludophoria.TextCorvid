@@ -14,6 +14,7 @@ namespace TextCorvid
         private int i_currentDialogue = 0;
         private TextGlue tg;
         private IEnumerator ie_currentEvent;
+        public CorvidAnimationState GetAnimationState { get { return cas_currentState; } }
         void Start()
         {
             tg = FindObjectOfType<TextGlue>();
@@ -60,7 +61,7 @@ namespace TextCorvid
 
         private IEnumerator SequenceText()
         {
-            if (!ctb_characterTextBox.Animating)
+            if (ctb_characterTextBox.GetAnimationState == CorvidAnimationState.animationEnd)
             {
                 ie_currentEvent = SequenceDialogueData();
                 StartCoroutine(ie_currentEvent);
@@ -99,7 +100,6 @@ namespace TextCorvid
         {
             CharacterTextBox ctb = (CharacterTextBox)ctb_characterTextBox;
             CharacterDisplayer disp = ctb.GetCharacterDisplayer;
-            FrameDisplayer fd_frames = ctb.GetFrameDisplayer;
             disp.UpdateCharacterImage(_nextDialogue.s_dialogueID);
             ctb.Interact();
             yield return null;

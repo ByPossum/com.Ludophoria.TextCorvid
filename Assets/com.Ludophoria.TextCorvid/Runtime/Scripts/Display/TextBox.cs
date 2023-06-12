@@ -10,6 +10,7 @@ namespace TextCorvid
         protected string s_textID;
         [SerializeField]protected CorvidAnimationState cas_currentState = CorvidAnimationState.closed;
         public bool Animating { get { return cas_currentState == CorvidAnimationState.animating; } }
+        public CorvidAnimationState GetAnimationState { get { return cas_currentState; } }
         public void Init(int _textSpeed, TextAnimator _animator = null, string _initialID = null, string _initialText = null)
         {
             s_textID = GetComponentInChildren<TMPro.TMP_Text>().text;
