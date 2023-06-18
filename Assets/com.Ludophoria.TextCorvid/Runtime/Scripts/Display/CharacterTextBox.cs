@@ -46,6 +46,7 @@ namespace TextCorvid
 
         public void DisplayText(TextDisplayType _typeToDisplay)
         {
+             td_display.AssignEndState();
              td_display.DisplayText(0f, _typeToDisplay);
         }
 

@@ -36,14 +36,16 @@ namespace TextCorvid
                 i_frame.transform.localScale = new Vector3(_startScale.x, proportionalSize, _startScale.y);
                 yield return null;
             }
-            cas_currentState = CorvidAnimationState.animationEnd;
+            if (i_frame.transform.localScale.y <= (Vector3.one * 0.1f).y)
+                i_frame.transform.localScale = Vector3.one - Vector3.up;
+            cas_currentState = i_frame.transform.localScale.y > 0.9f ? CorvidAnimationState.animationEnd : CorvidAnimationState.closed;
         }
 
         public override void SkipToTheEnd()
         {
             StopAllCoroutines();
             i_frame.transform.localScale = v_endState;
-            cas_currentState = CorvidAnimationState.idle;
+            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         public override void AssignEndState()
