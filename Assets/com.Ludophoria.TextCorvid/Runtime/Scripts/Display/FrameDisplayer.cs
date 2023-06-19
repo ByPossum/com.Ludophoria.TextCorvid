@@ -50,7 +50,7 @@ namespace TextCorvid
 
         public override void AssignEndState()
         {
-            v_endState = transform.localScale.y > 0f ? Vector3.zero : Vector3.one;
+            v_endState = cas_currentState == CorvidAnimationState.closed ? Vector3.one : Vector3.zero;
         }
     }
 }

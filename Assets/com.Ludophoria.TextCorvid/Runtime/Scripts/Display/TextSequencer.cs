@@ -22,6 +22,11 @@ namespace TextCorvid
             cas_currentState = CorvidAnimationState.idle;
         }
 
+        void Update()
+        {
+            //if(ctb_characterTextBox.GetAnimationState == CorvidAnimationState.animationEnd && )
+        }
+
         public void FireInput()
         {
             if (!ctb_characterTextBox.gameObject.activeInHierarchy && cas_currentState != CorvidAnimationState.closed)

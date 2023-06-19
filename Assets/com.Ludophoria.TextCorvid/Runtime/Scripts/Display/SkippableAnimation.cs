@@ -7,7 +7,7 @@ namespace TextCorvid
 
     public abstract class SkippableAnimation : MonoBehaviour
     {
-        [SerializeField] protected CorvidAnimationState cas_currentState;
+        protected CorvidAnimationState cas_currentState = CorvidAnimationState.closed;
         public bool GetAnimating { get { return cas_currentState == CorvidAnimationState.animating; } }
         public bool GetAnimationEnd { get { return cas_currentState == CorvidAnimationState.animationEnd; } }
         public CorvidAnimationState GetAnimationState { get { return cas_currentState; } }
