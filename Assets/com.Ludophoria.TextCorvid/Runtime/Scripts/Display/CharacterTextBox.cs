@@ -14,6 +14,7 @@ namespace TextCorvid
         private int i_currentAnimatingObject = 0;
         private IEnumerator t_currentTask;
         private bool b_shouldEndAnim = true;
+        public override bool Animating { get { return cas_currentState == CorvidAnimationState.animating || fd_frames.GetAnimating || td_display.GetAnimating; } }
         public CharacterDisplayer GetCharacterDisplayer { get { return cd_characterImage; } }
         public FrameDisplayer GetFrameDisplayer { get { return fd_frames; } }
 
@@ -52,7 +53,6 @@ namespace TextCorvid
 
         public IEnumerator ToggleTextBox(bool _opening)
         {
-
             t_currentTask = fd_frames.AnimateFrame(_opening ? 0 : f_frameSize, _opening ? f_frameSize : 0f, f_speed);
             yield return StartCoroutine(t_currentTask);
             ToggleText();
@@ -62,6 +62,12 @@ namespace TextCorvid
         {
             yield return null;
             //if(cd_characterImage.CheckNewCharacterTalking())
+        }
+
+        public void UpdateTextForDisplay(string _newText)
+        {
+            td_display.CacheID(_newText);
+            td_display.AssignEndState();
         }
 
         private void ToggleText()
@@ -74,10 +80,6 @@ namespace TextCorvid
         {
             t_currentTask = fd_frames.AnimateFrame(f_frameSize, 0, f_speed);
             StartCoroutine(t_currentTask);
-        }
-        public void ChangeCharacter(string _textID)
-        {
-            cd_characterImage.UpdateCharacterImage(_textID);
         }
 
         public override IEnumerator Interact()
@@ -138,5 +140,17 @@ namespace TextCorvid
             }
             return false;
         }
+        public override bool CheckIfEnded()
+        {
+            return cas_currentState == CorvidAnimationState.animationEnd && fd_frames.GetAnimationEnd && td_display.GetAnimationEnd;
+        }
+
+        public override void ResetAnimations()
+        {
+            cas_currentState = CorvidAnimationState.idle;
+            fd_frames.ResetAnimation();
+            td_display.ResetAnimation();
+        }
     }
+
 }

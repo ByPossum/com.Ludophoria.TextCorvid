@@ -24,7 +24,10 @@ namespace TextCorvid
 
         void Update()
         {
-            //if(ctb_characterTextBox.GetAnimationState == CorvidAnimationState.animationEnd && )
+            if (ctb_characterTextBox.CheckIfEnded())
+            {
+                ctb_characterTextBox.ResetAnimations();
+            }
         }
 
         public void FireInput()
@@ -35,17 +38,28 @@ namespace TextCorvid
             switch (cas_currentState)
             {
                 case CorvidAnimationState.idle:
-                    ChangeFrameAndPortrait((CharacterTextBox)ctb_characterTextBox);
-                    TransitionToAnimating();
-                    ie_currentEvent = ctb_characterTextBox.Interact();
+                    QueueNextData();
+                    StartCoroutine(SequenceText());
                     break;
                 case CorvidAnimationState.animating:
+                    // Display the next data if the boxes aren't animating
+                    if(!(ctb_characterTextBox as CharacterTextBox).Animating)
+                    {
+                        CharacterDialogue(SequenceDialogueData());
+                        QueueNextData();
+                    }
+                    // Run the text
+                    if (ie_currentEvent != null)
+                        StopCoroutine(ie_currentEvent);
                     StartCoroutine(SequenceText());
                     break;
                 case CorvidAnimationState.animationEnd:
+                    // Close the text box here.
                     ctb_characterTextBox.gameObject.SetActive(false);
+                    cas_currentState = CorvidAnimationState.closed;
                     break;
                 case CorvidAnimationState.closed:
+                    gameObject.SetActive(false);
                     break;
                 default:
                     break;
@@ -64,50 +78,30 @@ namespace TextCorvid
             //StartCoroutine(SequenceText());
         }
 
-        private IEnumerator SequenceText()
+        private void QueueNextData()
         {
-            if (ctb_characterTextBox.GetAnimationState == CorvidAnimationState.animationEnd)
-            {
-                ie_currentEvent = SequenceDialogueData();
-                StartCoroutine(ie_currentEvent);
-                yield return ie_currentEvent;
-
-            }
-            else
-            {
-                ie_currentEvent = ctb_characterTextBox.Interact();
-                StartCoroutine(ie_currentEvent);
-                yield return ie_currentEvent;
-            }
-            ie_currentEvent = null;
-            yield return null;
+            ChangeFrameAndPortrait((CharacterTextBox)ctb_characterTextBox);
+            TransitionToAnimating();
         }
 
-        private IEnumerator SequenceDialogueData()
+        private IEnumerator SequenceText()
+        {
+            ie_currentEvent = ctb_characterTextBox.Interact();
+            yield return ie_currentEvent;
+        }
+
+        private DialogueData SequenceDialogueData()
         {
             if (i_currentDialogue >= 0)
                 dA_sequencedText[i_currentDialogue].ueA_events.Invoke();
             
-            DialogueData _nextDialogue = AdvanceDialogue();
-            switch (ctb_characterTextBox)
-            {
-                case CharacterTextBox ctb:
-                    yield return CharacterDialogue(_nextDialogue);
-                    break;
-                default:
-                    break;
-                    /// TODO: Implement Resizable Text Boxes and others
-            }
-            yield return null;
+            return AdvanceDialogue();
         }
 
-        private IEnumerator CharacterDialogue(DialogueData _nextDialogue)
+        private void CharacterDialogue(DialogueData _nextDialogue)
         {
             CharacterTextBox ctb = (CharacterTextBox)ctb_characterTextBox;
-            CharacterDisplayer disp = ctb.GetCharacterDisplayer;
-            disp.UpdateCharacterImage(_nextDialogue.s_dialogueID);
-            ctb.Interact();
-            yield return null;
+            ctb.UpdateTextForDisplay(dA_sequencedText[i_currentDialogue].s_dialogueID);
         }
 
         public bool GetDone()
@@ -121,7 +115,7 @@ namespace TextCorvid
         {
             i_currentDialogue++;
             if (i_currentDialogue >= dA_sequencedText.Length)
-                i_currentDialogue = dA_sequencedText.Length - 1;
+                i_currentDialogue = dA_sequencedText.Length-1;
             return dA_sequencedText[i_currentDialogue];
         }
     

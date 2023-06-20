@@ -15,5 +15,6 @@ namespace TextCorvid
         public abstract void SkipToTheEnd();
 
         public abstract void AssignEndState();
+        public abstract void ResetAnimation();
     }
 }
