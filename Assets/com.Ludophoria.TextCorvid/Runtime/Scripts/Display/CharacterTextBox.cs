@@ -39,23 +39,24 @@ namespace TextCorvid
                     if (!_anim.GetAnimationEnd)
                         b_shouldEndAnim = false;
                 }
-                if(b_shouldEndAnim)
+                if (b_shouldEndAnim)
                     cas_currentState = CorvidAnimationState.animationEnd;
             }
-                    
+
         }
 
         public void DisplayText(TextDisplayType _typeToDisplay)
         {
-             td_display.AssignEndState();
-             td_display.DisplayText(0f, _typeToDisplay);
+            td_display.AssignEndState();
+            td_display.DisplayText(0f, _typeToDisplay);
         }
 
         public IEnumerator ToggleTextBox(bool _opening)
         {
             t_currentTask = fd_frames.AnimateFrame(_opening ? 0 : f_frameSize, _opening ? f_frameSize : 0f, f_speed);
             yield return StartCoroutine(t_currentTask);
-            ToggleText();
+            if(_opening)
+                ToggleText();
         }
 
         private IEnumerator CheckForNewCharacter()
@@ -76,10 +77,10 @@ namespace TextCorvid
             DisplayText(TextDisplayType.character);
         }
 
-        public void CloseTextBox()
+        public IEnumerator CloseTextBox()
         {
             t_currentTask = fd_frames.AnimateFrame(f_frameSize, 0, f_speed);
-            StartCoroutine(t_currentTask);
+            yield return StartCoroutine(t_currentTask);
         }
 
         public override IEnumerator Interact()
@@ -88,8 +89,7 @@ namespace TextCorvid
             {
                 case CorvidAnimationState.idle:
                     cas_currentState = CorvidAnimationState.animating;
-                    if (!CheckTextBoxDone())
-                        Animate();
+                    Animate();
                     break;
                 case CorvidAnimationState.animating:
                     Interrupt();

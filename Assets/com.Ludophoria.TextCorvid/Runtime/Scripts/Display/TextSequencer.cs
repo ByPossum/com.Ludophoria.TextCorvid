@@ -10,7 +10,7 @@ namespace TextCorvid
         [SerializeField] TextDisplayType td_wayToDisplayText;
         [SerializeField] private DialogueData[] dA_sequencedText;
         [SerializeField] private TextBox ctb_characterTextBox;
-        private CorvidAnimationState cas_currentState;
+        [SerializeField] private CorvidAnimationState cas_currentState;
         private int i_currentDialogue = 0;
         private TextGlue tg;
         private IEnumerator ie_currentEvent;
@@ -42,20 +42,14 @@ namespace TextCorvid
                     StartCoroutine(SequenceText());
                     break;
                 case CorvidAnimationState.animating:
-                    // Display the next data if the boxes aren't animating
-                    if(!(ctb_characterTextBox as CharacterTextBox).Animating)
-                    {
-                        CharacterDialogue(SequenceDialogueData());
-                        QueueNextData();
-                    }
-                    // Run the text
-                    if (ie_currentEvent != null)
-                        StopCoroutine(ie_currentEvent);
-                    StartCoroutine(SequenceText());
+                    DisplayNextData();
+                    InteractWithDialogue();
+                    if (i_currentDialogue == dA_sequencedText.Length - 1)
+                        cas_currentState = CorvidAnimationState.animationEnd;
                     break;
                 case CorvidAnimationState.animationEnd:
                     // Close the text box here.
-                    ctb_characterTextBox.gameObject.SetActive(false);
+                    StartCoroutine((ctb_characterTextBox as CharacterTextBox).ToggleTextBox(false));
                     cas_currentState = CorvidAnimationState.closed;
                     break;
                 case CorvidAnimationState.closed:
@@ -63,6 +57,22 @@ namespace TextCorvid
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void InteractWithDialogue()
+        {
+            if (ie_currentEvent != null)
+                StopCoroutine(ie_currentEvent);
+            StartCoroutine(SequenceText());
+        }
+
+        private void DisplayNextData()
+        {
+            if (!(ctb_characterTextBox as CharacterTextBox).Animating)
+            {
+                CharacterDialogue(SequenceDialogueData());
+                QueueNextData();
             }
         }
 
@@ -94,7 +104,7 @@ namespace TextCorvid
         {
             if (i_currentDialogue >= 0)
                 dA_sequencedText[i_currentDialogue].ueA_events.Invoke();
-            
+
             return AdvanceDialogue();
         }
 
@@ -109,20 +119,20 @@ namespace TextCorvid
             return false;
         }
 
-        public void ToggleInput() {}
+        public void ToggleInput() { }
 
         private DialogueData AdvanceDialogue()
         {
             i_currentDialogue++;
             if (i_currentDialogue >= dA_sequencedText.Length)
-                i_currentDialogue = dA_sequencedText.Length-1;
+                i_currentDialogue = dA_sequencedText.Length - 1;
             return dA_sequencedText[i_currentDialogue];
         }
-    
+
         private DialogueData RegressDialogue()
         {
             i_currentDialogue--;
-            if(i_currentDialogue <= 0)
+            if (i_currentDialogue <= 0)
                 i_currentDialogue = 0;
             return dA_sequencedText[i_currentDialogue];
         }
