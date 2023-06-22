@@ -88,6 +88,7 @@ namespace TextCorvid
             switch (cas_currentState)
             {
                 case CorvidAnimationState.idle:
+                    i_currentAnimatingObject = 0;
                     cas_currentState = CorvidAnimationState.animating;
                     Animate();
                     break;
@@ -100,12 +101,12 @@ namespace TextCorvid
                     StartCoroutine(Interact());
                     break;
                 case CorvidAnimationState.closed:
-                    ToggleTextBox(false);
+                    //ToggleTextBox(false);
                     break;
                 default:
                     break;
             }
-            return t_currentTask;
+            yield return t_currentTask;
         }
 
         private void Animate()

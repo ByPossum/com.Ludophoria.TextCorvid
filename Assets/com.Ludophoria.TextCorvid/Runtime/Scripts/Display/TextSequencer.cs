@@ -85,7 +85,6 @@ namespace TextCorvid
         private void TransitionToAnimating()
         {
             cas_currentState = CorvidAnimationState.animating;
-            //StartCoroutine(SequenceText());
         }
 
         private void QueueNextData()
