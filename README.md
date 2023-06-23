@@ -1,2 +1,2 @@
 # com.ludophoria.textcorvid
-Simple to use text manager
+Overly complex text manager
