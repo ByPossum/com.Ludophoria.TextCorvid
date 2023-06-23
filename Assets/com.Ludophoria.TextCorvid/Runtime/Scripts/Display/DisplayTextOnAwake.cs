@@ -28,7 +28,8 @@ namespace TextCorvid
                 td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.TextID), tb, tdt_displayType);
             else
                 td_displayer.DisplayText(tg.GetTextManager().GetText(td_displayer.TextID), GetComponent<RectTransform>().rect.height, tdt_displayType);
-            cd.UpdateCharacterImage(td_displayer.TextID);
+            if (cd != null)
+                cd.UpdateCharacterImage(td_displayer.TextID);
         }
     }
 }

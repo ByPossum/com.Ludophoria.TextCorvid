@@ -5,45 +5,34 @@ using UnityEngine;
 
 public class CreateTCPrefabs
 {
-    [MenuItem("GameObject/TextCorvid/Resizable Textbox", false,2)]
-    static void CreateResizableTextBox()
+    [MenuItem("GameObject/TextCorvid/Text Sequence", false,1)]
+    static void CreateTextSequence()
+    {
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextSequence.prefab");
+    }
+
+    [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 2)]
+    static void CreateRSTextBox()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab");
     }
 
-    [MenuItem("GameObject/TextCorvid/Canvas Textbox", false, 3)]
-    static void CreateWSTextBox()
+    [MenuItem("GameObject/TextCorvid/UI Text", false, 3)]
+    static void CreateUIText()
     {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/CanvasTextBox.prefab");
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/UIText.prefab");
     }
 
-    [MenuItem("GameObject/TextCorvid/Text Managers", false, 1)]
+    [MenuItem("GameObject/TextCorvid/Text Managers", false, 4)]
     static void CreateTextManagers()
     {
         CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextManager.prefab");
     }
-    [MenuItem("GameObject/TextCorvid/Trigger Text Box", false, 14)]
-    static void CreateTriggerTextBox()
+    [MenuItem("GameObject/TextCorvid/Character Manager", false, 5)]
+    static void CreateCharacterManager()
     {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TriggerTextBox.prefab");
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/CharacterManager.prefab");
     }
-    [MenuItem("GameObject/TextCorvid/Text Box", false, 15)]
-    static void CreateTextBox()
-    {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/Text.prefab");
-    }
-    [MenuItem("GameObject/TextCorvid/Text Sequencer", false, 16)]
-    static void CreateSequencer()
-    {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/TextSequencer.prefab");
-    }
-    [MenuItem("GameObject/TextCorvid/Sprite Text Box", false, 17)]
-    static void CreateSpriteBox()
-    {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/SpriteTextBox.prefab");
-    }
-
-
 
     static void CreateNewObjectFromString(string filePath)
     {

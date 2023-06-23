@@ -15,8 +15,7 @@ namespace TextCorvid
         {
             s_textID = GetComponentInChildren<TMPro.TMP_Text>().text;
             td_display.Init(_textSpeed, _animator, _initialID);
-            if (_initialText != null)
-                td_display.CacheText(_initialText);
+            td_display.CacheID(_initialID);
         }
 
         public abstract IEnumerator Interact();

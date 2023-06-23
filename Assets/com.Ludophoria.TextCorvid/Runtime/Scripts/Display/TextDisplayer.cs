@@ -39,7 +39,7 @@ namespace TextCorvid
         public void CacheID(string _textID)
         {
             s_textID = _textID;
-            t_displayedText.text = "";
+            AssignEndState();
         }
 
         public void CacheText(string _textToDisplay)
@@ -236,11 +236,17 @@ namespace TextCorvid
         public override void AssignEndState()
         {
             s_textToBeDisplayed = ta_animator.RemoveAllEffects(FindObjectOfType<TextGlue>().GetTextManager().GetText(s_textID));
+            Debug.Log($"{s_textID} {s_textToBeDisplayed}");
         }
 
         public override void ResetAnimation()
         {
             cas_currentState = CorvidAnimationState.idle;
+        }
+
+        public void ClearDisplayedText()
+        {
+            t_displayedText.text = "";
         }
     }
     

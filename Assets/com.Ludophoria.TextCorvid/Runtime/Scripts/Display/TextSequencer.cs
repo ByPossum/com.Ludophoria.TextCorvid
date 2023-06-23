@@ -10,7 +10,7 @@ namespace TextCorvid
         [SerializeField] TextDisplayType td_wayToDisplayText;
         [SerializeField] private DialogueData[] dA_sequencedText;
         [SerializeField] private TextBox ctb_characterTextBox;
-        [SerializeField] private CorvidAnimationState cas_currentState;
+        private CorvidAnimationState cas_currentState;
         private int i_currentDialogue = 0;
         private TextGlue tg;
         private IEnumerator ie_currentEvent;
@@ -18,7 +18,8 @@ namespace TextCorvid
         void Start()
         {
             tg = FindObjectOfType<TextGlue>();
-            ctb_characterTextBox.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator(), null, tg.GetTextManager().GetText(dA_sequencedText[0].s_dialogueID));
+            Debug.Log(dA_sequencedText[0].s_dialogueID);
+            ctb_characterTextBox.Init(tg.GetTextManager().TextSpeed, tg.GetTextAnimator(), dA_sequencedText[0].s_dialogueID);
             cas_currentState = CorvidAnimationState.idle;
         }
 

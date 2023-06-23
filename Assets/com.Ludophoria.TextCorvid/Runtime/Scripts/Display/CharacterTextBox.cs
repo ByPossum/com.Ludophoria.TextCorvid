@@ -68,7 +68,6 @@ namespace TextCorvid
         public void UpdateTextForDisplay(string _newText)
         {
             td_display.CacheID(_newText);
-            td_display.AssignEndState();
         }
 
         private void ToggleText()
@@ -111,6 +110,7 @@ namespace TextCorvid
 
         private void Animate()
         {
+            td_display.ClearDisplayedText();
             // Find the next animatable and animate it
             switch (A_objectsToAnimate[i_currentAnimatingObject])
             {

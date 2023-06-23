@@ -149,16 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   td_wayToDisplayText: 4
-  dA_sequencedText:
-  - s_dialogueID: ArmIntro01
-    ueA_events:
-      m_PersistentCalls:
-        m_Calls: []
-  - s_dialogueID: GirlIntro01
-    ueA_events:
-      m_PersistentCalls:
-        m_Calls: []
+  dA_sequencedText: []
   ctb_characterTextBox: {fileID: 9209379529766407171}
+  cas_currentState: 0
 --- !u!114 &9209379529541107714
 MonoBehaviour:
   m_ObjectHideFlags: 0

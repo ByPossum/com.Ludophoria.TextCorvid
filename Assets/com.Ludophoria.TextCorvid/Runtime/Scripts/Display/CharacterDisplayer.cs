@@ -9,6 +9,11 @@ namespace TextCorvid
     {
         [SerializeField] private Image i_characterImage;
         [SerializeField] private CharacteManager cm_characters;
+        public void Awake()
+        {
+            cm_characters = FindObjectOfType<CharacteManager>();
+        }
+
         public void UpdateCharacterImage(string _id)
         {
             i_characterImage.sprite = cm_characters.GetSpriteOfCurrentTalkingCharacter(_id);
