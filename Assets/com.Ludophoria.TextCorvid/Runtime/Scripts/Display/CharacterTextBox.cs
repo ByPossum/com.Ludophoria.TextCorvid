@@ -110,7 +110,7 @@ namespace TextCorvid
 
         private void Animate()
         {
-            td_display.ClearDisplayedText();
+            td_display?.ClearDisplayedText();
             // Find the next animatable and animate it
             switch (A_objectsToAnimate[i_currentAnimatingObject])
             {
