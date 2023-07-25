@@ -81,7 +81,7 @@ namespace TextCorvid
         {
             rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText);
             DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
-            GetComponent<SpriteRenderer>().size += new Vector2(rs_textBox.Padding.x + rs_textBox.Padding.z, rs_textBox.Padding.y + rs_textBox.Padding.w);
+            rs_textBox.UpdateForPadding(new Vector2(rs_textBox.Padding.x + rs_textBox.Padding.z, rs_textBox.Padding.y + rs_textBox.Padding.w));
         }
 
         public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)

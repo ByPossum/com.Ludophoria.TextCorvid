@@ -20,8 +20,9 @@ namespace TextCorvid
         public void Init(string _text, TMP_Text _container)
         {
             // Never let this bish crash
-            sr_textBox = GetComponent<SpriteRenderer>();
-            rt_box = _container.GetComponent<RectTransform>();
+            sr_textBox = sr_textBox ?? GetComponent<SpriteRenderer>();
+            rt_box = rt_box ?? GetComponentInParent<RectTransform>();
+
             f_tolerance = _text.Length + _text.Length * 0.1f;
             Vector2 _resize = ResizeBox(f_minWidth, f_maxWidth, _text, _text.Length);
             if (sr_textBox)
@@ -32,6 +33,17 @@ namespace TextCorvid
                 f_height = newSize.y;
                 sr_textBox.GetComponentInChildren<RectTransform>().sizeDelta = newSize;
             }
+            else if (rt_box)
+            {
+                Vector2 newSize = new Vector2(_resize.x * _container.fontSize, _resize.y + (_container.fontSize + _container.fontSize));
+                rt_box.sizeDelta = newSize;
+            }
+        }
+
+        public void UpdateForPadding(Vector2 _pad)
+        {
+            if (rt_box)
+                rt_box.GetComponentInParent<RectTransform>().sizeDelta += _pad;
         }
         
         private Vector2 ResizeBox(float _minX, float _maxX, string _text, float _target)
