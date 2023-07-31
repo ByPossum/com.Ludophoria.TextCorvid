@@ -5,7 +5,7 @@ using TMPro;
 
 namespace TextCorvid
 {
-    public class ResizableTextBox : MonoBehaviour
+    public class ResizableTextBox : Frame
     {
         private RectTransform rt_box;
         private SpriteRenderer sr_textBox;

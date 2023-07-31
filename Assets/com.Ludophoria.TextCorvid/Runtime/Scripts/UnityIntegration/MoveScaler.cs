@@ -12,7 +12,8 @@ public class MoveScaler : MonoBehaviour
 
     private async void Start()
     {
-        //a_animationController.SetBool("active", true);
+        if(a_animationController)
+            a_animationController?.SetBool("active", true);
         await Move(go_startPoint, go_endPoint);
     }
 
