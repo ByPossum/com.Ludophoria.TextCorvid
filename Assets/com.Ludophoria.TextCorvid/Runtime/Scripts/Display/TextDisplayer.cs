@@ -8,12 +8,11 @@ using TMPro;
 
 namespace TextCorvid
 {
-    public class TextDisplayer : SkippableAnimation
+    public class TextDisplayer : MonoBehaviour
     {
         [SerializeField] private RectTransform rt_displayBox;
         [SerializeField] private TMP_Text t_displayedText;
         [SerializeField] private string s_textToBeDisplayed = "";
-        private TextAnimator ta_animator;
         List<TMP_Text> previousText = new List<TMP_Text>();
         #region TextBox Sizes
         private int prevLineCount;
@@ -25,10 +24,9 @@ namespace TextCorvid
         private string s_textID;
         public string TextID { get { return s_textID; } }
 
-        public void Init(int _textSpeed, TextAnimator _anim = null, string _textID = null)
+        public void Init(int _textSpeed, string _textID = null)
         {
             i_textSpeed = _textSpeed;
-            ta_animator = _anim;
             if (!rt_displayBox)
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
@@ -39,7 +37,6 @@ namespace TextCorvid
         public void CacheID(string _textID)
         {
             s_textID = _textID;
-            AssignEndState();
         }
 
         public void CacheText(string _textToDisplay)
@@ -54,9 +51,8 @@ namespace TextCorvid
         /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
         /// <param name="rectSize">This is contextual. It's the size of the area to display. DisplayType.line uses width. DisplayType.character uses height.</param>
         /// <param name="displayType">How the text will be displayed.</param>
-        public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
+        public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block)
         {
-            cas_currentState = CorvidAnimationState.animating;
             switch (displayType)
             {
                 case TextDisplayType.block:
@@ -77,14 +73,7 @@ namespace TextCorvid
             }
         }
 
-        public void DisplayText(string textToDisplay, ResizableTextBox rs_textBox = null, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
-        {
-            rs_textBox.Init(ta_animator.RemoveEffects(textToDisplay), t_displayedText);
-            DisplayText(textToDisplay, rs_textBox.BoxHeight, displayType);
-            rs_textBox.UpdateForPadding(new Vector2(rs_textBox.Padding.x + rs_textBox.Padding.z, rs_textBox.Padding.y + rs_textBox.Padding.w));
-        }
-
-        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block, CharacterDisplayer _cd = null)
+        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
         {
             DisplayText(textToDisplay, rectToDisplay.rect.height, displayType);
         }
@@ -105,28 +94,25 @@ namespace TextCorvid
             prevLineCount = 0;
             rowCount = Mathf.FloorToInt(rectHeight / t_displayedText.rectTransform.rect.height);
             DeleteOldText();
-            textToDisplay = ta_animator.ParseAnimations(t_displayedText, textToDisplay);
             t_currentTask = ShowNextCharacterByCharacter(textToDisplay, t_displayedText);
             StartCoroutine(t_currentTask);
         }
         
         private void DisplayByBlock(string _textToDisplay)
         {
-            t_displayedText.text = ta_animator.ParseAnimations(t_displayedText, _textToDisplay);
+            t_displayedText.text = _textToDisplay;
         }
 
         private IEnumerator DisplayTextByLine(string _textToDisplay, int _maxLength)
         {
             t_currentTask = DisplayLine(CollectTextIntoBins(_textToDisplay, _maxLength));
             yield return StartCoroutine(t_currentTask);
-            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         private IEnumerator DisplayByWord(string _textToDisplay)
         {
             t_currentTask = DisplayWord(_textToDisplay);
             yield return StartCoroutine(t_currentTask);
-            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         /// <summary>
@@ -198,7 +184,6 @@ namespace TextCorvid
                 prevLineCount++;
                 yield return new WaitForSeconds(i_textSpeed*0.01f);
             }
-            cas_currentState = CorvidAnimationState.animationEnd;
         }
 
         private IEnumerator DisplayLine(List<string> _lines)
@@ -224,24 +209,6 @@ namespace TextCorvid
         private void OnDisable()
         {
             //t_displayedText.text = s_textID;
-        }
-
-        public override void SkipToTheEnd()
-        {
-            StopAllCoroutines();
-            t_displayedText.text = s_textToBeDisplayed;
-            cas_currentState = CorvidAnimationState.animationEnd;
-        }
-
-        public override void AssignEndState()
-        {
-            s_textToBeDisplayed = ta_animator.RemoveAllEffects(FindObjectOfType<TextGlue>().GetTextManager().GetText(s_textID));
-            Debug.Log($"{s_textID} {s_textToBeDisplayed}");
-        }
-
-        public override void ResetAnimation()
-        {
-            cas_currentState = CorvidAnimationState.idle;
         }
 
         public void ClearDisplayedText()

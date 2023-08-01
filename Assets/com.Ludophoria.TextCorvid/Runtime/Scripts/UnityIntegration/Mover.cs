@@ -4,11 +4,8 @@ using UnityEngine;
 
 namespace TextCorvid
 {
-    public enum CorvidAnimationState
+    public abstract class Mover : MonoBehaviour
     {
-        idle,
-        animating,
-        animationEnd,
-        closed
+        public abstract void Begin();
     }
 }

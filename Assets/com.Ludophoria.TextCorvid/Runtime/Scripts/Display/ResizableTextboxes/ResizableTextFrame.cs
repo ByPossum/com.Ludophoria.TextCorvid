@@ -5,7 +5,7 @@ using TMPro;
 
 namespace TextCorvid
 {
-    public class ResizableTextBox : Frame
+    public class ResizableTextFrame : Frame
     {
         private RectTransform rt_box;
         private SpriteRenderer sr_textBox;
@@ -17,7 +17,7 @@ namespace TextCorvid
         public float BoxWidth { get { return f_width; } }
         public float BoxHeight { get { return f_height; } }
         public Vector4 Padding { get { return v_padding; } }
-        public void Init(string _text, TMP_Text _container)
+        public override void Init(string _text, TMP_Text _container)
         {
             // Never let this bish crash
             sr_textBox = sr_textBox ?? GetComponent<SpriteRenderer>();
