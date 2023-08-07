@@ -44,7 +44,6 @@ namespace TextCorvid
                         D_allText.Add(key, nextFile[key]);
 
             }
-            DebugText();
         }
 
         /// <summary>

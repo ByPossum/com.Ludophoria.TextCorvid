@@ -10,6 +10,7 @@ namespace TextCorvid
         private TMPro.TMP_Text tm_textRext;
         [SerializeField] private TextDisplayer td_text;
         [SerializeField] private Frame f_frame;
+        [SerializeField] private TextboxArrow ta_arrow;
         [SerializeField] private Mover[] mA_movers;
         
         [SerializeField] private TextDisplayType td_wayToShowText;
@@ -42,6 +43,8 @@ namespace TextCorvid
 
         public void Display()
         {
+            if (ta_arrow)
+                ta_arrow.CreateArrow(tm_textRext.rectTransform, mA_movers[0].gameObject.transform.position);
             DisplayFrame();
             DisplayText();
             RunAllMovers();
