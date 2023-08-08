@@ -20,6 +20,16 @@ namespace TextCorvid
             await Move(go_startPoint, go_endPoint);
         }
 
+        public override GameObject GetEnd()
+        {
+            return go_endPoint;
+        }
+
+        public override GameObject GetStart()
+        {
+            return go_startPoint;
+        }
+
         private async Task Move(GameObject _start, GameObject _end)
         {
             Vector3 _startPoint = Camera.main.WorldToScreenPoint(_start.transform.position);

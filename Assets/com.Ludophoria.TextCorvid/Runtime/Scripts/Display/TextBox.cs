@@ -44,7 +44,7 @@ namespace TextCorvid
         public void Display()
         {
             if (ta_arrow)
-                ta_arrow.CreateArrow(tm_textRext.rectTransform, mA_movers[0].gameObject.transform.position);
+                ta_arrow.CreateArrow(tm_textRext.rectTransform, mA_movers[0].GetStart());
             DisplayFrame();
             DisplayText();
             RunAllMovers();

@@ -4,24 +4,32 @@ using UnityEngine;
 
 public class TextboxArrow : MonoBehaviour
 {
-    
-    public void CreateArrow(RectTransform parent, Vector2 target)
-    {
-        Vector2 parentPos = parent.transform.position;
-        float x = GetPercentageOnBoarder(parentPos.x, parent.rect.width, target.x);
-        float y = GetPercentageOnBoarder(parentPos.y, parent.rect.height, target.y);
-        transform.position = new Vector2(x, y);
+    private RectTransform parent;
+    private GameObject target;
+    private Vector2 targetPos;
+    private Camera cam;
+    [SerializeField] private float f_arrowDistance;
 
+    public void CreateArrow(RectTransform _parent, GameObject _target)
+    {
+        parent = _parent;
+        target = _target;
+        cam = Camera.main;
     }
 
-    private float GetPercentageOnBoarder(float boxPos, float size, float targetPos)
+    public void Update()
     {
-        float max = (boxPos + (size * 0.5f));
-        float min = (boxPos - (size * 0.5f));
-        float target = targetPos + (size * 0.5f);
-        float percentage = ((max + min - target) / max);
-        float result = Mathf.Clamp(max + (max * percentage), boxPos - (size * 0.5f), boxPos + (size * 0.5f));
-        Debug.Log($"Max: {max} | Min: {min} | Max + Min: {max + min} | Target: {target} | Neumerator: {max + min - target} | %: {percentage} | result: {result}");
-        return result;
+        if (parent && target)
+        {
+            targetPos = cam.WorldToScreenPoint(target.transform.position);
+            transform.position = GetNewPos(targetPos, parent.position, parent.rect.width, parent.rect.height);
+            transform.up = -(targetPos - (Vector2)transform.position);
+        }
+    }
+
+    private Vector2 GetNewPos(Vector2 targetPosition, Vector2 parentPosition, float width, float height)
+    {
+        Vector2 direction = (targetPosition - parentPosition).normalized;
+        return new Vector2(parentPosition.x + ((width * f_arrowDistance) * direction.x), parentPosition.y + ((height * f_arrowDistance) * direction.y));
     }
 }
