@@ -16,6 +16,11 @@ namespace TextCorvid
             ta_animator = FindObjectOfType<TextAnimator>() ?? new TextAnimator();
         }
 
+        public void Init()
+        {
+            Awake();
+        }
+
         public TextManager GetTextManager()
         {
             return tm_manager;
