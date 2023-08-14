@@ -17,6 +17,10 @@ namespace TextCorvid
         {
             if (a_animationController)
                 a_animationController?.SetBool("active", true);
+            if(!go_endPoint)
+                go_endPoint = transform.gameObject;
+            if(!go_startPoint)
+                go_startPoint = transform.gameObject;
             await Move(go_startPoint, go_endPoint);
         }
 
