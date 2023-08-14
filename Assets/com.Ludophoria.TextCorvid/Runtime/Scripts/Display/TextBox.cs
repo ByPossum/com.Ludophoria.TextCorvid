@@ -77,7 +77,7 @@ namespace TextCorvid
             s_textID = td_text.TextID ?? tm_textRext.text;
             string ttd = _textAnim.RemoveAllEffects(_textMan.GetText(s_textID));
             td_text.PreviewText(ttd);
-            f_frame.Preview(ttd, tm_textRext);
+            f_frame.Preview(ttd, td_text.GetTextObject);
         }
     }
 }

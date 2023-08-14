@@ -23,6 +23,7 @@ namespace TextCorvid
         private IEnumerator t_currentTask = null;
         [SerializeField] private string s_textID;
         public string TextID { get { return s_textID; } }
+        public TMP_Text GetTextObject { get { return t_displayedText; } }
 
         public void Init(int _textSpeed, string _textID = null)
         {
@@ -31,7 +32,6 @@ namespace TextCorvid
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
                 t_displayedText = GetComponentInChildren<TMP_Text>();
-            s_textID = _textID != null ? _textID : t_displayedText.text;
         }
 
         public void CacheID(string _textID)

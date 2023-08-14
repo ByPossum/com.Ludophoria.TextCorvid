@@ -85,6 +85,7 @@ namespace TextCorvid
 
         public override void Preview(string _text, TMP_Text _container)
         {
+#if UNITY_EDITOR
             sr_textBox = sr_textBox ?? GetComponent<SpriteRenderer>();
             rt_box = rt_box ?? GetComponentInParent<RectTransform>();
 
@@ -103,6 +104,7 @@ namespace TextCorvid
                 Vector2 newSize = new Vector2(_resize.x * _container.fontSize, _resize.y + (_container.fontSize + _container.fontSize));
                 rt_box.sizeDelta = newSize;
             }
+#endif
         }
     }
 

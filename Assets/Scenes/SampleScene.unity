@@ -1309,7 +1309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tg: {fileID: 2073281230}
-  b_run: 1
+  b_run: 0
 --- !u!4 &2029456613
 Transform:
   m_ObjectHideFlags: 0
@@ -1486,13 +1486,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 615508978}
     m_Modifications:
+    - target: {fileID: 4266921093150091151, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: go_endPoint
+      value: 
+      objectReference: {fileID: 1432190881}
+    - target: {fileID: 4266921093150091151, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: go_startPoint
+      value: 
+      objectReference: {fileID: 1039676681}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 120
+      value: 140
       objectReference: {fileID: 0}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 44.289062
+      value: 45.15625
       objectReference: {fileID: 0}
     - target: {fileID: 4819997795988112528, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_Name
@@ -1596,7 +1604,7 @@ PrefabInstance:
       objectReference: {fileID: 1039676681}
     - target: {fileID: 7200372501600255782, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: s_textID
-      value: Girlintro01
+      value: Tut01
       objectReference: {fileID: 0}
     - target: {fileID: 7200372501600255782, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: rt_displayBox
