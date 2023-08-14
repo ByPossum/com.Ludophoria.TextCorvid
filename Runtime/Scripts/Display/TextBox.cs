@@ -58,7 +58,7 @@ namespace TextCorvid
 
         public void DisplayText()
         {
-            td_text.DisplayText(tg_glue.GetTextManager().GetText(td_text.TextID), 0.0f, td_wayToShowText);
+            td_text.DisplayText(tg_glue.GetTextAnimator().ParseAnimations(tm_textRext, tg_glue.GetTextManager().GetText(td_text.TextID)), 0.0f, td_wayToShowText);
         }
 
         public void RunAllMovers()
