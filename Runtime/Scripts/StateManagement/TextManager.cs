@@ -17,8 +17,8 @@ namespace TextCorvid
         private Dictionary<string, string> D_allText = new Dictionary<string, string>();
         private int i_currentLanguageIndex = 0;
         private Dictionary<string, Text> D_currentTextOnScreen;
-        private string s_filePath;
-        private string s_folderPath;
+        private string[] s_filePath;
+        private string[] s_folderPath;
         public int TextSpeed { get { return ts_settings.i_textSpeed; } }
 
         public TextManager(TextSettings _newSettings)
@@ -30,24 +30,31 @@ namespace TextCorvid
             //MakeTestJsonData();
 
             // Load text from file
-            D_allText = LoadFileExtention(true) switch
+            for (int i = 0; i < s_filePath.Length; i++)
             {
-                ".csv" => ReadCSVText(),
-                ".json" => ReadJsonText(),
-                ".xml" => ReadXMLData(),
-                _ => null
-            };
+                Dictionary<string, string> nextFile = LoadFileExtention(true, s_folderPath[i], s_filePath[i]) switch
+                {
+                    ".csv" => ReadCSVText(s_filePath[i], s_folderPath[i]),
+                    ".json" => ReadJsonText(s_filePath[i], s_folderPath[i]),
+                    ".xml" => ReadXMLData(s_filePath[i], s_folderPath[i]),
+                    _ => null
+                };
+                foreach (string key in nextFile.Keys)
+                    if(!D_allText.ContainsKey(key))
+                        D_allText.Add(key, nextFile[key]);
+
+            }
         }
 
         /// <summary>
         /// Check if any of the supported filetypes are available
         /// </summary>
         /// <returns>The file extension that got loaded</returns>
-        private string LoadFileExtention(bool _fromResources)
+        private string LoadFileExtention(bool _fromResources, string _folderPath, string _fileName)
         {
             if (_fromResources)
             {
-                string _extension = "." + s_filePath.Split('.')[1];
+                string _extension = "." + _fileName.Split('.')[1];
                 return _extension;
             }
             FileStream fs = null;
@@ -62,7 +69,7 @@ namespace TextCorvid
             {
                 fs?.Close();
                 if (_fromResources)
-                    return LoadFileExtention(false);
+                    return LoadFileExtention(false, _folderPath, _fileName);
                 return "Unable to load file extension.";
             }
             string extention = Path.GetExtension(fs.Name);
@@ -83,10 +90,10 @@ namespace TextCorvid
             return "Unable To Get Text";
         }
 
-        private Dictionary<string, string> ReadCSVText()
+        private Dictionary<string, string> ReadCSVText(string _fileName, string _folderPath)
         {
             Dictionary<string, string> readText = new Dictionary<string, string>();
-            TextAsset _ass = GetTextAssetFromFile(".csv");
+            TextAsset _ass = GetTextAssetFromFile(".csv", _fileName, _folderPath);
             string allTextFromFile = _ass.text;
             string[] textRows = allTextFromFile.Split("\n"[0]);
             int rows = textRows.Length;
@@ -102,9 +109,9 @@ namespace TextCorvid
             return readText;
         }
 
-        private Dictionary<string, string> ReadJsonText()
+        private Dictionary<string, string> ReadJsonText(string _fileName, string _folderPath)
         {
-            TextAsset _ass = GetTextAssetFromFile(".JSON");
+            TextAsset _ass = GetTextAssetFromFile(".JSON", _fileName, _folderPath);
             CrowTextCollection ctc = JsonUtility.FromJson<CrowTextCollection>(_ass.text);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach(CrowText crow in ctc.crowText)
@@ -114,9 +121,9 @@ namespace TextCorvid
             return textData;
         }
 
-        private Dictionary<string, string> ReadXMLData()
+        private Dictionary<string, string> ReadXMLData(string _fileName, string _folderPath)
         {
-            TextAsset _ass = GetTextAssetFromFile(".xml");
+            TextAsset _ass = GetTextAssetFromFile(".xml", _fileName, _folderPath);
             CrowXml _allText = GenericReaders.ReadXML<CrowXml>(_ass);
             Dictionary<string, string> textData = new Dictionary<string, string>();
             foreach (CrowText _text in _allText.L_crowText)
@@ -124,9 +131,9 @@ namespace TextCorvid
             return textData;
         }
 
-        private TextAsset GetTextAssetFromFile(string _ext)
+        private TextAsset GetTextAssetFromFile(string _ext, string _filePath, string _folderPath)
         {
-            string _path = s_folderPath + s_filePath.Split('.')[0];
+            string _path = _folderPath + _filePath.Split('.')[0];
             TextAsset _ass = Resources.Load<TextAsset>(_path);
             if (!_ass)
                 if (File.Exists(Application.dataPath + _path + _ext))
@@ -190,6 +197,12 @@ namespace TextCorvid
             // Does this work? No idea
             i_currentLanguageIndex = UpdateLanguageIter((int)_nextLang - (int)i_currentLanguageIndex);
             l_currentLanguage = _nextLang;
+        }
+
+        private void DebugText()
+        {
+            foreach (string key in D_allText.Keys)
+                Debug.Log($"{key} | {D_allText[key]}");
         }
 
     }

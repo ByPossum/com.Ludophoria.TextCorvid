@@ -1,25 +1,83 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace TextCorvid
 {
-    public abstract class TextBox : MonoBehaviour
+    public class TextBox : MonoBehaviour
     {
-        [SerializeField] protected TextDisplayer td_display;
-        protected string s_textID;
-        [SerializeField] protected CorvidAnimationState cas_currentState;
-        public virtual bool Animating { get { return cas_currentState == CorvidAnimationState.animating; } }
-        public CorvidAnimationState GetAnimationState { get { return cas_currentState; } }
-        public void Init(int _textSpeed, TextAnimator _animator = null, string _initialID = null, string _initialText = null)
+        private TMPro.TMP_Text tm_textRext;
+        [SerializeField] private TextDisplayer td_text;
+        [SerializeField] private Frame f_frame;
+        [SerializeField] private TextboxArrow ta_arrow;
+        [SerializeField] private Mover[] mA_movers;
+        
+        [SerializeField] private TextDisplayType td_wayToShowText;
+        
+        private TextGlue tg_glue;
+
+        private string s_textID;
+        private string s_textWithAnims;
+        private string s_textToDisplay;
+
+        public async Task Init()
         {
-            s_textID = GetComponentInChildren<TMPro.TMP_Text>().text;
-            td_display.Init(_textSpeed, _animator, _initialID);
-            td_display.CacheID(_initialID);
+            tg_glue = FindObjectOfType<TextGlue>();
+            tm_textRext = GetComponentInChildren<TMPro.TMP_Text>();
+            // Wtf. A bit brutal huh?
+            if (!tm_textRext)
+                Destroy(this);
+
+            // Initialize pure text
+            s_textID = td_text.TextID ?? tm_textRext.text;
+            s_textWithAnims = tg_glue.GetTextManager().GetText(s_textID);
+            s_textToDisplay = tg_glue.GetTextAnimator().ParseAnimations(tm_textRext, s_textWithAnims);
+
+            // Initialize frame and text displayer
+            f_frame.Init(s_textToDisplay, tm_textRext);
+            td_text.Init(tg_glue.GetTextManager().TextSpeed);
+
+            await Task.Yield();
         }
 
-        public abstract IEnumerator Interact();
-        public abstract bool CheckIfEnded();
-        public abstract void ResetAnimations();
+        public void Display()
+        {
+            if (ta_arrow)
+                ta_arrow.CreateArrow(tm_textRext.rectTransform, mA_movers[0].GetStart());
+            DisplayFrame();
+            DisplayText();
+            RunAllMovers();
+        }
+
+        public void DisplayFrame()
+        {
+            if(f_frame)
+                f_frame.gameObject.SetActive(true);
+        }
+
+        public void DisplayText()
+        {
+            td_text.DisplayText(tg_glue.GetTextManager().GetText(td_text.TextID), 0.0f, td_wayToShowText);
+        }
+
+        public void RunAllMovers()
+        {
+            for (int i = 0; i < mA_movers.Length; i++)
+                RunSpecificMover(i);
+        }
+
+        public void RunSpecificMover(int _moverID)
+        {
+            mA_movers[_moverID].Begin();
+        }
+
+        public void PreviewTextBox(TextManager _textMan, TextAnimator _textAnim)
+        {
+            s_textID = td_text.TextID ?? tm_textRext.text;
+            string ttd = _textAnim.RemoveAllEffects(_textMan.GetText(s_textID));
+            td_text.PreviewText(ttd);
+            f_frame.Preview(ttd, td_text.GetTextObject);
+        }
     }
 }

@@ -8,14 +8,17 @@ namespace TextCorvid
     {
         private TextManager tm_manager;
         private TextAnimator ta_animator;
-        private CharacteManager cm_characters;
         [SerializeField] private TextSettings ts_settings;
         void Awake()
         {
             // Create necassary components
             tm_manager = new TextManager(ts_settings ? ts_settings : new TextSettings());
             ta_animator = FindObjectOfType<TextAnimator>() ?? new TextAnimator();
-            cm_characters = FindObjectOfType<CharacteManager>() ?? new CharacteManager();
+        }
+
+        public void Init()
+        {
+            Awake();
         }
 
         public TextManager GetTextManager()

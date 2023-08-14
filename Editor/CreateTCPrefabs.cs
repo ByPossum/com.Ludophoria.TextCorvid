@@ -14,7 +14,7 @@ public class CreateTCPrefabs
     [MenuItem("GameObject/TextCorvid/Resizable Textbox", false, 2)]
     static void CreateRSTextBox()
     {
-        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/ResizableTextBox.prefab");
+        CreateNewObjectFromString("com.Ludophoria.TextCorvid/Runtime/Prefabs/CanvasResizableTextBox.prefab");
     }
 
     [MenuItem("GameObject/TextCorvid/UI Text", false, 3)]
