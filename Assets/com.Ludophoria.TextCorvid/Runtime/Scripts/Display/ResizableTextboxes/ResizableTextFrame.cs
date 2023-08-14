@@ -82,6 +82,28 @@ namespace TextCorvid
             _binsOfText.Add(_nextBin);
             return _binsOfText;
         }
+
+        public override void Preview(string _text, TMP_Text _container)
+        {
+            sr_textBox = sr_textBox ?? GetComponent<SpriteRenderer>();
+            rt_box = rt_box ?? GetComponentInParent<RectTransform>();
+
+            f_tolerance = _text.Length + _text.Length * 0.1f;
+            Vector2 _resize = ResizeBox(f_minWidth, f_maxWidth, _text, _text.Length);
+            if (sr_textBox)
+            {
+                Vector2 newSize = new Vector2(_resize.x * _container.fontSize * 0.1f, _resize.y + (_container.fontSize * 0.1f));
+                sr_textBox.size = newSize;
+                f_width = newSize.x;
+                f_height = newSize.y;
+                sr_textBox.GetComponentInChildren<RectTransform>().sizeDelta = newSize;
+            }
+            else if (rt_box)
+            {
+                Vector2 newSize = new Vector2(_resize.x * _container.fontSize, _resize.y + (_container.fontSize + _container.fontSize));
+                rt_box.sizeDelta = newSize;
+            }
+        }
     }
 
 }

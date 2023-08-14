@@ -9,15 +9,14 @@ namespace TextCorvid
     {
         [SerializeField] TextGlue tg;
         [SerializeField] private bool b_run;
-        public async void OnValidate()
+        public void OnValidate()
         {
             tg.Init();
             foreach(TextBox box in FindObjectsOfType<TextBox>())
             {
-                await box.Init();
-                box.Display();
+                box.PreviewTextBox(tg.GetTextManager(), tg.GetTextAnimator());
             }
-            b_run = false;
+            //b_run = false;
         }
     }
 }

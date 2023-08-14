@@ -52,7 +52,8 @@ namespace TextCorvid
 
         public void DisplayFrame()
         {
-            f_frame.gameObject.SetActive(true);
+            if(f_frame)
+                f_frame.gameObject.SetActive(true);
         }
 
         public void DisplayText()
@@ -69,6 +70,14 @@ namespace TextCorvid
         public void RunSpecificMover(int _moverID)
         {
             mA_movers[_moverID].Begin();
+        }
+
+        public void PreviewTextBox(TextManager _textMan, TextAnimator _textAnim)
+        {
+            s_textID = td_text.TextID ?? tm_textRext.text;
+            string ttd = _textAnim.RemoveAllEffects(_textMan.GetText(s_textID));
+            td_text.PreviewText(ttd);
+            f_frame.Preview(ttd, tm_textRext);
         }
     }
 }

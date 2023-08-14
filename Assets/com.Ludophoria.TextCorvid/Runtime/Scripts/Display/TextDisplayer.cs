@@ -12,7 +12,7 @@ namespace TextCorvid
     {
         [SerializeField] private RectTransform rt_displayBox;
         [SerializeField] private TMP_Text t_displayedText;
-        [SerializeField] private string s_textToBeDisplayed = "";
+        private string s_textToBeDisplayed = "";
         List<TMP_Text> previousText = new List<TMP_Text>();
         #region TextBox Sizes
         private int prevLineCount;
@@ -21,7 +21,7 @@ namespace TextCorvid
         #endregion
         private int i_textSpeed;
         private IEnumerator t_currentTask = null;
-        private string s_textID;
+        [SerializeField] private string s_textID;
         public string TextID { get { return s_textID; } }
 
         public void Init(int _textSpeed, string _textID = null)
@@ -214,6 +214,11 @@ namespace TextCorvid
         public void ClearDisplayedText()
         {
             t_displayedText.text = "";
+        }
+
+        public void PreviewText(string _ttd)
+        {
+            t_displayedText.text = _ttd;
         }
     }
     
