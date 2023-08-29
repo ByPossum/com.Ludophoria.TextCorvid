@@ -1,0 +1,19 @@
+{
+    "name": "Ludophoria.TextCorvid.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:bf0ab8d44e70df743ba90c93e518c5dc",
+        "GUID:c3cff8a92b5ac70499956e9f76aa1882"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
