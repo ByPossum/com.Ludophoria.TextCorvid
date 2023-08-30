@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3587043950046314811}
   - component: {fileID: 3587043950046314810}
   - component: {fileID: 3587043950046314809}
-  - component: {fileID: 3587043950046314808}
+  - component: {fileID: 3943663356273919917}
   m_Layer: 0
   m_Name: UIText
   m_TagString: Untagged
@@ -150,8 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rt_displayBox: {fileID: 0}
   t_displayedText: {fileID: 0}
-  s_textToBeDisplayed: 
---- !u!114 &3587043950046314808
+  s_textID: 
+--- !u!114 &3943663356273919917
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,7 +160,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 3587043950046314806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfbeb647a5079ec42bb627d6f83b6145, type: 3}
+  m_Script: {fileID: 11500000, guid: 4967b87a47da1c343a35b0edd509b785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tdt_displayType: 1
+  td_displayer: {fileID: 3587043950046314809}
+  td_wayToShowText: 1

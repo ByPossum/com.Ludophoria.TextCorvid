@@ -16,6 +16,8 @@ namespace TextCorvid
             {
                 box.PreviewTextBox(tg.GetTextManager(), tg.GetTextAnimator());
             }
+            foreach (DisplayUIOnAwake ui in FindObjectsOfType<DisplayUIOnAwake>())
+                ui.DisplayText();
             //b_run = false;
         }
     }
