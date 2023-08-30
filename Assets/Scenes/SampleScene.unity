@@ -1028,7 +1028,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3587043950046314806, guid: 791c0d45e1e401e4b9e70dc1ae2692f2, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3587043950046314807, guid: 791c0d45e1e401e4b9e70dc1ae2692f2, type: 3}
       propertyPath: m_Pivot.x
@@ -1125,6 +1125,14 @@ PrefabInstance:
     - target: {fileID: 3587043950046314807, guid: 791c0d45e1e401e4b9e70dc1ae2692f2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3587043950046314809, guid: 791c0d45e1e401e4b9e70dc1ae2692f2, type: 3}
+      propertyPath: s_textID
+      value: GirlIntro01
+      objectReference: {fileID: 0}
+    - target: {fileID: 3587043950046314810, guid: 791c0d45e1e401e4b9e70dc1ae2692f2, type: 3}
+      propertyPath: m_text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 791c0d45e1e401e4b9e70dc1ae2692f2, type: 3}
