@@ -1498,6 +1498,10 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 1039676681}
+    - target: {fileID: 288766328, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: f_arrowDistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: v_padding.w
       value: 5
