@@ -5,15 +5,14 @@ using UnityEngine;
 public class TextboxArrow : MonoBehaviour
 {
     private RectTransform parent;
-    private GameObject target;
     private Vector2 targetPos;
     private Camera cam;
+    [SerializeField] private GameObject target;
     [SerializeField] private float f_arrowDistance;
 
-    public void CreateArrow(RectTransform _parent, GameObject _target)
+    public void CreateArrow(RectTransform _parent)
     {
         parent = _parent;
-        target = _target;
         cam = Camera.main;
     }
 

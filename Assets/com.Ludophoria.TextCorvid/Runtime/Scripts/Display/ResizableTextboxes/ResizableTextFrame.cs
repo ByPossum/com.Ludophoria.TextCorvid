@@ -45,7 +45,6 @@ namespace TextCorvid
         {
             if (rt_box)
                 rt_box.GetComponentInParent<RectTransform>().sizeDelta += _pad;
-            Debug.Log("shup");
         }
         
         private Vector2 ResizeBox(float _minX, float _maxX, string _text, float _target)
