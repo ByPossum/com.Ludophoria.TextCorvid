@@ -18,9 +18,9 @@ namespace TextCorvid
             if (a_animationController)
                 a_animationController?.SetBool("active", true);
             if(!go_endPoint)
-                go_endPoint = transform.gameObject;
+                go_endPoint = transform.parent.gameObject;
             if(!go_startPoint)
-                go_startPoint = transform.gameObject;
+                go_startPoint = transform.parent.gameObject;
             await Move(go_startPoint, go_endPoint);
         }
 
@@ -40,7 +40,7 @@ namespace TextCorvid
             Vector3 _endPoint = Camera.main.WorldToScreenPoint(_end.transform.position);
             for (float i = 0; i < 1; i += Time.deltaTime * (1 / f_duration))
             {
-                transform.position = Vector3.Lerp(_startPoint, _endPoint, i);
+                transform.parent.position = Vector3.Lerp(_startPoint, _endPoint, i);
                 await Task.Yield();
             }
         }
