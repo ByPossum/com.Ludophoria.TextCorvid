@@ -38,12 +38,14 @@ namespace TextCorvid
                 Vector2 newSize = new Vector2(_resize.x * _container.fontSize, _resize.y + (_container.fontSize + _container.fontSize));
                 rt_box.sizeDelta = newSize;
             }
+            UpdateForPadding(new Vector2(v_padding.x + v_padding.z, v_padding.y + v_padding.w));
         }
 
         public void UpdateForPadding(Vector2 _pad)
         {
             if (rt_box)
                 rt_box.GetComponentInParent<RectTransform>().sizeDelta += _pad;
+            Debug.Log("shup");
         }
         
         private Vector2 ResizeBox(float _minX, float _maxX, string _text, float _target)
@@ -104,6 +106,7 @@ namespace TextCorvid
                 Vector2 newSize = new Vector2(_resize.x * _container.fontSize, _resize.y + (_container.fontSize + _container.fontSize));
                 rt_box.sizeDelta = newSize;
             }
+            UpdateForPadding(new Vector2(v_padding.x + v_padding.z, v_padding.y + v_padding.w));
 #endif
         }
     }

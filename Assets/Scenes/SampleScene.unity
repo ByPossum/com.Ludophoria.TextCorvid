@@ -1494,6 +1494,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 615508978}
     m_Modifications:
+    - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: v_padding.w
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: v_padding.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: v_padding.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: v_padding.z
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4266921093150091151, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: go_endPoint
       value: 
@@ -1504,11 +1520,11 @@ PrefabInstance:
       objectReference: {fileID: 1039676681}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 140
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 45.15625
+      value: 55.15625
       objectReference: {fileID: 0}
     - target: {fileID: 4819997795988112528, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_Name
@@ -1600,7 +1616,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4819997796393338803, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_text
-      value: 
+      value: "Hi I'm Text Corvid.\r"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819997796393338803, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 4819997796393338803, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5321152694887384224, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: go_endPoint
