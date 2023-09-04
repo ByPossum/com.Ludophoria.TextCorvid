@@ -24,7 +24,7 @@ public class TextboxArrow : MonoBehaviour
         {
             targetPos = cam.WorldToScreenPoint(target.transform.position);
             rt.anchoredPosition = GetNewPos(targetPos, parent.position, parent.rect.width, parent.rect.height);
-            rt.transform.up = (targetPos - (Vector2)transform.position);
+            rt.transform.up = -(targetPos - (Vector2)transform.position);
         }
     }
 
