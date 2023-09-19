@@ -11,6 +11,8 @@ namespace TextCorvid
         [SerializeField] private bool b_run;
         public void OnValidate()
         {
+            if (Application.isPlaying)
+                return;
             tg.Init();
             
             foreach(TextBox box in FindObjectsOfType<TextBox>())
