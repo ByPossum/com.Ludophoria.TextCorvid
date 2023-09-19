@@ -1,5 +1,7 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace TextCorvid
@@ -11,7 +13,7 @@ namespace TextCorvid
         [SerializeField] private bool b_run;
         public void OnValidate()
         {
-            if (Application.isPlaying)
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
                 return;
             tg.Init();
             
@@ -25,3 +27,4 @@ namespace TextCorvid
         }
     }
 }
+#endif
