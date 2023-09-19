@@ -24,7 +24,7 @@ namespace TextCorvid
         public TextManager(TextSettings _newSettings)
         {
             ts_settings = _newSettings;
-            l_currentLanguage = ts_settings.A_supportedLanguages[0];
+            l_currentLanguage = ts_settings.A_supportedLanguages.Length < 0 ? ts_settings.A_supportedLanguages[0] : Languages.none;
             s_filePath = ts_settings.s_filePath;
             s_folderPath = ts_settings.s_folderPaths;
             //MakeTestJsonData();

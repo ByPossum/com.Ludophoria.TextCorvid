@@ -712,6 +712,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3741555785011098069, guid: 47b414efb799cd742b425674a572e1d8, type: 3}
+      propertyPath: ts_settings
+      value: 
+      objectReference: {fileID: 11400000, guid: 4f998b337a6abf8408559b727c0d8332, type: 2}
     - target: {fileID: 3741555785011098070, guid: 47b414efb799cd742b425674a572e1d8, type: 3}
       propertyPath: m_Name
       value: TextManager
@@ -1528,11 +1532,11 @@ PrefabInstance:
       objectReference: {fileID: 1039676681}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 170
       objectReference: {fileID: 0}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 55.15625
+      value: 54.578125
       objectReference: {fileID: 0}
     - target: {fileID: 4819997795988112528, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_Name
