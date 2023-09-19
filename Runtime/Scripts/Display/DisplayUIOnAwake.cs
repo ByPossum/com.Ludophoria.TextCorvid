@@ -9,7 +9,7 @@ namespace TextCorvid
     {
         [SerializeField] private TextDisplayer td_displayer;
         [SerializeField] private TextDisplayType td_wayToShowText;
-        private void Awake()
+        private void Start()
         {
             DisplayText();
         }
