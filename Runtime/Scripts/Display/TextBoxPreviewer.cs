@@ -11,7 +11,14 @@ namespace TextCorvid
         [SerializeField] private bool b_run;
         public void OnValidate()
         {
-            tg.Init();
+            try
+            {
+                tg.Init();
+            }
+            catch(System.NullReferenceException e)
+            {
+                Debug.LogError("Text Manager unable to initialize. Check your text settings");
+            }
             foreach(TextBox box in FindObjectsOfType<TextBox>())
             {
                 box.PreviewTextBox(tg.GetTextManager(), tg.GetTextAnimator());
