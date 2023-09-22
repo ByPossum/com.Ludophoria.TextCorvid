@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -15,7 +16,14 @@ namespace TextCorvid
         {
             if (EditorApplication.isPlayingOrWillChangePlaymode)
                 return;
-            tg.Init();
+            try
+            {
+                tg.Init();
+            }
+            catch(NullReferenceException e)
+            {
+                return;
+            }
             
             foreach(TextBox box in FindObjectsOfType<TextBox>())
             {
