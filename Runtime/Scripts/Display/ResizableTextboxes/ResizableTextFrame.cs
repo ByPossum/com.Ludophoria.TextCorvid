@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 namespace TextCorvid
 {
@@ -10,10 +11,12 @@ namespace TextCorvid
         private RectTransform rt_box;
         private SpriteRenderer sr_textBox;
         private bool b_boxSizeSatisfied = false;
-        [SerializeField]private float f_minWidth, f_maxWidth, f_minHeight, f_maxHeight;
+        [SerializeField] private float f_minWidth, f_maxWidth;
+        private float f_minHeight, f_maxHeight;
         [SerializeField, Tooltip("Left, Top, Right, Bottom")] private Vector4 v_padding;
         private float f_width, f_height;
         private float f_tolerance;
+        private Dictionary<float, float> D_scores = new Dictionary<float, float>();
         public float BoxWidth { get { return f_width; } }
         public float BoxHeight { get { return f_height; } }
         public Vector4 Padding { get { return v_padding; } }
@@ -25,6 +28,7 @@ namespace TextCorvid
 
             f_tolerance = _text.Length + _text.Length * 0.1f;
             Vector2 _resize = ResizeBox(f_minWidth, f_maxWidth, _text, _text.Length);
+            
             if (sr_textBox)
             {
                 Vector2 newSize = new Vector2(_resize.x * _container.fontSize * 0.1f, _resize.y + (_container.fontSize * 0.1f));
@@ -54,6 +58,18 @@ namespace TextCorvid
             List<string> bins = CollectTextIntoBins(Mathf.CeilToInt(_midX), _text);
             int midY = bins.Count + 1;
             float area = _midX * midY;
+
+            if (!D_scores.ContainsKey(_midX))
+                D_scores.Add(_midX, area);
+
+            if ((D_scores.ContainsKey((_minX + _midX) * 0.5f)) && (D_scores.ContainsKey((_midX + _maxX) * 0.5f)))
+                return GetBestScore(_text);
+            if (!D_scores.ContainsKey((_minX + _midX) * 0.5f))
+                return ResizeBox(_minX, _midX, _text, _target);
+            if (!D_scores.ContainsKey((_midX + _maxX) * 0.5f))
+                return ResizeBox(_midX, _maxX, _text, _target);
+            return GetBestScore(_text);
+            /*old
             if(Mathf.Abs(area - _target) < f_tolerance && area > f_minWidth * f_minHeight && area < f_maxWidth * f_maxHeight)
                 return new Vector2(midY, _midX);
             if (area > _target)
@@ -61,6 +77,20 @@ namespace TextCorvid
             if (area < _target)
                 _minX = _midX + 1f;
             return ResizeBox(_minX, _maxX, _text, _target);
+            */
+        }
+
+        private Vector2 GetBestScore(string _text)
+        {
+            float bestScore = 10000f;
+            float bestX = 100000000f;
+            foreach (float key in D_scores.Keys)
+                if (D_scores[key] < bestScore)
+                {
+                    bestScore = D_scores[key];
+                    bestX = key;
+                }
+            return new Vector2(bestX, CollectTextIntoBins(Mathf.CeilToInt(bestX), _text).Count + 1);
         }
 
         private List<string> CollectTextIntoBins(int _binLength, string _text)
