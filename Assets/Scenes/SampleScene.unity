@@ -1469,7 +1469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: f_minWidth
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3418844857733172035, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: v_padding.w
@@ -1497,11 +1497,11 @@ PrefabInstance:
       objectReference: {fileID: 1039676681}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 90
+      value: 210
       objectReference: {fileID: 0}
     - target: {fileID: 4501264697447112374, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 58
+      value: 56
       objectReference: {fileID: 0}
     - target: {fileID: 4819997795988112528, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: m_Name

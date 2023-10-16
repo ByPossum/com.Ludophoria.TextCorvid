@@ -59,25 +59,22 @@ namespace TextCorvid
             int midY = bins.Count + 1;
             float area = _midX * midY;
 
+            // Have we evaluated it already?
             if (!D_scores.ContainsKey(_midX))
                 D_scores.Add(_midX, area);
 
+            // When we've evaluated both our closest neighbours we're done
             if ((D_scores.ContainsKey((_minX + _midX) * 0.5f)) && (D_scores.ContainsKey((_midX + _maxX) * 0.5f)))
                 return GetBestScore(_text);
-            if (!D_scores.ContainsKey((_minX + _midX) * 0.5f))
+
+            // Check which neighbour to try next
+            if (!D_scores.ContainsKey((_minX + _midX) * 0.5f) && ((_minX + _midX) * 0.5f) > f_minWidth)
                 return ResizeBox(_minX, _midX, _text, _target);
-            if (!D_scores.ContainsKey((_midX + _maxX) * 0.5f))
+            if (!D_scores.ContainsKey((_midX + _maxX) * 0.5f) && ((_midX + _maxX) * 0.5f) < f_maxWidth)
                 return ResizeBox(_midX, _maxX, _text, _target);
+
+            // If we've fallen through here we've probably hit a min/max so return
             return GetBestScore(_text);
-            /*old
-            if(Mathf.Abs(area - _target) < f_tolerance && area > f_minWidth * f_minHeight && area < f_maxWidth * f_maxHeight)
-                return new Vector2(midY, _midX);
-            if (area > _target)
-                _maxX = _midX - 1f;
-            if (area < _target)
-                _minX = _midX + 1f;
-            return ResizeBox(_minX, _maxX, _text, _target);
-            */
         }
 
         private Vector2 GetBestScore(string _text)
