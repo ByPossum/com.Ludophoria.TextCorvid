@@ -36,9 +36,10 @@ namespace TextCorvid
 
             // Initialize frame and text displayer
             f_frame.Init(s_textToDisplay, tm_textRext);
-            td_text.Init(tg_glue.GetTextManager().TextSpeed);
-
+            td_text.Init(tg_glue.GetTextManager().TextSpeed, s_textID);
+            td_text.CacheText(tg_glue.GetTextAnimator().ParseAnimations(tm_textRext, s_textToDisplay));
             await Task.Yield();
+            
         }
 
         public void Display()
@@ -58,7 +59,7 @@ namespace TextCorvid
 
         public void DisplayText()
         {
-            td_text.DisplayText(tg_glue.GetTextAnimator().ParseAnimations(tm_textRext, tg_glue.GetTextManager().GetText(td_text.TextID)), 0.0f, td_wayToShowText);
+            td_text.DisplayText(tm_textRext.bounds.size.x, td_wayToShowText);
         }
 
         public void RunAllMovers()

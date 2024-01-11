@@ -19,8 +19,8 @@ namespace TextCorvid
             TextGlue tg = FindObjectOfType<TextGlue>();
             TMP_Text tm_text = td_displayer.GetComponent<TMP_Text>();
             td_displayer.Init(tg.GetTextManager().TextSpeed);
-            td_displayer.DisplayText(tg.GetTextAnimator().ParseAnimations(tm_text, tg.GetTextManager().GetText(td_displayer.TextID)), 0.0f,
-                td_wayToShowText);
+            td_displayer.DisplayText(0.0f, td_wayToShowText,
+                tg.GetTextAnimator().ParseAnimations(tm_text, tg.GetTextManager().GetText(td_displayer.TextID)));
         }
     }
 }
