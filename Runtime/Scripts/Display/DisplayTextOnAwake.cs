@@ -10,8 +10,6 @@ namespace TextCorvid
         public async void Start()
         {
             await tb_textBox.Init();
-            for (int i = 0; i < 4000; i++)
-                await System.Threading.Tasks.Task.Yield();
             tb_textBox.Display();
         }
     }
