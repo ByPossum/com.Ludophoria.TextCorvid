@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 namespace TextCorvid
 {
@@ -25,9 +26,10 @@ namespace TextCorvid
         public string TextID { get { return s_textID; } }
         public TMP_Text GetTextObject { get { return t_displayedText; } }
 
-        public void Init(int _textSpeed, string _textID = null)
+        public void Init(int _textSpeed, string _id = null)
         {
             i_textSpeed = _textSpeed;
+            CacheID(_id);
             if (!rt_displayBox)
                 rt_displayBox = GetComponent<RectTransform>();
             if (!t_displayedText)
@@ -51,8 +53,11 @@ namespace TextCorvid
         /// <param name="textToDisplay">String to display (typically gotten from TextManager.x.GetText()</param>
         /// <param name="rectSize">This is contextual. It's the size of the area to display. DisplayType.line uses width. DisplayType.character uses height.</param>
         /// <param name="displayType">How the text will be displayed.</param>
-        public void DisplayText(string textToDisplay, float rectSize, TextDisplayType displayType = TextDisplayType.block)
+        public void DisplayText(float rectSize, TextDisplayType displayType = TextDisplayType.block, string textToDisplay = null)
         {
+            if (textToDisplay == null)
+                textToDisplay = s_textToBeDisplayed;
+            textToDisplay = RemoveQuotations(textToDisplay);
             switch (displayType)
             {
                 case TextDisplayType.block:
@@ -73,14 +78,20 @@ namespace TextCorvid
             }
         }
 
-        public void DisplayText(string textToDisplay, RectTransform rectToDisplay = null, TextDisplayType displayType = TextDisplayType.block)
+        private string RemoveQuotations(string text)
         {
-            DisplayText(textToDisplay, rectToDisplay.rect.height, displayType);
-        }
-
-        public void DisplayText(float _rectSize, TextDisplayType _displayType)
-        {
-            DisplayText(s_textToBeDisplayed, _rectSize, _displayType);
+            text = text.Replace('\n', '\0');
+            for (int i = 0; i < text.Length; i++)
+            {
+                print(text[i]);
+            }
+            
+            if (text[0] == '"' && text[text.Length - 3] == '"')
+            {
+                text = text.Remove(0, 1);
+                text = text.Remove(text.Length - 3, 1);
+            }
+            return text;
         }
 
         /// <summary>
