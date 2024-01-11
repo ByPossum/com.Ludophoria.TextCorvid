@@ -81,10 +81,6 @@ namespace TextCorvid
         private string RemoveQuotations(string text)
         {
             text = text.Replace('\n', '\0');
-            for (int i = 0; i < text.Length; i++)
-            {
-                print(text[i]);
-            }
             
             if (text[0] == '"' && text[text.Length - 3] == '"')
             {
