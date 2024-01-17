@@ -31,8 +31,6 @@ public class TextboxArrow : MonoBehaviour
     private Vector2 GetNewPos(Vector2 targetPosition, Vector2 parentPosition, float width, float height)
     {
         Vector2 direction = (targetPosition - parentPosition).normalized;
-        float area = width * height;
-        print(area);
         return new Vector2((width*0.5f * direction.x), ((height*0.5f * direction.y)));
     }
 }
