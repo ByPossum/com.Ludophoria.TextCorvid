@@ -1557,7 +1557,7 @@ PrefabInstance:
       objectReference: {fileID: 1039676681}
     - target: {fileID: 7200372501600255782, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: s_textID
-      value: test02
+      value: tut01
       objectReference: {fileID: 0}
     - target: {fileID: 7200372501600255782, guid: 0e68b6ae81980d7498bfe2d34adf7a76, type: 3}
       propertyPath: rt_displayBox
