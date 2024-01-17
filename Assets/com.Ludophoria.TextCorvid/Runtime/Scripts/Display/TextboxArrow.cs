@@ -18,7 +18,7 @@ public class TextboxArrow : MonoBehaviour
         rt = GetComponent<RectTransform>();
     }
 
-    public void Update()
+    public void LateUpdate()
     {
         if (parent && target)
         {
@@ -31,6 +31,7 @@ public class TextboxArrow : MonoBehaviour
     private Vector2 GetNewPos(Vector2 targetPosition, Vector2 parentPosition, float width, float height)
     {
         Vector2 direction = (targetPosition - parentPosition).normalized;
-        return new Vector2(((width * f_arrowDistance) * direction.x), ((height * f_arrowDistance) * direction.y));
+        return new Vector2(((width * f_arrowDistance
+            ) * direction.x), ((height * f_arrowDistance) * direction.y));
     }
 }
